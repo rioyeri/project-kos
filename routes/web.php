@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PageController@login');
+
+Route::get('/home', 'PageController@home');
+
+Route::POST('/home', 'PageController@home');
+
+Auth::routes();
+
+Route::get('/tambahkamar', 'KamarController@create');
+
+Route::post('/tambahkamar', 'KamarController@store');
+
+Route::get('/lihatkamar', 'KamarController@index');
