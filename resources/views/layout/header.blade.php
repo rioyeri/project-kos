@@ -3,7 +3,7 @@
     <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
   </div>
   <!--logo start-->
-  <a href="/home" class="logo"><b>KOSAN<span>CERIA</span></b></a>
+  <a href="/home" class="logo"><b>GREEN<span>HOUSE</span></b></a>
   <!--logo end-->
   <div class="nav notify-row" id="top_menu">
     <ul class="nav top-menu">

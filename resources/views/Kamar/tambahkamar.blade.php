@@ -9,7 +9,7 @@
 @endsection
 
 @section('name')
-  Kos Ulfa
+  GreenHouse
 @endsection
 
 @section('content')

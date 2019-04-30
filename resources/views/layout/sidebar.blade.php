@@ -3,7 +3,7 @@
     <!-- sidebar menu start-->
     <ul class="sidebar-menu" id="nav-accordion">
       <p class="centered"><a href="profile.html"><img src="{{ asset('img/Y baru logo2.png')}}" class="img-circle" width="80"></a></p>
-      <h5 class="centered">Aditya Rio</h5>
+      <h5 class="centered">GreenHouse</h5>
       <li class="mt">
         <a class="@yield('dash')" href="/home">
           <i class="fa fa-dashboard"></i>
