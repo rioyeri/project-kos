@@ -14,10 +14,10 @@ class CreateJaminanKunciTable extends Migration
     public function up()
     {
         Schema::create('jaminanKunci', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('pembayaran_id');
-            $table->foreign('pembayaran_id')->references('id_pembayaran')->on('pembayaran');
-            $table->string('status');
+            $table->increments('id_jaminankunci');
+            $table->unsignedInteger('penghuni_id');
+            $table->foreign('penghuni_id')->references('id_penghuni')->on('penghuni');
+            $table->string('jaminan');
             $table->timestamps();
         });
     }

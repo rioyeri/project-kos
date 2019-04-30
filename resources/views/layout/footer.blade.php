@@ -14,6 +14,6 @@
     </div>
     <a href="/project-kos/public/home#" class="go-top">
       <i class="fa fa-angle-up"></i>
-      </a>
+    </a>
   </div>
 </footer>

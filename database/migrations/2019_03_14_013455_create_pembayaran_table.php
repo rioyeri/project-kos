@@ -19,7 +19,11 @@ class CreatePembayaranTable extends Migration
             $table->foreign('kamar_id')->references('id_kamar')->on('kamar');
             $table->unsignedInteger('penghuni_id');
             $table->foreign('penghuni_id')->references('id_penghuni')->on('penghuni');
-            $table->date('jatuhTempo');
+            $table->bigInteger('jumlahBayar');
+            $table->date('tglPembayaran');
+            $table->date('tglMasuk');
+            $table->date('tglKeluar');
+            $table->string('buktiBayar');
             $table->timestamps();
         });
     }

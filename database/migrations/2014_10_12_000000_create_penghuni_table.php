@@ -15,15 +15,13 @@ class CreatePenghuniTable extends Migration
     {
         Schema::create('penghuni', function (Blueprint $table) {
             $table->increments('id_penghuni');
-            $table->integer('noKTP')->unique();
+            $table->string('noKTP')->unique();
             $table->string('nama');
             $table->string('jenisKelamin');
             $table->string('tempatLahir');
             $table->date('tanggalLahir');
-            $table->string('perkerjaan');
+            $table->string('pekerjaan');
             $table->string('alamatAsli');
-            $table->date('tglMasuk');
-            $table->date('tglKeluar');
             $table->timestamps();
         });
     }

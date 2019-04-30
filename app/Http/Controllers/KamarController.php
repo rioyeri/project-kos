@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 Use App\Http\Controllers\Session;
 use App\Models\blok;
 use App\Models\lantai;
+use Sentinel;
 
 class KamarController extends Controller
 {
@@ -53,7 +54,7 @@ class KamarController extends Controller
       $data->lantai_id=$request->id_lantai;
       $data->namaKamar=$request->namaKamar;
       $data->save();
-      Session::flash('success','Data Anda Berhasil Ditambahkan!');
+      //Session::flash('success','Data Anda Berhasil Ditambahkan!');
       return redirect('/tambahkamar');
     }
 
@@ -74,9 +75,17 @@ class KamarController extends Controller
      * @param  \App\Kamar  $kamar
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kamar $kamar)
+    public function edit($id)
     {
-        //
+      //if(Sentinel::check()){
+        $kamar = Kamar::find($id);
+        $bloks = blok::all();
+        $lantais = lantai::all();
+        return view('Kamar.editKamar',compact('kamar', 'bloks', 'lantais'));
+      // }
+      // else{
+      //   return redirect('/');
+      // }
     }
 
     /**
@@ -86,9 +95,14 @@ class KamarController extends Controller
      * @param  \App\Kamar  $kamar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kamar $kamar)
+    public function update(Request $request, $id)
     {
-        //
+      $kamar = Kamar::find($id);
+      $kamar->namaKamar = $request->namaKamar;
+      $kamar->blok_id = $request->id_blok;
+      $kamar->lantai_id = $request->id_lantai;
+      $kamar->update();
+      return redirect('/lihatkamar');
     }
 
     /**
@@ -97,8 +111,10 @@ class KamarController extends Controller
      * @param  \App\Kamar  $kamar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kamar $kamar)
+    public function destroy($id)
     {
-        //
+      $kamar = Kamar::find($id);
+      $kamar->delete();
+      return redirect('/lihatkamar');
     }
 }

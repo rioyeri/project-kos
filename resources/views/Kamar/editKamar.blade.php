@@ -1,15 +1,15 @@
 @extends('layout.dashboard')
 
 @section('page')
-    Tambah Kamar
-@endsection
-
-@section('kamar')
-  active
+    Edit Kamar
 @endsection
 
 @section('name')
   Kos Ulfa
+@endsection
+
+@section('kamar')
+  active
 @endsection
 
 @section('content')
@@ -17,19 +17,21 @@
 
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i> Tambahkan Data Kamar</h3>
+    <h3><i class="fa fa-angle-right"></i> Edit Data Kamar</h3>
 
     <!-- FORM VALIDATION -->
     <div class="row mt">
       <div class="col-lg-12">
         <div class="form-panel">
           <div class=" form">
-            <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/tambahkamar">
+            <form class="cmxform form-horizontal style-form" id="commentForm" method="POST" action="/editkamar/{{ $kamar->id_kamar}}">
               {{ csrf_field() }}
+              {{ method_field('PUT') }}
               <div class="form-group ">
                 <label for="namaKamar" class="control-label col-lg-2">Nama Kamar</label>
                 <div class="col-lg-10">
-                  <input class=" form-control" id="namaKamar" name="namaKamar" minlength="2" type="text" placeholder='Masukan Nama Kamar' required/>
+                  <input name="id" type="hidden" value="{{ $kamar->id_kamar}}">
+                  <input class="form-control" name="namaKamar" type="text" value="{{ $kamar->namaKamar}}" placeholder="Masukan Nama Kamar" required/>
                 </div>
               </div>
               <div class="form-group ">
@@ -37,7 +39,11 @@
                 <div class="col-lg-10">
                   <select name="id_blok" class="form-control">
                     @foreach ($bloks as $blok)
-                      <option value="{{ $blok->id_blok }}"> {{ $blok->namaBlok }}</option>
+                      @if($blok->id_blok == $kamar->blok_id)
+                        <option value="{{ $blok->id_blok }}" selected> {{ $blok->namaBlok }}</option>
+                      @else
+                        <option value="{{ $blok->id_blok }}"> {{ $blok->namaBlok }}</option>
+                      @endif
                     @endforeach
                   </select>
                 </div>
@@ -47,7 +53,11 @@
                 <div class="col-lg-10">
                   <select name="id_lantai" class="form-control">
                     @foreach ($lantais as $lantai)
-                      <option value="{{ $lantai->id_lantai }}"> {{ $lantai->namaLantai }}</option>
+                      @if($lantai->id_lantai == $kamar->lantai_id)
+                        <option value="{{ $lantai->id_lantai }}" selected> {{ $lantai->namaLantai }}</option>
+                      @else
+                        <option value="{{ $lantai->id_lantai }}"> {{ $lantai->namaLantai }}</option>
+                      @endif
                     @endforeach
                   </select>
                 </div>

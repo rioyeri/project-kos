@@ -38,18 +38,18 @@
       <form method="POST" class="form-login" action="/home">
         <h2 class="form-login-heading">sign in now</h2>
         <div class="login-wrap">
-            @csrf
+            {{ csrf_field() }}
             <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+                <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                 <div class="col-md-12">
-                    <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                    <input id="username" type="text" class="form-control" name="username" required autofocus>
 
-                    @if ($errors->has('email'))
+                    {{--  @if ($errors->has('username'))
                         <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
+                            <strong>{{ $errors->first('username') }}</strong>
                         </span>
-                    @endif
+                    @endif  --}}
                 </div>
             </div>
 
@@ -70,7 +70,8 @@
             <input id="username" type="text" class="form-control" placeholder="User ID" autofocus>
             <br>
             <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>  --}}
-
+            <hr>
+            {{--  <span class="help-block">{{ $alert }}</span>  --}}
             <hr>
             <button class="btn btn-theme btn-block" href="/home" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
             <hr>
