@@ -43,19 +43,12 @@ class KamarController extends Controller
      */
     public function store(Request $request)
     {
-      // Post::create([
-      //   'namaKamar' => request('namaKamar'),
-      //   'blok_id' => request('id_blok'),
-      //   'lantai_id' => request('id_lantai')
-      // ]);
-
       $data = new Kamar;
       $data->blok_id=$request->id_blok;
       $data->lantai_id=$request->id_lantai;
       $data->namaKamar=$request->namaKamar;
       $data->save();
-      //Session::flash('success','Data Anda Berhasil Ditambahkan!');
-      return redirect('/tambahkamar');
+      return redirect('/tambahkamar')->with('success', 'Data kamar berhasil ditambahkan');
     }
 
     /**
@@ -102,7 +95,7 @@ class KamarController extends Controller
       $kamar->blok_id = $request->id_blok;
       $kamar->lantai_id = $request->id_lantai;
       $kamar->update();
-      return redirect('/lihatkamar');
+      return redirect('/lihatkamar')->with('success', 'Data kamar berhasil diupdate!');
     }
 
     /**
@@ -115,6 +108,6 @@ class KamarController extends Controller
     {
       $kamar = Kamar::find($id);
       $kamar->delete();
-      return redirect('/lihatkamar');
+      return redirect('/lihatkamar')->with('info', 'Data kamar berhasil dihapus');
     }
 }

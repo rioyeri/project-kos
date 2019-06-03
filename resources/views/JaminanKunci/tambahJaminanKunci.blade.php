@@ -35,6 +35,7 @@
                 <label for="penghuni_id" class="control-label col-lg-2">Pilih Nama Penghuni</label>
                 <div class="col-lg-10">
                   <select name="penghuni_id" class="form-control">
+                    <option disabled selected>-- Pilih --</option>
                     @foreach ($pembayarans as $pembayaran)
                       <option value="{{ $pembayaran->penghuni_id }}"> {{ Penghuni::where('id_penghuni', $pembayaran->penghuni_id)->first()->nama}} ({{ Kamar::where('id_kamar', $pembayaran->kamar_id)->first()->namaKamar}})</option>
                     @endforeach
@@ -49,7 +50,7 @@
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                  <button class="btn btn-theme" type="submit">Save</button>
+                  <button class="btn btn-theme" type="submit">Simpan</button>
                 </div>
               </div>
             </form>

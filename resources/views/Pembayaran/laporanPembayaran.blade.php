@@ -1,7 +1,7 @@
 @extends('layout.dashboard')
 
 @section('page')
-    Lihat Pembayaran
+    Daftar Pembayaran
 @endsection
 
 @section('name')
@@ -45,14 +45,14 @@
           <table class="table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Kamar</th>
-                <th>Nama Penghuni</th>
-                <th>Jumlah Bayar (Rp)</th>
-                <th>Tanggal Pembayaran</th>
-                <th>Tanggal Masuk</th>
-                <th>Tanggal Keluar</th>
-                <th>Bukti Pembayaran</th>
+                <th width="10%">#</th>
+                <th width="10%">Kamar</th>
+                <th width="20%">Nama Penghuni</th>
+                <th width="20%">Jumlah Bayar (Rp)</th>
+                <th width="10%" class="centered">Tanggal Pembayaran</th>
+                <th width="10%" class="centered">Tanggal Masuk</th>
+                <th width="10%" class="centered">Tanggal Keluar</th>
+                <th width="10%" class="centered">Bukti Pembayaran</th>
               </tr>
             </thead>
             <tbody>

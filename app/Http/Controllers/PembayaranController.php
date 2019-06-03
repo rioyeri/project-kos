@@ -62,8 +62,8 @@ class PembayaranController extends Controller
       $filebukti = $request->file("buktiBayar")->store($namabukti);
       $data->buktiBayar=$filebukti;
       $data->save();
-      //Session::flash('success','Data Anda Berhasil Ditambahkan!');
-      return redirect('/lihatpembayaran');
+
+      return redirect('/lihatpembayaran')->with('success', 'Data pembayaran berhasil ditambahkan!');
     }
 
     /**
@@ -136,7 +136,7 @@ class PembayaranController extends Controller
       $filebukti = $request->file("buktiBayar")->store($namabukti);
       $data->buktiBayar=$filebukti;
       $data->update();
-      return redirect('/lihatpembayaran');
+      return redirect('/lihatpembayaran')->with('info','Data pembayaran berhasil diupdate');
     }
 
     /**
@@ -155,6 +155,6 @@ class PembayaranController extends Controller
           Storage::deleteDirectory($namafolder);
         }
         $pembayaran->delete();
-        return redirect('/lihatpembayaran');
+        return redirect('/lihatpembayaran')->with('info','Data pembayaran terpilih, berhasil dihapus');
     }
 }

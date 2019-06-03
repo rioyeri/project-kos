@@ -48,11 +48,12 @@ class PenghuniController extends Controller
       $tglLahir = strtotime($request->tanggalLahir);
       $tglLahir = date('Y-m-d',$tglLahir);
       $penghuni->tanggalLahir=$tglLahir;
+      $penghuni->noHP=$request->noHP;
       $penghuni->pekerjaan=$request->pekerjaan;
       $penghuni->alamatAsli=$request->alamatAsli;
       $penghuni->save();
 
-      return redirect('/lihatpenghuni');
+      return redirect('/lihatpenghuni')->with('success', 'Data Penghuni berhasil ditambahkan!');
     }
 
     /**
@@ -95,10 +96,11 @@ class PenghuniController extends Controller
       $tglLahir = strtotime($request->tanggalLahir);
       $tglLahir = date('Y-m-d',$tglLahir);
       $penghuni->tanggalLahir=$tglLahir;
+      $penghuni->noHP=$request->noHP;
       $penghuni->pekerjaan=$request->pekerjaan;
       $penghuni->alamatAsli=$request->alamatAsli;
       $penghuni->update();
-      return redirect('/lihatpenghuni');
+      return redirect('/lihatpenghuni')->with('info', 'Data Berhasil diupdate!');
     }
 
     /**
@@ -111,6 +113,6 @@ class PenghuniController extends Controller
     {
       $penghuni = Penghuni::find($id);
       $penghuni->delete();
-      return redirect('/lihatpenghuni');
+      return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus!');
     }
 }

@@ -49,7 +49,7 @@ class JaminankunciController extends Controller
         $data->jaminan=$request->jaminan;
         $data->save();
 
-        return redirect('/lihatjaminankunci');
+        return redirect('/lihatjaminankunci')->with('success','Data berhasil disimpan');
     }
 
     /**
@@ -90,7 +90,7 @@ class JaminankunciController extends Controller
       $data->jaminan=$request->jaminan;
       $data->update();
 
-      return redirect('/lihatjaminankunci');
+      return redirect('/lihatjaminankunci')->with('info','Data berhasil diupdate');
     }
 
     /**
@@ -103,6 +103,6 @@ class JaminankunciController extends Controller
     {
         $jaminankunci = JaminanKunci::find($id);
         $jaminankunci->delete();
-        return redirect('/lihatjaminankunci');
+        return redirect('/lihatjaminankunci')->with('info', 'Data terpilih berhasil dihapus');
     }
 }

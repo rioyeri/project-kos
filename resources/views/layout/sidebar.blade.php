@@ -17,7 +17,7 @@
           </a>
         <ul class="sub">
           <li><a href="/tambahkamar">Tambah Kamar</a></li>
-          <li><a href="/lihatkamar">Lihat Kamar</a></li>
+          <li><a href="/lihatkamar">Daftar Kamar</a></li>
         </ul>
       </li>
       <li class="sub-menu">
@@ -27,8 +27,14 @@
           </a>
         <ul class="sub">
           <li><a href="/tambahpenghuni">Tambah Penghuni</a></li>
-          <li><a href="/lihatpenghuni">Lihat Penghuni</a></li>
+          <li><a href="/lihatpenghuni">Daftar Penghuni</a></li>
         </ul>
+      </li>
+      <li class="sub-menu">
+        <a href="/mapping/tambah" class="@yield('mapping')">
+          <i class="fa fa-book"></i>
+          <span>Mapping Kamar-Penghuni</span>
+          </a>
       </li>
       <li class="sub-menu">
           <a href="javascript:;" class="@yield('pembayaran')">
@@ -37,8 +43,8 @@
             </a>
           <ul class="sub">
             <li><a href="/tambahpembayaran">Tambah Data Pembayaran</a></li>
-            <li><a href="/lihatpembayaran">Lihat Data Pembayaran</a></li>
-            <li><a href="/laporanpembayaran">Lihat Laporan Pembayaran</a></li>
+            <li><a href="/lihatpembayaran">Daftar Data Pembayaran</a></li>
+            <li><a href="/laporanpembayaran">Laporan Pembayaran</a></li>
           </ul>
       </li>
       <li class="sub-menu">
@@ -48,18 +54,34 @@
           </a>
         <ul class="sub">
           <li><a href="/tambahjaminankunci">Tambah Data Jaminan Kunci</a></li>
-          <li><a href="/lihatjaminankunci">Lihat Data Jaminan Kunci</a></li>
+          <li><a href="/lihatjaminankunci">Daftar Data Jaminan Kunci</a></li>
         </ul>
       </li>
       <li class="sub-menu">
-          <a href="javascript:;" class="@yield('pinjaman')">
+          <a href="javascript:;" class="@yield('pengeluaran')">
             <i class="fa fa-book"></i>
-            <span>Pinjaman</span>
+            <span>Pengeluaran</span>
             </a>
           <ul class="sub">
-            <li><a href="/tambahpinjaman">Tambah Data Pinjaman</a></li>
-            <li><a href="/lihatpinjaman">Lihat Data Pinjaman</a></li>
+            <li><a href="/tambahpengeluaran">Tambah Data Pengeluaran</a></li>
+            <li><a href="/lihatpengeluaran">Daftar Data Pengeluaran</a></li>
           </ul>
+      </li>
+      <li class="sub-menu">
+        <a href="javascript:;" class="@yield('pemasukan')">
+          <i class="fa fa-book"></i>
+          <span>Pemasukan</span>
+          </a>
+        <ul class="sub">
+          <li><a href="/tambahpemasukan">Tambah Data Pemasukan</a></li>
+          <li><a href="/lihatpemasukan">Daftar Data Pemasukan</a></li>
+        </ul>
+      </li>
+      <li class="sub-menu">
+        <a href="/laporankeuangan" class="@yield('keuangan')">
+          <i class="fa fa-book"></i>
+          <span>Laporan Keuangan</span>
+        </a>
       </li>
     </ul>
     <!-- sidebar menu end-->

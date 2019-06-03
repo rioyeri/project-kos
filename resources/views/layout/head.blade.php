@@ -6,6 +6,7 @@
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
   <title>KOS-KOSAN CERIA | @yield('page')</title>
 
+  @yield('css')
   <!-- Favicons -->
   <link href=" {{ asset('img/favicon.png') }}" rel="icon">
   <link href=" {{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
@@ -21,8 +22,7 @@
   <!-- Custom styles for this template -->
   <link href= "{{ asset('css/style.css')}}" rel="stylesheet">
   <link href= "{{ asset('css/style-responsive.css')}}" rel="stylesheet">
-  <script src= "{{ asset('lib/chart-master/Chart.js')}}"></script>
-  <script type="text/javascript" src="{{ asset('lib/scripts.js') }}"></script>
+
   <!-- =======================================================
     Template Name: Dashio
     Template URL: https://templatemag.com/dashio-bootstrap-admin-template/

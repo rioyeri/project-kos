@@ -1,7 +1,7 @@
 @extends('layout.dashboard')
 
 @section('page')
-    Lihat Penghuni
+    Daftar Penghuni
 @endsection
 
 @section('name')
@@ -20,6 +20,22 @@
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
+          @if (session('alert'))
+            <div class="alert alert-danger alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <strong>Warning!</strong> {{ session('alert') }}
+            </div>
+          @elseif (session('info'))
+            <div class="alert alert-info alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <strong>Berhasil!</strong> {{ session('info') }}
+            </div>
+          @elseif (session('success'))
+            <div class="alert alert-success alert-dismissable">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <strong>Berhasil!</strong> {{ session('success') }}
+            </div>
+          @endif
           <hr>
           <table class="table">
             <thead>
@@ -32,6 +48,7 @@
                 <th>Tanggal Lahir</th>
                 <th>Pekerjaan</th>
                 <th>Alamat Asli</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -50,11 +67,11 @@
                   <td>{{ $penghuni->tglMasuk }}</td>
                   <td>{{ $penghuni->tglKeluar }}</td>
                   <td>
-                    <a href="/editpenghuni/{{ $penghuni->id_penghuni}}"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a>
+                    <a href="/editpenghuni/{{ $penghuni->id_penghuni}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Update</i></button></a>
                     <form class="" action="/hapuspenghuni/{{ $penghuni->id_penghuni }}" method="post">
                       {{ csrf_field() }}
                       {{ method_field('delete') }}
-                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></a>
+                        <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Hapus</i></button></a>
                     </form>
                   </td>
                 </tr>

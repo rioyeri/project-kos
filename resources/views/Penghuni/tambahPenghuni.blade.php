@@ -43,6 +43,7 @@
                 <label for="jenisKelamin" class="control-label col-lg-2">Jenis Kelamin</label>
                 <div class="col-lg-10">
                   <select name="jenisKelamin" class="form-control">
+                    <option selected disabled>-- Pilih --</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                   </select>
@@ -58,9 +59,15 @@
                 <label class="control-label col-lg-2">Tanggal Lahir</label>
                 <div class="col-lg-10">
                   <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tanggalLahir" name="tanggalLahir" size="16" type="text" required/>
+                    <input class="form-control default-date-picker" id="tanggalLahir" name="tanggalLahir" size="16" type="text" placeholder="YYYY-MM-DD" required/>
                   </div>
                   <span class="help-block">Contoh : 2000-01-02 (2 Januari 2000)</span>
+                </div>
+              </div>
+              <div class="form-group ">
+                <label for="noHP" class="control-label col-lg-2">Nomor Handphone</label>
+                <div class="col-lg-10">
+                  <input class="form-control" id="noHP" name="noHP" minlength="10" type="text" placeholder='08xxxxxxx' required/>
                 </div>
               </div>
               <div class="form-group ">
@@ -77,7 +84,7 @@
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                  <button class="btn btn-theme" type="submit">Save</button>
+                  <button class="btn btn-theme" type="submit">Simpan</button>
                 </div>
               </div>
             </form>

@@ -27,21 +27,23 @@
             <form class="cmxform form-horizontal style-form" enctype="multipart/form-data" id="commentForm" method="post" action="/tambahpembayaran">
               {{ csrf_field() }}
               <div class="form-group ">
-                <label for="id_kamar" class="control-label col-lg-2">Pilih Kamar</label>
+                <label for="id_penghuni" class="control-label col-lg-2">Pilih Penghuni</label>
                 <div class="col-lg-10">
-                  <select name="kamar_id" class="form-control">
-                    @foreach ($kamars as $kamar)
-                      <option value="{{ $kamar->id_kamar }}"> {{ $kamar->namaKamar }}</option>
+                  <select name="penghuni_id" class="form-control" parsley-trigger="change" onchange="changeKamar(this.value)">
+                    <option disabled selected>-- Pilih Nama Penghuni --</option>
+                    @foreach ($penghunis as $penghuni)
+                      <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama }}</option>
                     @endforeach
                   </select>
                 </div>
               </div>
               <div class="form-group ">
-                <label for="id_penghuni" class="control-label col-lg-2">Pilih Penghuni</label>
+                <label for="id_kamar" class="control-label col-lg-2">Pilih Kamar</label>
                 <div class="col-lg-10">
-                  <select name="penghuni_id" class="form-control">
-                    @foreach ($penghunis as $penghuni)
-                      <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama }}</option>
+                  <select name="kamar_id" class="form-control" id="kamar_id" disabled>
+                    <option disabled selected>-- Pilih Nama Kamar --</option>
+                    @foreach ($kamars as $kamar)
+                      <option value="{{ $kamar->id_kamar }}"> {{ $kamar->namaKamar }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -56,7 +58,7 @@
                 <label class="control-label col-lg-2">Tanggal Pembayaran</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tglPembayaran" type="text" size="16" class="form-control default-date-picker" required/>
+                      <input name="tglPembayaran" type="text" size="16" class="form-control default-date-picker" placeholder="YYYY-MM-DD" required/>
                     </div>
                   <span class="help-block">Pilih Tanggal Pembayaran</span>
                 </div>
@@ -65,7 +67,7 @@
                 <label class="control-label col-lg-2">Tanggal Masuk</label>
                 <div class="col-lg-10">
                   <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tglMasuk" name="tglMasuk" size="16" type="text" required/>
+                    <input class="form-control default-date-picker" id="tglMasuk" name="tglMasuk" size="16" type="text" placeholder="YYYY-MM-DD" required/>
                   </div>
                   <span class="help-block">Pilih Tanggal Masuk</span>
                 </div>
@@ -74,7 +76,7 @@
                 <label class="control-label col-lg-2">Tanggal Keluar</label>
                 <div class="col-lg-10">
                   <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tglKeluar" name="tglKeluar" size="16" type="text" required/>
+                    <input class="form-control default-date-picker" id="tglKeluar" name="tglKeluar" size="16" type="text" placeholder="YYYY-MM-DD" required/>
                   </div>
                   <span class="help-block">Pilih Tanggal Keluar</span>
                 </div>
@@ -100,7 +102,7 @@
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                  <button class="btn btn-theme" type="submit">Save</button>
+                  <button class="btn btn-theme" type="submit">Simpan</button>
                 </div>
               </div>
             </form>
@@ -126,5 +128,20 @@
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script>
     $("#number").divide();
+
+    function changeKamar(id){
+      $.ajax({
+        url       :   "{{ route('ajaxGetKamar')}}",
+        data      : {
+                      id_peng : id,
+                    },
+        type		  :	"GET",
+        success		:	function(data){
+                    $("#kamar_id").val(data)
+                    console.log(data);
+                    // $('#responsive-datatable').DataTable();
+                  }
+            });
+      }
   </script>
 @endsection
