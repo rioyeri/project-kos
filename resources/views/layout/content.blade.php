@@ -1,9 +1,6 @@
 <section id="main-content">
   <section class="wrapper">
-    <div class="row">
-      <div class="col-lg-9 main-chart">
-        <div id="clockDisplay" class="container"></div>
-      </div>
+    <div class="row mt">
       <!-- /col-lg-9 END SECTION MIDDLE -->
       <!-- **********************************************************************************************************************************************************
           RIGHT SIDEBAR CONTENT

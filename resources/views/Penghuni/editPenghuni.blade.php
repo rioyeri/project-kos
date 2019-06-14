@@ -69,6 +69,12 @@
                 </div>
               </div>
               <div class="form-group ">
+                <label for="noHP" class="control-label col-lg-2">Nomor Handphone</label>
+                <div class="col-lg-10">
+                  <input class=" form-control" id="noHP" name="noHP" minlength="10" type="text" value="{{ $penghuni->noHP }}" placeholder='08xxxxxxxx' required/>
+                </div>
+              </div>
+              <div class="form-group ">
                 <label for="pekerjaan" class="control-label col-lg-2">Pekerjaan</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="pekerjaan" name="pekerjaan" minlength="2" type="text" value="{{ $penghuni->pekerjaan }}"placeholder='Pekerjaan' required/>

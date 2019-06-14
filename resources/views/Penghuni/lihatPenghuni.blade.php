@@ -46,6 +46,7 @@
                 <th>Jenis Kelamin</th>
                 <th>Tempat Lahir</th>
                 <th>Tanggal Lahir</th>
+                <th>Nomor HP</th>
                 <th>Pekerjaan</th>
                 <th>Alamat Asli</th>
                 <th></th>
@@ -62,10 +63,9 @@
                   <td>{{ $penghuni->jenisKelamin }}</td>
                   <td>{{ $penghuni->tempatLahir }}</td>
                   <td>{{ $penghuni->tanggalLahir }}</td>
+                  <th>{{ $penghuni->noHP }}</th>
                   <td>{{ $penghuni->pekerjaan }}</td>
                   <td>{{ $penghuni->alamatAsli }}</td>
-                  <td>{{ $penghuni->tglMasuk }}</td>
-                  <td>{{ $penghuni->tglKeluar }}</td>
                   <td>
                     <a href="/editpenghuni/{{ $penghuni->id_penghuni}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Update</i></button></a>
                     <form class="" action="/hapuspenghuni/{{ $penghuni->id_penghuni }}" method="post">

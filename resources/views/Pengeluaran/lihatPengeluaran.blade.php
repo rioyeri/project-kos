@@ -4,6 +4,10 @@
     Daftar Pengeluaran
 @endsection
 
+@section('css')
+  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('name')
   GreenHouse
 @endsection
@@ -16,12 +20,12 @@
 <!--main content start-->
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i>Tabel Data Pengeluaran</h3>
+    <h3><i class="fa fa-angle-right"></i>Daftar Data Pengeluaran</h3>
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
           <hr>
-          <table class="table">
+          <table id="datatable" class="table data-table">
             <thead>
               <tr>
                 <th>#</th>
@@ -61,4 +65,32 @@
 
 <!-- /MAIN CONTENT -->
 <!--main content end-->
+@endsection
+
+@section('js')
+  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        // Default Datatable
+        $('#datatable').DataTable();
+
+        //Buttons examples
+        var table = $('#datatable-buttons').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf']
+        });
+
+        // Key Tables
+
+        $('#key-table').DataTable({
+            keys: true
+        });
+
+        table.buttons().container()
+            .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    });
+
+</script>
 @endsection

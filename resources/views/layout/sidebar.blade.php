@@ -1,9 +1,9 @@
 <aside>
-  <div id="sidebar" class="nav-collapse ">
+  <div id="sidebar" class="nav-dropdown ">
     <!-- sidebar menu start-->
     <ul class="sidebar-menu" id="nav-accordion">
-      <p class="centered"><a href="profile.html"><img src="{{ asset('img/Y baru logo2.png')}}" class="img-circle" width="80"></a></p>
-      <h5 class="centered">GreenHouse</h5>
+      {{-- <p class="centered"><a href="profile.html"><img src="{{ asset('img/Y baru logo2.png')}}" class="img-circle" width="80"></a></p> --}}
+      <h5 class="centered">Menu</h5>
       <li class="mt">
         <a class="@yield('dash')" href="/home">
           <i class="fa fa-dashboard"></i>
@@ -12,7 +12,7 @@
       </li>
       <li class="sub-menu">
         <a href="javascript:;" class="@yield('kamar')">
-          <i class="fa fa-desktop"></i>
+          <i class="fa fa-home"></i>
           <span>Kamar</span>
           </a>
         <ul class="sub">
@@ -22,7 +22,7 @@
       </li>
       <li class="sub-menu">
         <a href="javascript:;" class="@yield('penghuni')">
-          <i class="fa fa-book"></i>
+          <i class="fa fa-users"></i>
           <span>Penghuni</span>
           </a>
         <ul class="sub">
@@ -32,13 +32,13 @@
       </li>
       <li class="sub-menu">
         <a href="/mapping/tambah" class="@yield('mapping')">
-          <i class="fa fa-book"></i>
+          <i class="fa fa-map-marker"></i>
           <span>Mapping Kamar-Penghuni</span>
           </a>
       </li>
       <li class="sub-menu">
           <a href="javascript:;" class="@yield('pembayaran')">
-            <i class="fa fa-book"></i>
+            <i class="fa fa-usd"></i>
             <span>Pembayaran</span>
             </a>
           <ul class="sub">
@@ -59,7 +59,7 @@
       </li>
       <li class="sub-menu">
           <a href="javascript:;" class="@yield('pengeluaran')">
-            <i class="fa fa-book"></i>
+            <i class="fa fa-upload"></i>
             <span>Pengeluaran</span>
             </a>
           <ul class="sub">
@@ -69,7 +69,7 @@
       </li>
       <li class="sub-menu">
         <a href="javascript:;" class="@yield('pemasukan')">
-          <i class="fa fa-book"></i>
+          <i class="fa fa-download"></i>
           <span>Pemasukan</span>
           </a>
         <ul class="sub">

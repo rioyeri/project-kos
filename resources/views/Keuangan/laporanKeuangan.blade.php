@@ -28,7 +28,7 @@
 <!--main content start-->
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i>Tabel Data Pemasukan Eksternal</h3>
+    <h3><i class="fa fa-angle-right"></i>Daftar Data Pemasukan Eksternal</h3>
     <div class="row mb">
       <div class="col-md-12">
         <div class="content-panel">
