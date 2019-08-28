@@ -29,7 +29,7 @@
               <div class="form-group ">
                 <label for="id_penghuni" class="control-label col-lg-2">Pilih Penghuni</label>
                 <div class="col-lg-10">
-                  <select name="penghuni_id" class="form-control" parsley-trigger="change" onchange="changeKamar(this.value)">
+                  <select name="penghuni_id" id="penghuni" class="form-control" parsley-trigger="change" onchange="change(this.value)">
                     <option disabled selected>-- Pilih Nama Penghuni --</option>
                     @foreach ($penghunis as $penghuni)
                       <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama }}</option>
@@ -48,39 +48,40 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group ">
-                <label for="jumlahBayar" class="control-label col-lg-2">Jumlah Pembayaran</label>
-                <div class="col-lg-10">
-                  <input class="form-control" id="number" name="jumlahBayar" type="text" placeholder='Masukan Jumlah Pembayaran' required/>
-                </div>
-              </div>
+
+              <div id="tagihan"></div>
+
               <div class="form-group">
                 <label class="control-label col-lg-2">Tanggal Pembayaran</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tglPembayaran" type="text" size="16" class="form-control default-date-picker" placeholder="YYYY-MM-DD" required/>
+                      <input name="tglPembayaran" type="text" autocomplete="off" size="16" class="form-control" placeholder="YYYY-MM-DD" id="tglPembayaran" data-date-format='yyyy-mm-dd' autocomplete="off" required/>
                     </div>
                   <span class="help-block">Pilih Tanggal Pembayaran</span>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="control-label col-lg-2">Tanggal Masuk</label>
+              {{-- <div class="form-group ">
+                <label for="lamaKontrak" class="control-label col-lg-2">Lama Sewa (/Bulan)</label>
                 <div class="col-lg-10">
-                  <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tglMasuk" name="tglMasuk" size="16" type="text" placeholder="YYYY-MM-DD" required/>
+                  <input class="form-control" name="lamaKontrak" id="lamaKontrak" type="text" placeholder='Masukan Lama Sewa' required/>
+                </div>
+              </div> --}}
+              {{-- <div class="form-group">
+                <label class="control-label col-lg-2">Mulai Masuk awal bulan</label>
+                <div class="col-lg-10">
+                  <div data-date-viewmode="month" data-date-format="Y-m-d">
+                    <input name="masuk" type="month" size="16" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" placeholder="YYYY-MM" required/>
                   </div>
-                  <span class="help-block">Pilih Tanggal Masuk</span>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-lg-2">Tanggal Keluar</label>
+                <label class="control-label col-lg-2">Waktu Keluar di akhir bulan</label>
                 <div class="col-lg-10">
-                  <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tglKeluar" name="tglKeluar" size="16" type="text" placeholder="YYYY-MM-DD" required/>
+                  <div data-date-viewmode="month" data-date-format="Y-m-d">
+                    <input name="keluar" id="keluar" type="month" size="16" class="form-control" placeholder="YYYY-MM" required/>
                   </div>
-                  <span class="help-block">Pilih Tanggal Keluar</span>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group">
                 <label class="control-label col-lg-2">Upload Bukti Pembayaran</label>
                 <div class="controls col-md-9">
@@ -127,7 +128,12 @@
   <script src="{{ asset('lib/advanced-form-components.js')}}"></script>
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script>
-    $("#number").divide();
+    jQuery('#tglPembayaran').datepicker();
+
+    function change(id){
+      changeTagihan(id);
+      changeKamar(id);
+    }
 
     function changeKamar(id){
       $.ajax({
@@ -138,6 +144,42 @@
         type		  :	"GET",
         success		:	function(data){
                     $("#kamar_id").val(data)
+                    console.log(data);
+                    // $('#responsive-datatable').DataTable();
+                  }
+            });
+      }
+
+      function changeTagihan(id){
+        console.log(id)
+        $.ajax({
+        url       :   "{{ route('ajxGetTagihan')}}",
+        data      : {
+                      penghuni : id,
+                    },
+        type		  :	"GET",
+        dataType  : "html",
+        success		:	function(data){
+                    $("#tagihan").html(data);
+                    console.log(data);
+                  },
+        error     :   function(data){
+                    document.getElementById('buktiBayar').value = 'yayaya';
+                  }
+            });
+      }
+
+      function changeKeluar(id){
+        var lama = $("#lamaKontrak").val()
+        $.ajax({
+        url       :   "{{ route('ajxGetKeluar')}}",
+        data      : {
+                      msk : id,
+                      lamaKontrak : lama,
+                    },
+        type		  :	"GET",
+        success		:	function(data){
+                    $("#keluar").val(data)
                     console.log(data);
                     // $('#responsive-datatable').DataTable();
                   }

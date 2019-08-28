@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pembayaran;
+use App\Models\Pembayarandet;
 use Carbon\Carbon;
 
 class JatuhTempoController extends Controller
@@ -16,12 +16,16 @@ class JatuhTempoController extends Controller
     public function index()
     {
         Carbon::setLocale('id');
-        $now = Carbon::today();
-        $till = Carbon::today()->addMonths(1);
-        $jatuhtempos = Pembayaran::whereBetween('tglKeluar', [$now, $till])->get();
+        // $now = Carbon::today();
+        // $till = Carbon::today()->addWeeks(1);
+        $bulan = date('m', strtotime(Carbon::today()->addWeeks(1)));
+        $namabulan = date('F', strtotime(Carbon::today()->addWeeks(1)));
+        $tahun = date('Y', strtotime(Carbon::today()->addWeeks(1)));
+        // $jatuhtempos = Pembayaran::whereBetween('wktKeluar', [$now, $till])->get();
     //   $jatuhtempos = Pembayaran::whereYear('tglKeluar', $q->year)->whereMonth('tglKeluar', $q->month)->get();
+        $jatuhtempos = Pembayarandet::where('tahun', $tahun)->where('bulan', $bulan)->where('status',0)->join('penghuni','pembayarandet.id_penghuni','=','penghuni.id_penghuni')->get();
 
-      return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'now', 'till'));
+        return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'namabulan', 'tahun'));
     }
 
     /**

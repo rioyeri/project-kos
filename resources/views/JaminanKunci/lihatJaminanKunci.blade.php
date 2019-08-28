@@ -8,6 +8,10 @@
   GreenHouse
 @endsection
 
+@section('css')
+  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('jaminankunci')
   active
 @endsection
@@ -39,14 +43,18 @@
       @endif
       <div class="col-md-12">
         <div class="content-panel">
-          <hr>
-          <table class="table">
+          <div class="col-md-12">
+            <p class="text-muted col-2 font-14 m-b-30">
+              <a href="/tambahjaminankunci" class="btn btn-theme waves-effect waves-light m-b-5">Tambah Jaminan Kunci</a>
+            </p>
+          </div>
+          <table id="datatable" class="table data-table">
             <thead>
               <tr>
                 <th width="10%">#</th>
                 <th width="30%">Nama Penghuni</th>
                 <th width="50%">Jaminan</th>
-                <th width="10%"></th>
+                <th width="10%">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -78,3 +86,32 @@
 <!-- /MAIN CONTENT -->
 <!--main content end-->
 @endsection
+
+@section('js')
+  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        // Default Datatable
+        $('#datatable').DataTable();
+
+        //Buttons examples
+        var table = $('#datatable-buttons').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf']
+        });
+
+        // Key Tables
+
+        $('#key-table').DataTable({
+            keys: true
+        });
+
+        table.buttons().container()
+            .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    });
+
+</script>
+@endsection
+

@@ -24,7 +24,7 @@
       <div class="col-lg-12">
         <div class="form-panel">
           <div class=" form">
-            <form class="cmxform form-horizontal style-form" id="commentForm" method="POST" action="/editpenghuni/{{ $penghuni->id_penghuni }}">
+            <form class="cmxform form-horizontal style-form" id="commentForm" enctype="multipart/form-data" method="POST" action="/editpenghuni/{{ $penghuni->id_penghuni }}">
               {{ csrf_field() }}
               {{ method_field('PUT') }}
               <div class="form-group ">
@@ -63,7 +63,7 @@
                 <label class="control-label col-lg-2">Tanggal Lahir</label>
                 <div class="col-lg-10">
                   <div data-date-viewmode="years" data-date-format="Y-m-d" >
-                    <input class="form-control default-date-picker" id="tanggalLahir" name="tanggalLahir" size="16" type="text" value="{{ $penghuni->tanggalLahir }}" required/>
+                    <input class="form-control" id="tanggalLahir" name="tanggalLahir" size="16" type="text" value="{{ $penghuni->tanggalLahir }}" data-date-format='yyyy-mm-dd' autocomplete="off" required/>
                   </div>
                   <span class="help-block">Pilih Tanggal Lahir</span>
                 </div>
@@ -84,6 +84,39 @@
                 <label for="alamatAsli" class="control-label col-lg-2">Alamat (Sesuai KTP)</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="alamatAsli" name="alamatAsli" minlength="2" type="text" value="{{ $penghuni->alamatAsli }}" placeholder='Alamat' required/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-lg-2">Upload Foto KTP</label>
+                <div class="controls col-md-9">
+                  <div class="fileupload fileupload-new" data-provides="fileupload">
+                    @if(empty($penghuni->ktp))
+                      <span class="btn btn-theme02 btn-file">
+                        <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select file</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                        <input type="file" id="ktp" name="ktp" />
+                          @if($errors->has('ktp'))
+                            <span class="help-block">
+                              <strong>{{ $errors->first('ktp') }}</strong>
+                            </span>
+                          @endif
+                      </span>
+                    @elseif(!empty($penghuni->ktp))
+                      <img src="{{ asset('storage/'.$penghuni->ktp) }}"  alt="user-img" title="{{ $penghuni->nama }}" class="img-thumbnail img-responsive photo">
+                      <span class="btn btn-theme02 btn-file">
+                          <span class="fileupload-new"><i class="fa fa-undo"></i> Change</span>
+                          <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                          <input type="file" id="ktp" name="ktp" />
+                            @if($errors->has('ktp'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('ktp') }}</strong>
+                              </span>
+                            @endif
+                        </span>
+                    @endif
+                    <span class="fileupload-preview" style="margin-left:5px;"></span>
+                    <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -109,5 +142,11 @@
 @section('js')
   <script src="{{ asset('/lib/jquery-ui-1.9.2.custom.min.js')}}"></script>
   <script type="text/javascript" src="{{ asset('/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+  <script type="text/javascript" src="{{ asset('lib/bootstrap-fileupload/bootstrap-fileupload.js')}}"></script>
   <script src="{{ asset('/lib/advanced-form-components.js')}}"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      jQuery('#tanggalLahir').datepicker();
+    });
+  </script>
 @endsection

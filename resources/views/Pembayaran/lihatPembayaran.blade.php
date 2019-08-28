@@ -1,5 +1,9 @@
 @extends('layout.dashboard')
 
+@section('css')
+  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('page')
     Daftar Pembayaran
 @endsection
@@ -20,7 +24,7 @@
 <!--main content start-->
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i>Daftar Data Pembayaran</h3>
+    <h3><i class="fa fa-angle-right"></i>Pembayaran</h3>
     <div class="row">
       @if (session('alert'))
         <div class="alert alert-danger alert-dismissable">
@@ -40,45 +44,46 @@
       @endif
       <div class="col-md-12">
         <div class="content-panel">
-          <hr>
-          <table class="table">
-            <thead>
-              <tr>
-                <th width="5%">#</th>
-                <th width="10%">Kamar</th>
-                <th width="20%">Nama Penghuni</th>
-                <th width="20%">Jumlah Bayar (Rp)</th>
-                <th width="10%" class="centered">Tanggal Pembayaran</th>
-                <th width="10%" class="centered">Tanggal Masuk</th>
-                <th width="10%" class="centered">Tanggal Keluar</th>
-                <th width="15%" class="centered">Bukti Pembayaran</th>
-              </tr>
-            </thead>
-            <tbody>
-              @php ($i=0)
-              @foreach ($pembayarans as $pembayaran)
-                <tr>
-                  @php ($i++)
-                  <td>{{ $i }}</td>
-                  <td>{{ Kamar::where('id_kamar', $pembayaran->kamar_id)->first()->namaKamar}}</td>
-                  <td>{{ Penghuni::where('id_penghuni', $pembayaran->penghuni_id)->first()->nama}}</td>
-                  <td>{{ $pembayaran->jumlahBayar }}</td>
-                  <td>{{ $pembayaran->tglPembayaran }}</td>
-                  <td>{{ $pembayaran->tglMasuk }}</td>
-                  <td>{{ $pembayaran->tglKeluar }}</td>
-                  <td><a href="storage/{{ $pembayaran->buktiBayar}}">{{ $pembayaran->buktiBayar }}</a></td>
-                  <td>
-                    <a href="/editpembayaran/{{ $pembayaran->id_pembayaran}}"><button class="btn btn-primary btn-block btn-xs"><i class="fa fa-pencil"> Update</i></button></a>
-                    <form class="" action="/hapuspembayaran/{{ $pembayaran->id_pembayaran }}" method="post">
-                      {{ csrf_field() }}
-                      {{ method_field('delete') }}
-                        <button type="submit" class="btn btn-danger btn-block btn-xs"><i class="fa fa-trash-o "> Hapus</i></button></a>
-                    </form>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+          <p class="text-muted col-md-2 font-14 m-b-30">
+            <a href="/tambahpembayaran" class="btn btn-theme waves-effect waves-light m-b-5">Tambah Pembayaran</a>
+          </p>
+          <div class="row">
+            <div class="col-md-12">
+              <h4><i class="fa fa-angle-right"></i>Daftar Data Pembayaran</h4>
+            </div>
+            <div class="row mt">
+              <div class="col-lg-12">
+                <div class="form-check">
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label class="col-lg-2 control-label">Choose Period</label>
+                      <div class="col-md-3">
+                        <input type="month" class="form-control" parsley-trigger="change" required name="period" id="period">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="id_kamar" class="control-label col-lg-2">Pilih Status Pembayaran</label>
+                      <div class="col-md-3">
+                        <select name="status" class="form-control" id="status">
+                          <option disabled selected>-- Pilih Status Pembayaran --</option>
+                          @foreach ($status as $stt)
+                            <option value="{{ $stt }}"> {{ $stt }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-offset-2 col-lg-10">
+                        <button class="btn btn-theme" type="submit" onclick="showtabel()">Tampilkan</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="tabel">
+          </div>
         </div>
       </div>
     </div>
@@ -88,3 +93,36 @@
 <!-- /MAIN CONTENT -->
 <!--main content end-->
 @endsection
+
+@section('js')
+  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        // Default Datatable
+        $('#datatable').DataTable();
+    });
+
+    function showtabel(){
+            var period = $("#period").val()
+            var status = $("#status").val()
+            $.ajax({
+                url         :   "{{route('AjxShowTable')}}",
+                data        :   {
+                    date : period,
+                    stat : status,
+                },
+                type		:	"GET",
+                dataType    :   "html",
+                success		:	function(data){
+                    $("#tabel").html(data);
+                },
+                error       :   function(data){
+                    document.getElementById('period').value = '2000-06';
+                }
+            });
+    }
+</script>
+@endsection
+

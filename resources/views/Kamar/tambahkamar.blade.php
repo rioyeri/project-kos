@@ -43,12 +43,6 @@
             <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/tambahkamar">
               {{ csrf_field() }}
               <div class="form-group ">
-                <label for="namaKamar" class="control-label col-lg-2">Nama Kamar</label>
-                <div class="col-lg-10">
-                  <input class=" form-control" id="namaKamar" name="namaKamar" minlength="2" type="text" placeholder='Masukan Nama Kamar' required/>
-                </div>
-              </div>
-              <div class="form-group ">
                 <label for="blok_id" class="control-label col-lg-2">Blok</label>
                 <div class="col-lg-10">
                   <select name="id_blok" class="form-control">
@@ -70,6 +64,20 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group ">
+                <label for="namaKamar" class="control-label col-lg-2">Nama Kamar</label>
+                <div class="col-lg-10">
+                  <input class=" form-control" id="namaKamar" name="namaKamar" minlength="1" type="text" placeholder='Masukan Nama Kamar' required/>
+                </div>
+              </div>
+              <div class="form-group ">
+                <label for="harga" class="control-label col-lg-2">Harga Sewa Kamar</label>
+                <div class="col-lg-10 form-inline">
+                  <label>Rp.</label>
+                  <input class="form-control" id="number" name="harga" minlength="2" type="text" placeholder='Masukan Harga Sewa' required/>
+                  <label> / Bulan</label>
+                </div>
+              </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                   <button class="btn btn-theme" type="submit">Tambahkan</button>
@@ -88,4 +96,11 @@
 </section>
 <!-- /MAIN CONTENT -->
 <!--main content end-->
+@endsection
+
+@section('js')
+  <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+  <script>
+    $("#number").divide();
+  </script>
 @endsection

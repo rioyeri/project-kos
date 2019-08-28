@@ -47,6 +47,7 @@ class KamarController extends Controller
       $data->blok_id=$request->id_blok;
       $data->lantai_id=$request->id_lantai;
       $data->namaKamar=$request->namaKamar;
+      $data->harga=$request->harga;
       $data->save();
       return redirect('/tambahkamar')->with('success', 'Data kamar berhasil ditambahkan');
     }
@@ -94,6 +95,7 @@ class KamarController extends Controller
       $kamar->namaKamar = $request->namaKamar;
       $kamar->blok_id = $request->id_blok;
       $kamar->lantai_id = $request->id_lantai;
+      $kamar->harga = $request->harga;
       $kamar->update();
       return redirect('/lihatkamar')->with('success', 'Data kamar berhasil diupdate!');
     }

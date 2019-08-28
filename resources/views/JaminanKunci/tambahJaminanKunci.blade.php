@@ -36,8 +36,12 @@
                 <div class="col-lg-10">
                   <select name="penghuni_id" class="form-control">
                     <option disabled selected>-- Pilih --</option>
-                    @foreach ($pembayarans as $pembayaran)
-                      <option value="{{ $pembayaran->penghuni_id }}"> {{ Penghuni::where('id_penghuni', $pembayaran->penghuni_id)->first()->nama}} ({{ Kamar::where('id_kamar', $pembayaran->kamar_id)->first()->namaKamar}})</option>
+                    @foreach ($penghunis as $penghuni)
+                      @php
+                        $idk = $mapping->where('id_penghuni', $penghuni->id_penghuni)->first();
+                        $kmr = Kamar::where('id_kamar', $idk['id_kamar'])->first();
+                      @endphp
+                      <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama}} ({{ $kmr['namaKamar'] }})</option>
                     @endforeach
                   </select>
                 </div>

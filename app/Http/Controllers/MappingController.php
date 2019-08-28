@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Kamar;
 use App\Models\Penghuni;
 use App\Models\Mapping;
+use Carbon\Carbon;
+use App\Models\Pembayarandet;
 
 class MappingController extends Controller
 {
@@ -16,7 +18,13 @@ class MappingController extends Controller
      */
     public function index()
     {
-        //
+      $mappeng = Mapping::all('id_penghuni');
+      $mapkam = Mapping::all('id_kamar');
+      $mappings = Mapping::all();
+      $kamars = Kamar::whereNotIn('id_kamar', $mapkam)->get();
+      $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->get();
+
+      return view('Mapping.mapping_kamar', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
     }
 
     public function ajx(Request $request)
@@ -41,7 +49,7 @@ class MappingController extends Controller
       $kamars = Kamar::whereNotIn('id_kamar', $mapkam)->get();
       $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->get();
 
-      return view('Mapping.mapping_kamar', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
+      return view('Mapping.tambah_mapping', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
     }
 
     /**
@@ -52,14 +60,36 @@ class MappingController extends Controller
      */
     public function store(Request $request)
     {
+
+      $msk = new Carbon($request->masuk);
+      $klr = new Carbon($request->keluar);
+      $masuk = date('Y-m-d', strtotime($msk));
+      $keluar = date('Y-m-d', strtotime($klr));
+
       $mapping = new Mapping;
       $mapping->id_penghuni = $request->penghuni_id;
       $mapping->id_kamar = $request->kamar_id;
+      $mapping->tglMasuk = $masuk;
+      $mapping->tglKeluar = $keluar;
+
       if (Mapping::where('id_kamar', $mapping->id_kamar)->first()){
         return redirect('/mapping/tambah')->with('alert', 'Kamar sudah dihuni penghuni lain!');
       }else{
+        for($i=0;$i<$request->lamaKontrak;$i++){
+          $data1 = new Pembayarandet;
+          $data1->id_penghuni = $request->penghuni_id;
+          $tglmsk = date('d', strtotime($msk));
+          $blnmsk = date('m', strtotime($msk));
+          $thnmsk = date('Y', strtotime($msk));
+          $data1->tanggal = $tglmsk;
+          $data1->tahun = $thnmsk;
+          $data1->bulan = $blnmsk;
+          $data1->status = 0;
+          $data1->save();
+          $msk = $msk->addMonths(1);
+        }
         $mapping->save();
-        return redirect('/mapping/tambah')->with('success', 'Mapping PENGHUNI-KAMAR berhasil dibuat');
+        return redirect('/mapping/lihat')->with('success', 'Mapping PENGHUNI-KAMAR berhasil dibuat');
       }
     }
 
@@ -82,7 +112,9 @@ class MappingController extends Controller
      */
     public function edit($id)
     {
-        //
+      $mapping = Mapping::find($id);
+
+      return view('Mapping.edit_mapping', compact('mapping'));
     }
 
     /**
@@ -92,9 +124,21 @@ class MappingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $msk = new Carbon($request->masuk);
+      for($i=0;$i<$request->lamaKontrak;$i++){
+        $data1 = new Pembayarandet;
+        $data1->id_penghuni = $request->penghuni_id;
+        $blnmsk = date('m', strtotime($msk));
+        $thnmsk = date('Y', strtotime($msk));
+        $data1->tahun = $thnmsk;
+        $data1->bulan = $blnmsk;
+        $data1->status = 0;
+        $data1->save();
+        $msk = $msk->addMonths(1);
+      }
+      return redirect('/mapping/lihat')->with('success', 'Perpanjangan masa sewa disimpan');
     }
 
     /**

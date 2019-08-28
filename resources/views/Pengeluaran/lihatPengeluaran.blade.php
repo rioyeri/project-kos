@@ -24,7 +24,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
-          <hr>
+          <div class="col-md-12">
+            <p class="text-muted col-2 font-14 m-b-30">
+              <a href="/tambahpengeluaran" class="btn btn-theme waves-effect waves-light m-b-5">Tambah Pengeluaran</a>
+            </p>
+          </div>
           <table id="datatable" class="table data-table">
             <thead>
               <tr>
@@ -33,6 +37,7 @@
                 <th>Jumlah (Rp)</th>
                 <th>Tanggal Dana Keluar</th>
                 <th>Keterangan</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -42,7 +47,7 @@
                   @php ($i++)
                   <td>{{ $i }}</td>
                   <td>{{ $pengeluaran->namaPJ }}</td>
-                  <td>{{ $pengeluaran->jumlah }}</td>
+                  <td>Rp. {{ $pengeluaran->jumlah }}</td>
                   <td>{{ $pengeluaran->tanggal }}</td>
                   <td>{{ $pengeluaran->keterangan }}</td>
                   <td>

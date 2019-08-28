@@ -1,0 +1,2 @@
+<input name="masuk" id="masuk" type="month" size="16" class="form-control" parsley-triger="change" onchange="changeKeluar(this.value)" placeholder="YYYY-MM" required/>
+                    {{-- <input name="keluar" id="keluar" type="month" size="16" class="form-control" placeholder="YYYY-MM" required/> --}}

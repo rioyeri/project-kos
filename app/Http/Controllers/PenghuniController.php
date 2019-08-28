@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penghuni;
+use App\Imports\PenghuniImport;
+use Excel;
 Use App\Http\Controllers\Session;
+use Storage;
 
 
 class PenghuniController extends Controller
@@ -51,6 +54,9 @@ class PenghuniController extends Controller
       $penghuni->noHP=$request->noHP;
       $penghuni->pekerjaan=$request->pekerjaan;
       $penghuni->alamatAsli=$request->alamatAsli;
+      $path = "ktp/$request->nama";
+      $file = $request->file("ktp")->store($path);
+      $penghuni->ktp=$file;
       $penghuni->save();
 
       return redirect('/lihatpenghuni')->with('success', 'Data Penghuni berhasil ditambahkan!');
@@ -99,6 +105,16 @@ class PenghuniController extends Controller
       $penghuni->noHP=$request->noHP;
       $penghuni->pekerjaan=$request->pekerjaan;
       $penghuni->alamatAsli=$request->alamatAsli;
+
+      $path = "ktp/$request->nama";
+      if(!empty($request->ktp)){
+        if(!empty($penghuni->ktp)){
+          Storage::delete($penghuni->ktp);
+        }
+          $file = $request->file("ktp")->store($path);
+          $penghuni->ktp=$file;
+      }
+
       $penghuni->update();
       return redirect('/lihatpenghuni')->with('info', 'Data Berhasil diupdate!');
     }
@@ -114,5 +130,20 @@ class PenghuniController extends Controller
       $penghuni = Penghuni::find($id);
       $penghuni->delete();
       return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus!');
+    }
+
+    public function importPenghuni(Request $request)
+    {
+        //VALIDASI
+        $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file'); //GET FILE
+            Excel::import(new PenghuniImport, $file); //IMPORT FILE
+            return redirect()->back()->with(['success' => 'Upload success']);
+        }
+        return redirect()->back()->with(['error' => 'Please choose file before']);
     }
 }

@@ -1,0 +1,33 @@
+      @foreach ($penghunis as $penghuni)
+        <tr>
+          @php
+            $i++;
+          @endphp
+          <td>{{ $i }}</td>
+          <td>{{ $penghuni->nama}}</td>
+          @php
+              $mapping = Mapping::where('id_penghuni', $penghuni->id_penghuni)->first();
+              $kamar = Kamar::where('id_kamar', $mapping['id_kamar'])->first();
+              $status = $pembayarans->where('id_penghuni',$penghuni->id_penghuni)->count();
+          @endphp
+          <td>{{ $kamar['namaKamar'] }}</td>
+          <td>{{ $status }}</td>
+          <td><a href="">detail</a></td>
+        </tr>
+      @endforeach
+
+
+        if($request->stat == "Sudah Bayar"){
+          $penghunis=Penghuni::all();
+        }elseif($request->stat == "Belum Bayar"){
+          $penghunis=Penghuni::all();
+        }else{
+          $penghunis = Penghuni::all();
+        }
+
+      <label><input value="{{ $pembayarandet->id }}" type="checkbox" name="tagihan{{ $pembayarandet->tahun }}{{ $pembayarandet->bulan }}">{{ $pembayarandet->bulan }} {{ $pembayarandet->tahun }}</label>
+
+      @foreach($pembayarandets as $pembayarandet)
+  <input value="{{ $pembayarandet->id }}" type="text" name="tagihan{{ $pembayarandet->tahun }}{{ $pembayarandet->bulan }}">
+@endforeach
+

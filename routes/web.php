@@ -17,8 +17,6 @@ Route::get('/home', 'JatuhTempoController@index');
 
 Route::POST('/home', 'LoginController@Login');
 
-Auth::routes();
-
 Route::get('/lihatkamar', 'KamarController@index');
 Route::get('/tambahkamar', 'KamarController@create');
 Route::post('/tambahkamar', 'KamarController@store');
@@ -32,23 +30,27 @@ Route::post('/tambahpenghuni', 'PenghuniController@store');
 Route::get('/editpenghuni/{id}', 'PenghuniController@edit');
 Route::put('/editpenghuni/{id}', 'PenghuniController@update');
 Route::delete('/hapuspenghuni/{id}','PenghuniController@destroy');
+Route::post('/penghuni/import', 'PenghuniController@importPenghuni');
 
 Route::get('/mapping/lihat', 'MappingController@index');
 Route::get('/mapping/tambah', 'MappingController@create');
 Route::post('/mapping/tambah', 'MappingController@store');
 Route::get('/mapping/edit/{id}', 'MappingController@edit');
-Route::put('/mapping/edit/{id}', 'MappingController@update');
+Route::put('/mapping/edit', 'MappingController@update');
 Route::delete('/mapping/hapus/{id}','MappingController@destroy');
 Route::get('/ajaxGetKamar', 'MappingController@ajx')->name('ajaxGetKamar');
 
 Route::get('/tambahpembayaran', 'PembayaranController@create');
 Route::get('/lihatpembayaran', 'PembayaranController@index');
 Route::post('/tambahpembayaran', 'PembayaranController@store');
-Route::get('/editpembayaran/{id}', 'PembayaranController@edit');
+Route::get('/editpembayaran/{thn}/{bln}/{id}', 'PembayaranController@edit');
 Route::put('/editpembayaran/{id}', 'PembayaranController@update');
-Route::delete('/hapuspembayaran/{id}','PembayaranController@destroy')->name('pembayaran.destroy');
-Route::get('/laporanpembayaran/', 'PembayaranController@show');
-Route::put('/laporanpembayaran/','PembayaranController@sort');
+Route::delete('/hapuspembayaran/{thn}/{bln}/{id}','PembayaranController@destroy')->name('pembayaran.destroy');
+Route::post('/ajxHapuspembayaran','PembayaranController@ajxDelete')->name('ajxDelete');
+Route::get('/ajaxGetKeluar','PembayaranController@ajxGetKeluar')->name('ajxGetKeluar');
+Route::get('/AjxShowTable','PembayaranController@AjxShowTable')->name('AjxShowTable');
+Route::get('/ajxGetHarga', 'PembayaranController@ajxGetHarga')->name('ajxGetHarga');
+Route::get('/ajxGetTagihan', 'PembayaranController@getAjxTagihan')->name('ajxGetTagihan');
 
 Route::get('/tambahpengeluaran', 'PengeluaranController@create');
 Route::get('/lihatpengeluaran', 'PengeluaranController@index');

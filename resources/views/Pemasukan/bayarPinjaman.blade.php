@@ -8,7 +8,7 @@
   GreenHouse
 @endsection
 
-@section('pengeluaran')
+@section('pemasukan')
   active
 @endsection
 

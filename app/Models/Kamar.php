@@ -9,7 +9,7 @@ class Kamar extends Model
     protected $table = 'kamar';
     protected $primaryKey = 'id_kamar';
     protected $fillable = [
-      'namaKamar', 'lantai_id'. 'blok_id'
+      'namaKamar', 'lantai_id'. 'blok_id', 'harga',
     ];
     public $timestamps = true;
 }

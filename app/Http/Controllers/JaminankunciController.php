@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\JaminanKunci;
 use App\Models\Penghuni;
-use App\Models\Pembayaran;
+use App\Models\Mapping;
 use App\Models\Kamar;
 
 class JaminankunciController extends Controller
@@ -30,10 +30,10 @@ class JaminankunciController extends Controller
     public function create()
     {
         $jaminankuncis = JaminanKunci::all();
-        $pembayarans = Pembayaran::all();
+        $mapping = Mapping::all();
         $penghunis = Penghuni::all();
         $kamars = Kamar::all();
-        return view('Jaminankunci.tambahJaminanKunci', compact('jaminankuncis','pembayarans','penghunis','kamars'));
+        return view('Jaminankunci.tambahJaminanKunci', compact('jaminankuncis','penghunis','kamars', 'mapping'));
     }
 
     /**

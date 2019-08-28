@@ -8,7 +8,7 @@
   GreenHouse
 @endsection
 
-@section('Dashboard')
+@section('dash')
   active
 @endsection
 
@@ -20,6 +20,7 @@
 @php
   use App\Models\Penghuni;
   use App\Models\Kamar;
+  use App\Models\Mapping;
 @endphp
 <!--main content start-->
 <section id="main-content">
@@ -28,6 +29,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
+          <h4><i class="fa fa-angle-right"></i>Yang Belum Membayar Uang Kos pada bulan {{ $namabulan }} {{ $tahun }}</h4>
           <hr>
           <table class="table">
             <thead>
@@ -35,7 +37,7 @@
                 <th>#</th>
                 <th>Nama</th>
                 <th>Kamar</th>
-                <th>Tanggal Jatuh Tempo</th>
+                <th>Status Pembayaran</th>
               </tr>
             </thead>
             <tbody>
@@ -44,9 +46,10 @@
                 <tr>
                   @php ($i++)
                   <td>{{ $i }}</td>
-                  <td>{{ Penghuni::where('id_penghuni', $jatuhtempo->penghuni_id)->first()->nama }}</td>
-                  <td>{{ Kamar::where('id_kamar', $jatuhtempo->kamar_id)->first()->namaKamar }}</td>
-                  <td>{{ $jatuhtempo->tglKeluar }}</td>
+                  <td>{{ Penghuni::where('id_penghuni', $jatuhtempo->id_penghuni)->first()->nama }}</td>
+                  @php($idkamar = Mapping::where('id_penghuni', $jatuhtempo->id_penghuni)->first()->id_kamar)
+                  <td>{{ Kamar::where('id_kamar', $idkamar)->first()->namaKamar }}</td>
+                  <td>Belum Membayar</td>
                 </tr>
               @endforeach
             </tbody>
