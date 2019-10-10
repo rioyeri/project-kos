@@ -24,25 +24,31 @@
       <div class="col-lg-12">
         <div class="form-panel">
           <div class=" form">
-            <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/tambahpemasukan">
+            @if($jenis=="create")
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/tambahpemasukan">
               {{ csrf_field() }}
+            @elseif($jenis=="edit")
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/editpemasukan/{{ $pemasukan->id_pemasukan }}">
+              {{ csrf_field() }}
+              {{ method_field('PUT') }}
+            @endif
               <div class="form-group ">
                 <label for="namaSumber" class="control-label col-lg-2">Nama Sumber</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="namaSumber" type="text" placeholder='Masukan Nama Sumber Pemasukan' required/>
+                  <input class="form-control" name="namaSumber" type="text" placeholder='Masukan Nama Sumber Pemasukan' value="@isset($pemasukan->namaSumber){{$pemasukan->namaSumber}}@endisset" required/>
                 </div>
               </div>
               <div class="form-group ">
                 <label for="jumlah" class="control-label col-lg-2">Jumlah (Rp)</label>
                 <div class="col-lg-10">
-                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah yang Dipinjam' required/>
+                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah yang Dipinjam' value="@isset($pemasukan->jumlah){{$pemasukan->jumlah}}@endisset" required/>
                 </div>
               </div>
               <div class="form-group">
                 <label for="tanggal" class="control-label col-lg-2">Tanggal Dana Masuk</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tanggal" type="text" size="16" class="form-control default-date-picker" required/>
+                      <input name="tanggal" id="tanggal" type="text" size="16" class="form-control default-date-picker" data-date-format='yyyy-mm-dd' value="@isset($pemasukan->tanggal){{$pemasukan->tanggal}}@endisset" autocomplete="off" required/>
                     </div>
                   <span class="help-block">Pilih Tanggal Dana tersebut Masuk</span>
                 </div>
@@ -50,7 +56,7 @@
               <div class="form-group ">
                 <label for="keterangan" class="control-label col-lg-2">Keterangan</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan (jika diperlukan)'/>
+                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan (jika diperlukan)' value="@isset($pemasukan->keterangan){{$pemasukan->keterangan}}@endisset"/>
                 </div>
               </div>
               <div class="form-group">
@@ -80,6 +86,7 @@
   <script src="{{ asset('lib/advanced-form-components.js')}}"></script>
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script>
+    jQuery('#tanggal').datepicker();
     $("#number").divide();
   </script>
 @endsection

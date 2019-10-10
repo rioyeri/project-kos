@@ -57,44 +57,42 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-      $data = new Pembayaran;
-      $data->penghuni_id=$request->penghuni_id;
-      $data->jumlahBayar=$request->jumlahBayar;
-      $tglBayar = date('Y-m-d', strtotime($request->tglPembayaran));
-      $data->tglPembayaran = $tglBayar;
-      $nama = Penghuni::where('id_penghuni', $request->penghuni_id)->first()->nama;
-      $namabukti = "bukti/$nama";
-      $filebukti = $request->file("buktiBayar")->store($namabukti);
-      $data->buktiBayar=$filebukti;
-      $data->save();
+      try{
+        $data = new Pembayaran;
+        $data->penghuni_id=$request->penghuni_id;
+        $data->jumlahBayar=$request->jumlahBayar;
+        $tglBayar = date('Y-m-d', strtotime($request->tglPembayaran));
+        $data->tglPembayaran = $tglBayar;
+        $nama = Penghuni::where('id_penghuni', $request->penghuni_id)->first()->nama;
+        $namabukti = "bukti/$nama";
+        $filebukti = $request->file("buktiBayar")->store($namabukti);
+        $data->buktiBayar=$filebukti;
+        $data->save();
 
-      $pembayaran = Pembayaran::latest()->first()->id_pembayaran;
+        $pembayaran = Pembayaran::latest()->first()->id_pembayaran;
 
-      for($j=1;$j<=$request->ii;$j++){
-        // echo "<pre>";
-        // print_r($pembayaran);
-        $tagihan = "tagihan$j";
-        $det = Pembayarandet::where('id_penghuni', $request->penghuni_id)->where('id',$request->$tagihan)->first();
-        if ($request->$tagihan == true){
-          $det->id_pembayaran = $pembayaran;
-          $det->status = 1;
-          $det->update();
+        for($j=1;$j<=$request->ii;$j++){
+          // echo "<pre>";
+          // print_r($pembayaran);
+          $tagihan = "tagihan$j";
+          $det = Pembayarandet::where('id_penghuni', $request->penghuni_id)->where('id',$request->$tagihan)->first();
+          if ($request->$tagihan == true){
+            $det->id_pembayaran = $pembayaran;
+            $det->status = 1;
+            $det->update();
+          }
         }
+
+        $keuangan = new Keuangan;
+        $keuangan->trx_jenis = 2;
+        $keuangan->trx_id = $pembayaran;
+        $keuangan->save();
+
+        return redirect('/lihatpembayaran')->with('success', 'Data pembayaran berhasil ditambahkan!');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->errorInfo);
+        // return response()->json($e);
       }
-
-      $keuangan = new Keuangan;
-      $keuangan->trx_jenis = 2;
-      $keuangan->trx_id = $pembayaran;
-      $getSaldo = Keuangan::all();
-
-      if(!empty($getSaldo->last())){
-        $keuangan->saldo = $getSaldo->last()->saldo + $request->jumlahBayar;
-      }else{
-        $keuangan->saldo = $request->jumlahBayar;
-      }
-      $keuangan->save();
-
-      return redirect('/lihatpembayaran')->with('success', 'Data pembayaran berhasil ditambahkan!');
     }
 
     /**
@@ -129,8 +127,11 @@ class PembayaranController extends Controller
      */
     public function edit($thn, $bln,$id)
     {
+      $thn = $thn;
+      $bln = $bln;
       $pembayaran = Pembayaran::find($id);
-      $pembayarandets = Pembayarandet::where('id_pembayaran',$id)->where('tahun',$thn)->where('bulan',$bln)->first();
+      // $pembayarandets = Pembayarandet::where('id_pembayaran',$id)->where('tahun',$thn)->where('bulan',$bln)->first();
+      $pembayarandets = Pembayarandet::where('id_pembayaran',$id)->get();
       $kamars = Kamar::all();
       $penghunis = Penghuni::all();
       return view('Pembayaran.editPembayaran', compact('pembayaran','kamars','penghunis', 'pembayarandets','thn','bln'));
@@ -160,19 +161,7 @@ class PembayaranController extends Controller
         $data->buktiBayar=$filebukti;
       }
 
-      $keuangan = Keuangan::where('trx_id',$id)->where('trx_jenis',2)->first();
-      $getSaldo = Keuangan::all();
-
-      if(!empty($getSaldo->last())){
-        $jmlBayar = Pembayaran::where('id_pembayaran', $id)->first()->jumlahBayar;
-        $lastSaldo = $getSaldo->last()->saldo;
-        $keuangan->saldo = $lastSaldo - $jmlBayar + $request->jumlahBayar;
-      }else{
-        $keuangan->saldo = $request->jumlahBayar;
-      }
-
       try{
-        $keuangan->update();
         $data->update();
         return redirect('/lihatpembayaran')->with('info','Data pembayaran berhasil diupdate');
       }catch(\Exception $a){
@@ -190,9 +179,8 @@ class PembayaranController extends Controller
     public function destroy($thn, $bln, $id)
     {
         $pembayaran = Pembayaran::find($id);
-        $detail = Pembayarandet::where('id_pembayaran',$id)->where('tahun',$thn)->where('bulan',$bln)->first();
-        $detail->id_pembayaran = null;
-        $detail->status = 0;
+        $detail = Pembayarandet::where('id_pembayaran',$id)->get();
+        $keuangan = Keuangan::where('trx_jenis', 2)->where('trx_id',$id)->first();
 
         try{
           if($pembayaran->buktiBayar){
@@ -201,8 +189,13 @@ class PembayaranController extends Controller
             $namafolder = "bukti/$nama";
             Storage::deleteDirectory($namafolder);
           }
-          $detail->update();
           $pembayaran->delete();
+          $keuangan->delete();
+          foreach($detail as $det){
+            $det->id_pembayaran = null;
+            $det->status = 0;
+            $det->update();
+          }
           return redirect('/lihatpembayaran')->with('info','Data pembayaran terpilih, berhasil dihapus');
         }catch(\Exception $a){
           return redirect()->back()->withErrors($a->errorInfo);
@@ -241,7 +234,7 @@ class PembayaranController extends Controller
 
     public function ajxGetKeluar(Request $request){
       $keluar = new Carbon($request->msk);
-      $keluar = $keluar->addMonths($request->lamaKontrak-1);
+      $keluar = $keluar->addMonths($request->lamaKontrak);
       $hasil = date('Y-m-d',strtotime($keluar));
       echo $hasil;
     }

@@ -21,6 +21,8 @@
 @php
   use App\Models\Penghuni;
   use App\Models\Kamar;
+  use App\Models\blok;
+  use App\Models\lantai;
 @endphp
 <section id="main-content">
   <section class="wrapper">
@@ -45,7 +47,13 @@
                 <label for="id_kamar" class="control-label col-lg-2">Pilih Kamar</label>
                 <div class="col-lg-10">
                   <select name="kamar_id" class="form-control" id="kamar_id">
-                    <option value="{{ $mapping->id_kamar }}" selected disabled> {{ Kamar::where('id_kamar', $mapping->id_kamar)->first()->namaKamar }}</option>
+                    @php
+                      $kamar = Kamar::where('id_kamar', $mapping->id_kamar)->select('blok_id', 'lantai_id', 'namaKamar')->first();
+                      $blok = blok::where('id_blok', $kamar['blok_id'])->first()->namaBlok;
+                      $lantai = lantai::where('id_lantai', $kamar['lantai_id'])->first()->namaLantai;
+                      $namaKamar = $blok." ".$kamar['namaKamar']." (lantai ".$lantai.")";
+                    @endphp
+                    <option value="{{ $mapping->id_kamar }}" selected disabled>Blok {{ $namaKamar }}</option>
                   </select>
                 </div>
               </div>
@@ -56,26 +64,28 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-lg-2">Mulai Masuk awal bulan</label>
-                <div class="col-lg-10">
-                  <div data-date-viewmode="month" data-date-format="Y-m-d">
-                    <input name="masuk" type="month" size="16" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" placeholder="YYYY-MM" required/>
+                <label class="control-label col-lg-2">Tanggal Masuk</label>
+                <div class="col-lg-4">
+                  <div data-date-format="Y-m-d">
+                    <input name="masuk" id="masuk" type="date" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" required autocomplete="off">
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-lg-2">Waktu Keluar di akhir bulan</label>
-                <div class="col-lg-10">
-                  <div data-date-viewmode="month" data-date-format="Y-m-d">
-                    <input name="keluar" id="keluar" type="month" size="16" class="form-control" placeholder="YYYY-MM" required/>
+                <label class="control-label col-lg-2">Jatuh Tempo</label>
+                <div class="col-lg-4">
+                  <div data-date-format="Y-m-d">
+                    <input type="date" class="form-control" required name="keluar" id="keluar" autocomplete="off">
                   </div>
                 </div>
               </div>
+
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                   <button class="btn btn-theme" type="submit">Simpan</button>
                 </div>
               </div>
+              <input type="hidden" name="id_mapping" value="{{ $id }}">
             </form>
           </div>
         </div>

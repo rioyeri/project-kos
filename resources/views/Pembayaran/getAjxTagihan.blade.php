@@ -7,7 +7,7 @@
     @foreach ($pembayarandets as $det)
       @php
         $i++;
-        $bulan = date("F", mktime(null, null, null, $det->bulan));;
+        $bulan = date("F", mktime(null, null, null, $det->bulan));
         $tahun = date('Y', strtotime($det->tahun));
       @endphp
       <div class="row col-lg-10">

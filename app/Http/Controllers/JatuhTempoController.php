@@ -22,8 +22,8 @@ class JatuhTempoController extends Controller
         $namabulan = date('F', strtotime(Carbon::today()->addWeeks(1)));
         $tahun = date('Y', strtotime(Carbon::today()->addWeeks(1)));
         // $jatuhtempos = Pembayaran::whereBetween('wktKeluar', [$now, $till])->get();
-    //   $jatuhtempos = Pembayaran::whereYear('tglKeluar', $q->year)->whereMonth('tglKeluar', $q->month)->get();
-        $jatuhtempos = Pembayarandet::where('tahun', $tahun)->where('bulan', $bulan)->where('status',0)->join('penghuni','pembayarandet.id_penghuni','=','penghuni.id_penghuni')->get();
+        // $jatuhtempos = Pembayaran::whereYear('tglKeluar', $q->year)->whereMonth('tglKeluar', $q->month)->get();
+        $jatuhtempos = Pembayarandet::where('tahun', $tahun)->where('bulan', $bulan)->join('penghuni','pembayarandet.id_penghuni','=','penghuni.id_penghuni')->get();
 
         return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'namabulan', 'tahun'));
     }

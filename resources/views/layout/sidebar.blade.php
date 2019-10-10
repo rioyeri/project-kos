@@ -5,7 +5,7 @@
       {{-- <p class="centered"><a href="profile.html"><img src="{{ asset('img/Y baru logo2.png')}}" class="img-circle" width="80"></a></p> --}}
       <h5 class="centered">Menu</h5>
       <li class="mt">
-        <a class="@yield('dash')" href="/home">
+        <a class="@yield('dash')" href="{{ route('getHome') }}">
           <i class="fa fa-dashboard"></i>
           <span>Dashboard</span>
           </a>

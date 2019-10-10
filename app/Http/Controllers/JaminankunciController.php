@@ -30,10 +30,9 @@ class JaminankunciController extends Controller
     public function create()
     {
         $jaminankuncis = JaminanKunci::all();
-        $mapping = Mapping::all();
-        $penghunis = Penghuni::all();
+        $mapping = Mapping::join('penghuni', 'mappingkamar.id_penghuni', '=', 'penghuni.id_penghuni')->select('penghuni.nama', 'mappingkamar.id_kamar', 'penghuni.id_penghuni')->get();
         $kamars = Kamar::all();
-        return view('Jaminankunci.tambahJaminanKunci', compact('jaminankuncis','penghunis','kamars', 'mapping'));
+        return view('Jaminankunci.tambahJaminanKunci', compact('jaminankuncis','kamars', 'mapping'));
     }
 
     /**
@@ -72,8 +71,8 @@ class JaminankunciController extends Controller
     public function edit($id)
     {
         $jaminankunci = JaminanKunci::find($id);
-        $penghunis = Penghuni::all();
-        return view('JaminanKunci.editJaminanKunci', compact('jaminankunci', 'penghunis'));
+        $mapping = Mapping::join('penghuni', 'mappingkamar.id_penghuni', '=', 'penghuni.id_penghuni')->select('penghuni.nama', 'mappingkamar.id_kamar', 'penghuni.id_penghuni')->get();
+        return view('JaminanKunci.editJaminanKunci', compact('jaminankunci', 'mapping'));
     }
 
     /**

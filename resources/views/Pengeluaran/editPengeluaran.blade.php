@@ -43,7 +43,7 @@
                 <label class="control-label col-lg-2">Tanggal Dana Keluar</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tanggal" type="text" size="16" class="form-control default-date-picker" value="{{ $pengeluaran->tanggal }}" required/>
+                      <input name="tanggal" id="tanggal" type="text" size="16" class="form-control default-date-picker" data-date-format='yyyy-mm-dd' value="{{ $pengeluaran->tanggal }}" autocomplete="off" required/>
                     </div>
                   <span class="help-block">Pilih Tanggal Dana Keluar</span>
                 </div>
@@ -51,7 +51,7 @@
               <div class="form-group ">
                 <label for="keterangan" class="control-label col-lg-2">Keterangan</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan' value="{{ $pengeluran->keterangan }}" required/>
+                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan' value="{{ $pengeluaran->keterangan }}" required/>
                 </div>
               </div>
               <div class="form-group">
@@ -81,6 +81,7 @@
   <script src="{{ asset('lib/advanced-form-components.js')}}"></script>
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script>
+    jQuery('#tanggal').datepicker();
     $("#number").divide();
   </script>
 @endsection

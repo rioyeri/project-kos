@@ -19,6 +19,7 @@ class KeuanganController extends Controller
         $keuangans = Keuangan::all();
         $pemasukans = Pemasukan::all();
         $pengeluarans = Pengeluaran::all();
+
         return view('Keuangan.laporanKeuangan', compact('keuangans', 'pemasukans', 'pengeluarans'));
     }
 

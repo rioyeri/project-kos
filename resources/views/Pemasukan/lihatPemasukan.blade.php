@@ -5,7 +5,10 @@
 @endsection
 
 @section('css')
-  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_page.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_table.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/DT_bootstrap.css')}}" rel="stylesheet"/>
+  {{-- <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" /> --}}
 @endsection
 
 @section('name')
@@ -47,15 +50,15 @@
                   @php ($i++)
                   <td>{{ $i }}</td>
                   <td>{{ $pemasukan->namaSumber }}</td>
-                  <td>Rp. {{ $pemasukan->jumlah }}</td>
+                  <td>Rp. <span class="number">{{ $pemasukan->jumlah }}</span></td>
                   <td>{{ $pemasukan->tanggal }}</td>
                   <td>{{ $pemasukan->keterangan }}</td>
                   <td>
-                    <a href="/editpemasukan/{{ $pemasukan->id_pemasukan}}"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a>
+                    <a href="/editpemasukan/{{ $pemasukan->id_pemasukan}}"><button class="btn btn-primary btn-block btn-xs"><i class="fa fa-pencil"> Edit</i></button></a>
                     <form class="" action="/hapuspemasukan/{{ $pemasukan->id_pemasukan }}" method="post">
                       {{ csrf_field() }}
                       {{ method_field('delete') }}
-                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></a>
+                        <button type="submit" class="btn btn-danger btn-block btn-xs"><i class="fa fa-trash-o "> Hapus</i></button></a>
                     </form>
                   </td>
                 </tr>
@@ -73,7 +76,14 @@
 @endsection
 
 @section('js')
-  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.dataTables.js')}}"></script>
+  <script type="text/javascript" src="{{asset('lib/advanced-datatable/js/DT_bootstrap.js')}}"></script>
+  {{-- <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script> --}}
+  <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+  <script>
+    $(".number").divide();
+  </script>
 
   <script type="text/javascript">
     $(document).ready(function () {

@@ -13,6 +13,9 @@
 @endsection
 
 @section('css')
+  <link href="{{ asset('lib/advanced-datatable/css/demo_page.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_table.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/DT_bootstrap.css')}}" rel="stylesheet"/>
   <link href="{{ asset('lib/fullcalendar/bootstrap-fullcalendar.css')}}" rel="stylesheet" />
 @endsection
 
@@ -31,7 +34,7 @@
         <div class="content-panel">
           <h4><i class="fa fa-angle-right"></i>Yang Belum Membayar Uang Kos pada bulan {{ $namabulan }} {{ $tahun }}</h4>
           <hr>
-          <table class="table">
+          <table class="table" id="datatable">
             <thead>
               <tr>
                 <th>#</th>
@@ -41,14 +44,20 @@
               </tr>
             </thead>
             <tbody>
-              @php ($i = 0)
+              @php
+                $i = 0;
+              @endphp
               @foreach ($jatuhtempos as $jatuhtempo)
                 <tr>
-                  @php ($i++)
+                  @php
+                    $i++;
+                    $mapping = Mapping::where('id_penghuni', $jatuhtempo->id_penghuni)->first();
+                    $kamar = Kamar::join('blok', 'kamar.blok_id', '=', 'blok.id_blok')->join('lantai', 'kamar.lantai_id', '=', 'lantai.id_lantai')->where('id_kamar', $mapping['id_kamar'])->select('blok.namaBlok', 'lantai.namaLantai','kamar.namaKamar')->first();
+                    $namaKamar = $kamar['namaBlok']." ".$kamar['namaKamar']." (lantai ".$kamar['namaLantai'].")";
+                  @endphp
                   <td>{{ $i }}</td>
                   <td>{{ Penghuni::where('id_penghuni', $jatuhtempo->id_penghuni)->first()->nama }}</td>
-                  @php($idkamar = Mapping::where('id_penghuni', $jatuhtempo->id_penghuni)->first()->id_kamar)
-                  <td>{{ Kamar::where('id_kamar', $idkamar)->first()->namaKamar }}</td>
+                  <td>{{ $namaKamar }}</td>
                   <td>Belum Membayar</td>
                 </tr>
               @endforeach
@@ -58,11 +67,6 @@
       </div>
     </div>
   </section>
-  <section class="panel">
-    <div class="panel-body">
-      <div id="calendar" class="has-toolbar"></div>
-    </div>
-  </section>
 </section>
 
 <!-- /MAIN CONTENT -->
@@ -70,5 +74,34 @@
 @endsection
 
 @section('js')
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.dataTables.js')}}"></script>
+  <script type="text/javascript" src="{{asset('lib/advanced-datatable/js/DT_bootstrap.js')}}"></script>
   <script src="{{ asset('lib/fullcalendar/fullcalendar.min.js')}}"></script>
+@endsection
+
+@section('script-js')
+<script type="text/javascript">
+  $(document).ready(function () {
+
+      // Default Datatable
+      $('#datatable').DataTable();
+
+      //Buttons examples
+      var table = $('#datatable-buttons').DataTable({
+          lengthChange: false,
+          buttons: ['copy', 'excel', 'pdf']
+      });
+
+      // Key Tables
+
+      $('#key-table').DataTable({
+          keys: true
+      });
+
+      table.buttons().container()
+          .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+  });
+
+</script>
 @endsection

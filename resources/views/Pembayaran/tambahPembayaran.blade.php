@@ -4,6 +4,9 @@
     Tambahkan Data Pembayaran
 @endsection
 
+@section('css')
+  <link href="{{ asset('lib/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
 @section('name')
   GreenHouse
 @endsection
@@ -13,6 +16,11 @@
 @endsection
 
 @section('content')
+@php
+  use App\Models\Kamar;
+  use App\Models\lantai;
+  use App\Models\blok;
+@endphp
 <!--main content start-->
 
 <section id="main-content">
@@ -29,7 +37,7 @@
               <div class="form-group ">
                 <label for="id_penghuni" class="control-label col-lg-2">Pilih Penghuni</label>
                 <div class="col-lg-10">
-                  <select name="penghuni_id" id="penghuni" class="form-control" parsley-trigger="change" onchange="change(this.value)">
+                  <select name="penghuni_id" id="penghuni" class="form-control select2" parsley-trigger="change" onchange="change(this.value)">
                     <option disabled selected>-- Pilih Nama Penghuni --</option>
                     @foreach ($penghunis as $penghuni)
                       <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama }}</option>
@@ -43,7 +51,13 @@
                   <select name="kamar_id" class="form-control" id="kamar_id" disabled>
                     <option disabled selected>-- Pilih Nama Kamar --</option>
                     @foreach ($kamars as $kamar)
-                      <option value="{{ $kamar->id_kamar }}"> {{ $kamar->namaKamar }}</option>
+                      @php
+                        $k = Kamar::where('id_kamar', $kamar->id_kamar)->first();
+                        $blok = blok::where('id_blok', $k['blok_id'])->first()->namaBlok;
+                        $lantai = lantai::where('id_lantai', $k['lantai_id'])->first()->namaLantai;
+                        $namaKamar = "Blok ".$blok." kamar ".$k['namaKamar']." (lantai ".$lantai.")";
+                      @endphp
+                      <option value="{{ $kamar->id_kamar }}"> {{ $namaKamar }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -55,33 +69,11 @@
                 <label class="control-label col-lg-2">Tanggal Pembayaran</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tglPembayaran" type="text" autocomplete="off" size="16" class="form-control" placeholder="YYYY-MM-DD" id="tglPembayaran" data-date-format='yyyy-mm-dd' autocomplete="off" required/>
+                      <input name="tglPembayaran" type="text" size="16" class="form-control" placeholder="YYYY-MM-DD" id="tglPembayaran" data-date-format='yyyy-mm-dd' autocomplete="off" required/>
                     </div>
                   <span class="help-block">Pilih Tanggal Pembayaran</span>
                 </div>
               </div>
-              {{-- <div class="form-group ">
-                <label for="lamaKontrak" class="control-label col-lg-2">Lama Sewa (/Bulan)</label>
-                <div class="col-lg-10">
-                  <input class="form-control" name="lamaKontrak" id="lamaKontrak" type="text" placeholder='Masukan Lama Sewa' required/>
-                </div>
-              </div> --}}
-              {{-- <div class="form-group">
-                <label class="control-label col-lg-2">Mulai Masuk awal bulan</label>
-                <div class="col-lg-10">
-                  <div data-date-viewmode="month" data-date-format="Y-m-d">
-                    <input name="masuk" type="month" size="16" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" placeholder="YYYY-MM" required/>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-lg-2">Waktu Keluar di akhir bulan</label>
-                <div class="col-lg-10">
-                  <div data-date-viewmode="month" data-date-format="Y-m-d">
-                    <input name="keluar" id="keluar" type="month" size="16" class="form-control" placeholder="YYYY-MM" required/>
-                  </div>
-                </div>
-              </div> --}}
               <div class="form-group">
                 <label class="control-label col-lg-2">Upload Bukti Pembayaran</label>
                 <div class="controls col-md-9">
@@ -89,7 +81,7 @@
                     <span class="btn btn-theme02 btn-file">
                       <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select file</span>
                       <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                        <input type="file" id="buktiBayar" name="buktiBayar" />
+                        <input type="file" id="buktiBayar" name="buktiBayar" required>
                           @if($errors->has('buktiBayar'))
                             <span class="help-block">
                               <strong>{{ $errors->first('buktiBayar') }}</strong>
@@ -127,8 +119,11 @@
   <script type="text/javascript" src="{{ asset('lib/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
   <script src="{{ asset('lib/advanced-form-components.js')}}"></script>
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+  <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
   <script>
     jQuery('#tglPembayaran').datepicker();
+    // Select2
+    $(".select2").select2();
 
     function change(id){
       changeTagihan(id);

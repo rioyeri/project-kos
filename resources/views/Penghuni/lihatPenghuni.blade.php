@@ -5,7 +5,10 @@
 @endsection
 
 @section('css')
-  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_page.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_table.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/DT_bootstrap.css')}}" rel="stylesheet"/>
+  {{-- <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" /> --}}
 @endsection
 
 @section('name')
@@ -20,7 +23,11 @@
 <!--main content start-->
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i>Daftar Penghuni</h3>
+    @if($jenis==1)
+      <h3><i class="fa fa-angle-right"></i>Daftar Penghuni</h3>
+    @elseif($jenis==0)
+      <h3><i class="fa fa-angle-right"></i>Daftar Penghuni Nonaktif</h3>
+    @endif
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
@@ -40,12 +47,14 @@
               <strong>Berhasil!</strong> {{ session('success') }}
             </div>
           @endif
-          <div class="col-md-12">
-            <p class="text-muted col-2 font-14 m-b-30">
-                <a href="/tambahpenghuni" class="btn btn-theme waves-effect waves-light m-b-5">Tambah Penghuni</a>
-            </p>
-          </div>
-
+          @if($jenis==1)
+            <div class="col-md-12">
+              <p class="text-muted col-2 font-14 m-b-30">
+                  <a href="/tambahpenghuni" class="btn btn-theme waves-effect waves-light m-b-5">Tambah Penghuni</a>
+                  <a href="/penghuni/history" class="btn btn-danger waves-effect waves-light m-b-5">History Penghuni</a>
+              </p>
+            </div>
+          @endif
           <table id="datatable" class="table">
             <thead>
               <tr>
@@ -151,14 +160,24 @@
                       <a href="storage/{{ $penghuni->ktp}}">Buka KTP
                     @endif
                   </td>
-                  <td>
-                    <a href="/editpenghuni/{{ $penghuni->id_penghuni}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Update</i></button></a>
-                    <form class="" action="/hapuspenghuni/{{ $penghuni->id_penghuni }}" method="post">
-                      {{ csrf_field() }}
-                      {{ method_field('delete') }}
-                        <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Hapus</i></button></a>
-                    </form>
-                  </td>
+                  @if($jenis==1)
+                    <td>
+                      <a href="/editpenghuni/{{ $penghuni->id_penghuni}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Update</i></button></a>
+                      <form class="" action="/hapuspenghuni/{{ $penghuni->id_penghuni }}" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                          <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Hapus</i></button></a>
+                      </form>
+                    </td>
+                  @elseif($jenis==0)
+                    <td>
+                      <form class="" action="/restorepenghuni/{{ $penghuni->id_penghuni }}" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('put') }}
+                          <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Restore</i></button></a>
+                      </form>
+                    </td>
+                  @endif
                 </tr>
               @endforeach
             </tbody>
@@ -174,7 +193,10 @@
 @endsection
 
 @section('js')
-  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.dataTables.js')}}"></script>
+  <script type="text/javascript" src="{{asset('lib/advanced-datatable/js/DT_bootstrap.js')}}"></script>
+  {{-- <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script> --}}
 
   <script type="text/javascript">
     $(document).ready(function () {

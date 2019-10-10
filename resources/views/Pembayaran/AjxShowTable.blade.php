@@ -1,6 +1,8 @@
 @php
     use App\Models\Mapping;
     use App\Models\Kamar;
+    use App\Models\lantai;
+    use App\Models\blok;
     use App\Models\Penghuni;
     use App\Models\Pembayarandet;
     $bulan = date("F", mktime(null, null, null, $bln));;
@@ -29,6 +31,9 @@
                         $i++;
                         $mapping = Mapping::where('id_penghuni', $pby->id_penghuni)->first();
                         $kamar = Kamar::where('id_kamar', $mapping['id_kamar'])->first();
+                        $blok = blok::where('id_blok', $kamar['blok_id'])->first()->namaBlok;
+                        $lantai = lantai::where('id_lantai', $kamar['lantai_id'])->first()->namaLantai;
+                        $namaKamar = "Blok ".$blok." kamar ".$kamar['namaKamar']." (lantai ".$lantai.")";
                         $penghuni = Penghuni::where('id_penghuni',$pby->id_penghuni)->first();
                         $bayar = Pembayarandet::where('tahun',$thn)->where('bulan',$bln)->where('id_penghuni',$pby->id_penghuni)->first();
                         if($bayar->status==0){
@@ -39,7 +44,7 @@
                       @endphp
                       <td>{{ $i }}</td>
                       <td>{{ $penghuni['nama']}}</td>
-                      <td>{{ $kamar['namaKamar'] }}</td>
+                      <td>{{ $namaKamar }}</td>
                       <td>{{ $stt }}</td>
                       <td>
                         @if($bayar->status == 1)

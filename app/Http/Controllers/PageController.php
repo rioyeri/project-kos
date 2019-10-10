@@ -8,7 +8,7 @@ class PageController extends Controller
 {
   public function login()
   {
-      return view('Home.login');
+      return view('Home.landingpage');
   }
 
   public function home()

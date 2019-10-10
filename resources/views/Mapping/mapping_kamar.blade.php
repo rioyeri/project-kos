@@ -23,6 +23,8 @@
   use App\Models\Penghuni;
   use App\Models\Kamar;
   use App\Models\Mapping;
+  use App\Models\blok;
+  use App\Models\lantai;
 @endphp
 
 <!--main content start-->
@@ -61,18 +63,26 @@
                 <th>Nama Penghuni</th>
                 <th>Kamar</th>
                 <th>Tanggal Masuk</th>
-                <th>Tanggal Keluar</th>
+                <th>Jatuh Tempo</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              @php ($i=0)
+              @php
+                $i=0;
+              @endphp
               @foreach ($mappings as $mapping)
                 <tr>
-                  @php ($i++)
+                  @php
+                    $i++;
+                    $kamar = Kamar::where('id_kamar', $mapping->id_kamar)->select('blok_id', 'lantai_id', 'namaKamar')->first();
+                    $blok = blok::where('id_blok', $kamar['blok_id'])->first()->namaBlok;
+                    $lantai = lantai::where('id_lantai', $kamar['lantai_id'])->first()->namaLantai;
+                    $namaKamar = $blok." ".$kamar['namaKamar']." (lantai ".$lantai.")";
+                  @endphp
                   <td>{{ $i }}</td>
                   <td>{{ Penghuni::where('id_penghuni', $mapping->id_penghuni)->first()->nama }}</td>
-                  <td>{{ Kamar::where('id_kamar', $mapping->id_kamar)->first()->namaKamar }}</td>
+                  <td>{{ $namaKamar }}</td>
                   <td>{{ $mapping->tglMasuk }}</td>
                   <td>{{ $mapping->tglKeluar }}</td>
                   <td>
@@ -80,7 +90,7 @@
                     <form class="" action="/mapping/hapus/{{ $mapping->id_mapping }}" method="post">
                       {{ csrf_field() }}
                       {{ method_field('delete') }}
-                      <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Deactive</i></button></a>
+                      <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Deactive</i></button>
                     </form>
                   </td>
                 </tr>
@@ -110,10 +120,27 @@
 @endsection
 
 @section('script-js')
-  <script>
-    $("#number").divide();
+  <script type="text/javascript">
+    $(document).ready(function () {
+    $('#number').divide();
     $('#datatable').DataTable();
-    $(".select2").select2();
+    $('.select2').select2();
+
+    //Buttons examples
+    var table = $('#datatable-buttons').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf']
+        });
+
+        // Key Tables
+
+        $('#key-table').DataTable({
+            keys: true
+        });
+
+    table.buttons().container()
+            .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    });
     function changeKamar(id){
       $.ajax({
         url       :   "{{ route('ajaxGetKamar')}}",

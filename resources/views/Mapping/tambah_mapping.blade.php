@@ -52,7 +52,7 @@
                   <select name="kamar_id" class="form-control select2" id="kamar_id">
                     <option disabled selected>-- Pilih Nama Kamar --</option>
                     @foreach ($kamars as $kamar)
-                      <option value="{{ $kamar->id_kamar }}"> {{ blok::where('id_blok', $kamar->blok_id)->first()->namaBlok }} {{ $kamar->namaKamar }} (lantai {{ lantai::where('id_lantai',$kamar->lantai_id)->first()->namaLantai }})</option>
+                      <option value="{{ $kamar->id_kamar }}">Blok {{ blok::where('id_blok', $kamar->blok_id)->first()->namaBlok }} kamar {{ $kamar->namaKamar }} (lantai {{ lantai::where('id_lantai',$kamar->lantai_id)->first()->namaLantai }})</option>
                     @endforeach
                   </select>
                 </div>
@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-lg-2">Mulai Masuk awal bulan</label>
+                <label class="control-label col-lg-2">Tanggal Masuk</label>
                 <div class="col-lg-4">
                   <div data-date-format="Y-m-d">
                     <input name="masuk" id="masuk" type="date" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" required autocomplete="off">
@@ -72,7 +72,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-lg-2">Waktu Keluar di akhir bulan</label>
+                <label class="control-label col-lg-2">Jatuh Tempo</label>
                 <div class="col-lg-4">
                   <div data-date-format="Y-m-d">
                     <input type="date" class="form-control" required name="keluar" id="keluar" autocomplete="off">

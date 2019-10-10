@@ -26,7 +26,8 @@ class PemasukanController extends Controller
      */
     public function create()
     {
-      return view('Pemasukan.tambahPemasukan');
+      $jenis="create";
+      return view('Pemasukan.tambahPemasukan', compact('jenis'));
     }
 
     /**
@@ -37,6 +38,7 @@ class PemasukanController extends Controller
      */
     public function store(Request $request)
     {
+      try{
         $data = new Pemasukan;
         $data->namaSumber = $request->namaSumber;
         $data->jumlah = $request->jumlah;
@@ -48,17 +50,13 @@ class PemasukanController extends Controller
         $keuangan = new Keuangan;
         $keuangan->trx_jenis = 1;
         $keuangan->trx_id = $pemasukan;
-        $getSaldo = Keuangan::all();
-
-        if(!empty($getSaldo->last())){
-
-          $keuangan->saldo = $getSaldo->last()->saldo + $request->jumlah;
-        }else{
-          $keuangan->saldo = $request->jumlah;
-        }
         $keuangan->save();
 
         return redirect('/lihatpemasukan');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->errorInfo);
+        // return response()->json($e);
+      }
     }
 
     /**
@@ -80,7 +78,9 @@ class PemasukanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pemasukan = Pemasukan::find($id);
+        $jenis="edit";
+        return view('Pemasukan.tambahPemasukan', compact('pemasukan','jenis'));
     }
 
     /**
@@ -92,7 +92,13 @@ class PemasukanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Pemasukan::find($id);
+        $data->namaSumber=$request->namaSumber;
+        $data->keterangan=$request->keterangan;
+        $data->tanggal=$request->tanggal;
+        $data->jumlah=$request->jumlah;
+        $data->update();
+        return redirect('/lihatpemasukan');
     }
 
     /**
@@ -103,6 +109,15 @@ class PemasukanController extends Controller
      */
     public function destroy($id)
     {
-        //
+      try{
+        $pemasukan = Pemasukan::find($id);
+        $keuangan = Keuangan::where('trx_jenis', 1)->where('trx_id', $id)->first();
+        $keuangan->delete();
+        $pemasukan->delete();
+        return redirect('/lihatpemasukan');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->errorInfo);
+        // return response()->json($e);
+      }
     }
 }

@@ -4,7 +4,7 @@
   <meta name="description" content="">
   <meta name="author" content="Dashboard">
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-  <title>KOS-KOSAN CERIA | @yield('page')</title>
+  <title>Green House | @yield('page')</title>
 
   @yield('css')
   <!-- Favicons -->

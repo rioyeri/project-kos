@@ -5,7 +5,10 @@
 @endsection
 
 @section('css')
-  <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_page.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/demo_table.css')}}" rel="stylesheet" />
+  <link href="{{ asset('lib/advanced-datatable/css/DT_bootstrap.css')}}" rel="stylesheet"/>
+  {{-- <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" /> --}}
 @endsection
 
 @section('name')
@@ -74,7 +77,7 @@
                   <td class="centered">{{ $kamar->namaKamar }}</td>
                   <td class="centered {{ $blok->class }}">{{ $blok->namaBlok }}</td>
                   <td class="centered">{{ lantai::where('id_lantai', $kamar->lantai_id)->first()->namaLantai }}</td>
-                  <td class="centered">{{ $kamar->harga }}</td>
+                  <td class="centered">Rp. <span class="number">{{ $kamar->harga }}</span></td>
                   <td>
                       <a href="/editkamar/{{ $kamar->id_kamar}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Update</i></button></a>
                     <form class="" action="/hapuskamar/{{ $kamar->id_kamar }}" method="post">
@@ -98,7 +101,14 @@
 @endsection
 
 @section('js')
-  <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.js')}}"></script>
+  <script type="text/javascript" language="javascript" src="{{ asset('lib/advanced-datatable/js/jquery.dataTables.js')}}"></script>
+  <script type="text/javascript" src="{{asset('lib/advanced-datatable/js/DT_bootstrap.js')}}"></script>
+  {{-- <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script> --}}
+  <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+  <script>
+    $(".number").divide();
+  </script>
 
   <script type="text/javascript">
     $(document).ready(function () {

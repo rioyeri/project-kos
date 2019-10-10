@@ -22,9 +22,8 @@ class MappingController extends Controller
       $mapkam = Mapping::all('id_kamar');
       $mappings = Mapping::all();
       $kamars = Kamar::whereNotIn('id_kamar', $mapkam)->get();
-      $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->get();
 
-      return view('Mapping.mapping_kamar', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
+      return view('Mapping.mapping_kamar', compact('kamars', 'mappings', 'mappeng'));
     }
 
     public function ajx(Request $request)
@@ -47,7 +46,7 @@ class MappingController extends Controller
       $mapkam = Mapping::all('id_kamar');
       $mappings = Mapping::all();
       $kamars = Kamar::whereNotIn('id_kamar', $mapkam)->get();
-      $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->get();
+      $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->where('status',1)->get();
 
       return view('Mapping.tambah_mapping', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
     }
@@ -62,8 +61,8 @@ class MappingController extends Controller
     {
 
       $msk = new Carbon($request->masuk);
-      $klr = new Carbon($request->keluar);
       $masuk = date('Y-m-d', strtotime($msk));
+      $klr = new Carbon($request->keluar);
       $keluar = date('Y-m-d', strtotime($klr));
 
       $mapping = new Mapping;
@@ -75,12 +74,15 @@ class MappingController extends Controller
       if (Mapping::where('id_kamar', $mapping->id_kamar)->first()){
         return redirect('/mapping/tambah')->with('alert', 'Kamar sudah dihuni penghuni lain!');
       }else{
+        $mapping->save();
+        $idmap = Mapping::where('id_penghuni', $request->penghuni_id)->where('id_kamar', $request->kamar_id)->select('id_mapping')->first();
         for($i=0;$i<$request->lamaKontrak;$i++){
           $data1 = new Pembayarandet;
           $data1->id_penghuni = $request->penghuni_id;
           $tglmsk = date('d', strtotime($msk));
           $blnmsk = date('m', strtotime($msk));
           $thnmsk = date('Y', strtotime($msk));
+          $data1->id_mapping = $idmap['id_mapping'];
           $data1->tanggal = $tglmsk;
           $data1->tahun = $thnmsk;
           $data1->bulan = $blnmsk;
@@ -88,7 +90,7 @@ class MappingController extends Controller
           $data1->save();
           $msk = $msk->addMonths(1);
         }
-        $mapping->save();
+
         return redirect('/mapping/lihat')->with('success', 'Mapping PENGHUNI-KAMAR berhasil dibuat');
       }
     }
@@ -114,7 +116,7 @@ class MappingController extends Controller
     {
       $mapping = Mapping::find($id);
 
-      return view('Mapping.edit_mapping', compact('mapping'));
+      return view('Mapping.edit_mapping', compact('mapping', 'id'));
     }
 
     /**
@@ -126,19 +128,33 @@ class MappingController extends Controller
      */
     public function update(Request $request)
     {
-      $msk = new Carbon($request->masuk);
-      for($i=0;$i<$request->lamaKontrak;$i++){
-        $data1 = new Pembayarandet;
-        $data1->id_penghuni = $request->penghuni_id;
-        $blnmsk = date('m', strtotime($msk));
-        $thnmsk = date('Y', strtotime($msk));
-        $data1->tahun = $thnmsk;
-        $data1->bulan = $blnmsk;
-        $data1->status = 0;
-        $data1->save();
-        $msk = $msk->addMonths(1);
+      $mapping = Mapping::where('id_mapping', $request->id_mapping)->first();
+      $klr = new Carbon($request->keluar);
+      $keluar = date('Y-m-d', strtotime($klr));
+      $mapping->tglKeluar = $keluar;
+      $mapping->update();
+      try{
+        $msk = new Carbon($request->masuk);
+        for($i=0;$i<$request->lamaKontrak;$i++){
+          $data1 = new Pembayarandet;
+          $data1->id_penghuni = $request->penghuni_id;
+          $blnmsk = date('m', strtotime($msk));
+          $thnmsk = date('Y', strtotime($msk));
+          $tglmsk = date('d', strtotime($msk));
+          $data1->id_mapping = $request->id_mapping;
+          $data1->tahun = $thnmsk;
+          $data1->bulan = $blnmsk;
+          $data1->tanggal = $tglmsk;
+          $data1->status = 0;
+          $data1->save();
+          $msk = $msk->addMonths(1);
+        }
+        return redirect('/mapping/lihat')->with('success', 'Perpanjangan masa sewa disimpan');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->errorInfo);
+        // return response()->json($e);
       }
-      return redirect('/mapping/lihat')->with('success', 'Perpanjangan masa sewa disimpan');
+
     }
 
     /**
@@ -150,6 +166,7 @@ class MappingController extends Controller
     public function destroy($id)
     {
         $data = Mapping::find($id);
+
         $data->delete();
         return redirect()->back()->with('info', 'Mapping Kamar terhapus!');
     }

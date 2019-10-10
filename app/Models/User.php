@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Model
 {
-    use Notifiable;
+    protected $table ='users';
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +14,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nama', 'username', 'password', 'backup_pass', 'no_HP'
     ];
 
     /**
@@ -25,6 +23,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'backup_pass',
     ];
 }

@@ -55,20 +55,22 @@
               </div>
               <div class="form-group">
                 <label for="tagihan" class="control-label col-lg-2">Periode Pembayaran</label>
-                <div class="col-lg-5" id="tagihan">
+                <div id="tagihan">
                   <div class="col-lg-10" >
                     @php
                       $i=0;
                     @endphp
                     <input class="hidden" name="penghuni_id" value="{{ $pembayaran->penghuni_id }}">
-                    @php
-                      $bulan = date("F", mktime(null, null, null, $pembayarandets->bulan));;
-                      $tahun = date('Y', strtotime($pembayarandets->tahun));
-                    @endphp
-                    <div class="row">
-                      @php($i++)
-                      <label><input value="{{ $pembayarandets->id }}" type="checkbox" checked disabled name="tagihan{{ $i }}">{{ $bulan }} {{ $tahun }}</label>
-                    </div>
+                    @foreach ($pembayarandets as $det)
+                      @php
+                        $i++;
+                        $bulan = date("F", mktime(null, null, null, $det['bulan']));;
+                        $tahun = date('Y', strtotime($det['tahun']));
+                      @endphp
+                      <div class="row col-lg-10">
+                        <label><input value="{{ $det->id }}" type="checkbox" name="tagihan{{ $i }}" checked disabled>{{ $bulan }} {{ $tahun }}</label>
+                      </div>
+                    @endforeach
                     <input type="hidden" value="{{ $i }}" name="ii">
                   </div>
                 </div>

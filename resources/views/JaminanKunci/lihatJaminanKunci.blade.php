@@ -64,7 +64,7 @@
                   @php ($i++)
                   <td>{{ $i }}</td>
                   <td>{{ Penghuni::where('id_penghuni', $jaminankunci->penghuni_id)->first()->nama}}</td>
-                  <td>{{ $jaminankunci->jaminan }}</td>
+                  <td>Rp. <span class="number">{{ $jaminankunci->jaminan }}</span></td>
                   <td>
                     <a href="/editjaminankunci/{{ $jaminankunci->id_jaminankunci}}"><button class="btn btn-primary btn-block btn-xs"><i class="fa fa-pencil"> Update</i></button></a>
                     <form class="" action="/hapusjaminankunci/{{ $jaminankunci->id_jaminankunci }}" method="post">
@@ -89,6 +89,10 @@
 
 @section('js')
   <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
+  <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+  <script>
+    $(".number").divide();
+  </script>
 
   <script type="text/javascript">
     $(document).ready(function () {

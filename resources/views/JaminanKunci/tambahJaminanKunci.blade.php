@@ -1,5 +1,9 @@
 @extends('layout.dashboard')
 
+@section('css')
+  <link href="{{ asset('lib/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('page')
     Tambahkan Data Jaminan Kunci
 @endsection
@@ -17,6 +21,8 @@
   use App\Models\Pembayaran;
   use App\Models\Penghuni;
   use App\Models\Kamar;
+  use App\Models\lantai;
+  use App\Models\blok;
 @endphp
 <!--main content start-->
 
@@ -34,22 +40,25 @@
               <div class="form-group ">
                 <label for="penghuni_id" class="control-label col-lg-2">Pilih Nama Penghuni</label>
                 <div class="col-lg-10">
-                  <select name="penghuni_id" class="form-control">
+                  <select name="penghuni_id" class="form-control select2" required>
                     <option disabled selected>-- Pilih --</option>
-                    @foreach ($penghunis as $penghuni)
+                    @foreach ($mapping as $m)
                       @php
-                        $idk = $mapping->where('id_penghuni', $penghuni->id_penghuni)->first();
-                        $kmr = Kamar::where('id_kamar', $idk['id_kamar'])->first();
+                        $kmr = Kamar::where('id_kamar', $m['id_kamar'])->first();
+                        $blok = blok::where('id_blok', $kmr['blok_id'])->first();
+                        $lantai = lantai::where('id_lantai', $kmr['lantai_id'])->first();
+                        $namaKamar = "Blok ".$blok['namaBlok']." kamar ".$kmr['namaKamar']." (lantai ".$lantai['namaLantai'].")";
                       @endphp
-                      <option value="{{ $penghuni->id_penghuni }}"> {{ $penghuni->nama}} ({{ $kmr['namaKamar'] }})</option>
+                      <option value="{{ $m['id_penghuni'] }}"> {{ $m['nama']}} ({{ $namaKamar }})</option>
                     @endforeach
                   </select>
                 </div>
               </div>
               <div class="form-group ">
                 <label for="jaminan" class="control-label col-lg-2">Jaminan</label>
-                <div class="col-lg-10">
-                  <input class="form-control" name="jaminan" type="text" placeholder='Masukan Jaminan' required/>
+                <div class="col-lg-10 form-inline">
+                  <label>Rp.</label>
+                  <input class="form-control" id="number" name="jaminan" minlength="2" type="text" placeholder='Masukan Jaminan' required/>
                 </div>
               </div>
               <div class="form-group">
@@ -70,4 +79,16 @@
 </section>
 <!-- /MAIN CONTENT -->
 <!--main content end-->
+@endsection
+
+@section('js')
+  <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('lib/number-divider.min.js') }}"></script>
+@endsection
+
+@section('script-js')
+  <script>
+    $(".select2").select2();
+    $("#number").divide();
+  </script>
 @endsection

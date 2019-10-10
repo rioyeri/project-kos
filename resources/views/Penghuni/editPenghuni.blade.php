@@ -43,12 +43,15 @@
                 <label for="jenisKelamin" class="control-label col-lg-2">Jenis Kelamin</label>
                 <div class="col-lg-10">
                   <select name="jenisKelamin" class="form-control">
-                    @if($penghuni->jenisKelamin == "Laki-laki")
+                    @if(strtolower($penghuni->jenisKelamin) == "laki-laki")
                       <option value="Laki-laki" selected>Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
-                    @elseif($penghuni->jenisKelamin == "Perempuan")
+                    @elseif(strtolower($penghuni->jenisKelamin) == "perempuan")
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan" selected>Perempuan</option>
+                    @else
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
                     @endif
                   </select>
                 </div>
