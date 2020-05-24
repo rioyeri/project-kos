@@ -37,29 +37,55 @@
     <div class="row mb">
       <div class="col-md-12">
         <div class="content-panel">
-
+          <form class="form-horizontal" role="form" action="{{ route('exportKeuangan') }}" enctype="multipart/form-data" method="POST">
+            @csrf
+            <div class="text-right m-b-0">
+              <button class="btn btn-success waves-effect waves-light w-xs m-b-5">
+                  <span class="mdi mdi-file-excel">
+                      Export to Excel
+                  </span>
+              </button>
+            </div>
+          </form>
           <table id="datatable" class="table data-table">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Tanggal</th>
-                <th>Nama</th>
-                <th>Keterangan</th>
-                <th>Pemasukan</th>
-                <th>Pengeluaran</th>
+                <th>Uraian</th>
+                <th class="text-right">Pemasukan</th>
+                <th class="text-right">Pengeluaran</th>
 
               </tr>
             </thead>
             <tbody>
               @php
-                $i=0
+                $i=1;
+                $total=0;
               @endphp
               @foreach ($keuangans as $keuangan)
                 <tr>
+                  <td>{{ $i++ }}</td>
+                  <td>{{ $keuangan['Tanggal'] }}</td>
+                  <td>{{ $keuangan['Uraian'] }}</td>
                   @php
-                    $i++
+                    if($keuangan['Pemasukan'] != ""){
+                      $pemasukan = "Rp ".number_format($keuangan['Pemasukan'], 2, ",", ".");
+                      $total+=$keuangan['Pemasukan'];
+                    }else{
+                      $pemasukan = "";
+                    }
+
+                    if($keuangan['Pengeluaran'] != ""){
+                      $pengeluaran = "Rp ".number_format($keuangan['Pengeluaran'], 2, ",", ".");
+                      $total-=$keuangan['Pengeluaran'];
+                    }else{
+                      $pengeluaran = "";
+                    }
                   @endphp
-                  <td>{{ $i }}</td>
+                  <td class="text-right">{{ $pemasukan }}</td>
+                  <td class="text-right">{{ $pengeluaran }}</td>
+                  {{-- <td>{{ $i }}</td>
                   @if($keuangan->trx_jenis == 1)
                     @php
                       $data1 = Pemasukan::where('id_pemasukan',$keuangan->trx_id)->first();
@@ -101,14 +127,14 @@
                     <td>Pembayaran Kos bulan {{ $bayarbulan }}</td>
                     <td>Rp. <span class="number">{{ $data2['jumlahBayar'] }}</span></td>
                     <td>0</td>
-                  @endif
+                  @endif --}}
                 </tr>
               @endforeach
             </tbody>
           </table>
         </div>
         <div class="content-panel">
-          <h3><i class="fa fa-angle-right"></i><b>Total Saldo Sekarang :  Rp.  <input class="number" value="{{ $total }}" readonly></b></h3>
+          <h3> <i class="fa fa-angle-right"></i><b> Total Saldo Sekarang : Rp {{ number_format($total, 2, ",", ".") }}</b></h3>
         </div>
       </div>
     </div>

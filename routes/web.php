@@ -17,10 +17,11 @@
 Route::get('/','LoginController@index')->name('getHome');
 Route::post('login','LoginController@login')->name('login');
 Route::get('/logout', 'LoginController@logout')->name('logout');
-Route::get('/user/create', 'UserController@create');
-Route::post('/user/create', 'UserController@store');
 
 Route::middleware(['checkUser'])->group(function () {
+  Route::get('/user/create', 'UserController@create')->name('createUser');
+  Route::post('/user/create', 'UserController@store');
+
   Route::get('/dashboard', 'JatuhTempoController@index')->name('dashboard');
 
   Route::get('/lihatkamar', 'KamarController@index');
@@ -30,7 +31,7 @@ Route::middleware(['checkUser'])->group(function () {
   Route::put('/editkamar/{id}', 'KamarController@update');
   Route::delete('/hapuskamar/{id}','KamarController@destroy');
 
-  Route::get('/lihatpenghuni', 'PenghuniController@index');
+  Route::get('/lihatpenghuni', 'PenghuniController@index')->name('penghuni.index');
   Route::get('/tambahpenghuni', 'PenghuniController@create');
   Route::post('/tambahpenghuni', 'PenghuniController@store');
   Route::get('/editpenghuni/{id}', 'PenghuniController@edit');
@@ -39,6 +40,12 @@ Route::middleware(['checkUser'])->group(function () {
   Route::post('/penghuni/import', 'PenghuniController@importPenghuni');
   Route::get('/penghuni/history', 'PenghuniController@getPenghuniNonaktif');
   Route::put('/restorepenghuni/{id}','PenghuniController@restorePenghuni');
+  Route::post('/penghuni/export/', 'PenghuniController@export')->name('exportPenghuni');
+
+  Route::get('/penghuni/dokumen/{id}/get', 'PenghuniController@getDokumen');
+  Route::get('/penghuni/dokumen/{id}/add', 'PenghuniController@tambahDokumen');
+  Route::post('/penghuni/dokumen/{id}/add', 'PenghuniController@storeDokumen');
+  Route::delete('penghuni/dokumen/{id}/delete', 'PenghuniController@destroyDokumen');
 
   Route::get('/mapping/lihat', 'MappingController@index');
   Route::get('/mapping/tambah', 'MappingController@create');
@@ -75,6 +82,7 @@ Route::middleware(['checkUser'])->group(function () {
   Route::delete('/hapuspemasukan/{id}','PemasukanController@destroy');
 
   Route::get('/laporankeuangan', 'KeuanganController@index');
+  Route::post('/laporankeuangan/export/', 'KeuanganController@export')->name('exportKeuangan');
 
   Route::get('/tambahjaminankunci', 'JaminanKunciController@create');
   Route::get('/lihatjaminankunci', 'JaminanKunciController@index');

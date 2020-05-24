@@ -4,7 +4,7 @@
     Tambah User
 @endsection
 
-@section('')
+@section('user')
   active
 @endsection
 
@@ -63,7 +63,7 @@
               <div class="form-group ">
                 <label for="harga" class="control-label col-lg-2">Password</label>
                 <div class="col-lg-10 form-inline">
-                  <input class="form-control" id="password" name="password" minlength="6" type="text" placeholder='Password' required/>
+                  <input class="form-control" id="password" name="password" minlength="6" type="password" placeholder='Password' required/>
                 </div>
               </div>
               <div class="form-group">

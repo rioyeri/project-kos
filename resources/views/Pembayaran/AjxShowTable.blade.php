@@ -5,9 +5,8 @@
     use App\Models\blok;
     use App\Models\Penghuni;
     use App\Models\Pembayarandet;
-    $bulan = date("F", mktime(null, null, null, $bln));;
 @endphp
-  <h3><i class="fa fa-angle-right"></i>Daftar Data Pembayaran di bulan {{ $bulan }} {{ $thn }}</h3>
+  <h3><i class="fa fa-angle-right"></i>Daftar Data Pembayaran di bulan {{ $namabulan }} {{ $thn }}</h3>
     <div class="row mt">
       <div class="col-lg-12">
         <div class="content-panel">

@@ -65,17 +65,17 @@
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Tanggal Masuk</label>
-                <div class="col-lg-4">
+                <div class="col-lg-10">
                   <div data-date-format="Y-m-d">
-                    <input name="masuk" id="masuk" type="date" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" required autocomplete="off">
+                    <input type="text" class="form-control" required name="masuk" id="masuk" autocomplete="off" data-date-format="yyyy-mm-dd" parsley-trigger="keyup" onkeyup="changeKeluar()">
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Jatuh Tempo</label>
-                <div class="col-lg-4">
+                <div class="col-lg-10">
                   <div data-date-format="Y-m-d">
-                    <input type="date" class="form-control" required name="keluar" id="keluar" autocomplete="off">
+                    <input type="text" class="form-control" required name="keluar" id="keluar" autocomplete="off" data-date-format="yyyy-mm-dd">
                   </div>
                 </div>
               </div>
@@ -105,6 +105,16 @@
   <script>
     $("#number").divide();
     $(".select2").select2();
+    // Date Picker
+    $('#masuk').datepicker({
+        todayHighlight: true,
+        autoclose: true
+    });
+    $('#keluar').datepicker({
+        todayHighlight: true,
+        autoclose: true
+    });
+
     function changeKamar(id){
       $.ajax({
         url       :   "{{ route('ajaxGetKamar')}}",
@@ -120,18 +130,19 @@
       });
     }
 
-    function changeKeluar(id){
-        var lama = $("#lamaKontrak").val()
-        console.log(id)
+    function changeKeluar(){
+        var msk = $("#masuk").val();
+        var lama = $("#lamaKontrak").val();
+        // console.log("test");
         $.ajax({
         url       :   "{{ route('ajxGetKeluar')}}",
         data      : {
-                      msk : id,
+                      msk : msk,
                       lamaKontrak : lama,
                     },
         type		  :	"GET",
         success		:	function(data){
-                    $("#keluar").val(data)
+                    $("#keluar").val(data);
                     console.log(data);
                     // $('#responsive-datatable').DataTable();
                   }

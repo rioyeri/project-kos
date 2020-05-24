@@ -30,6 +30,7 @@ class JaminankunciController extends Controller
     public function create()
     {
         $jaminankuncis = JaminanKunci::all();
+
         $mapping = Mapping::join('penghuni', 'mappingkamar.id_penghuni', '=', 'penghuni.id_penghuni')->select('penghuni.nama', 'mappingkamar.id_kamar', 'penghuni.id_penghuni')->get();
         $kamars = Kamar::all();
         return view('Jaminankunci.tambahJaminanKunci', compact('jaminankuncis','kamars', 'mapping'));
@@ -43,12 +44,17 @@ class JaminankunciController extends Controller
      */
     public function store(Request $request)
     {
+      try{
         $data = new JaminanKunci;
         $data->penghuni_id=$request->penghuni_id;
         $data->jaminan=$request->jaminan;
         $data->save();
 
-        return redirect('/lihatjaminankunci')->with('success','Data berhasil disimpan');
+        return redirect('/lihatpenghuni')->with('success','Data berhasil disimpan');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
     }
 
     /**
@@ -70,9 +76,16 @@ class JaminankunciController extends Controller
      */
     public function edit($id)
     {
-        $jaminankunci = JaminanKunci::find($id);
-        $mapping = Mapping::join('penghuni', 'mappingkamar.id_penghuni', '=', 'penghuni.id_penghuni')->select('penghuni.nama', 'mappingkamar.id_kamar', 'penghuni.id_penghuni')->get();
-        return view('JaminanKunci.editJaminanKunci', compact('jaminankunci', 'mapping'));
+        if(JaminanKunci::where('penghuni_id', $id)->count() != 0){
+          $jenis = "edit";
+        }else{
+          $jenis = "create";
+        }
+
+        $jaminankunci = JaminanKunci::where('penghuni_id',$id)->first();
+        $penghuni = Penghuni::where('id_penghuni', $id)->first();
+        // $mapping = Mapping::join('penghuni', 'mappingkamar.id_penghuni', '=', 'penghuni.id_penghuni')->select('penghuni.nama', 'mappingkamar.id_kamar', 'penghuni.id_penghuni')->get();
+        return view('JaminanKunci.editJaminanKunci', compact('jaminankunci', 'penghuni', 'jenis'));
     }
 
     /**
@@ -84,12 +97,20 @@ class JaminankunciController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $data = JaminanKunci::find($id);
-      $data->penghuni_id=$request->penghuni_id;
-      $data->jaminan=$request->jaminan;
-      $data->update();
+      // echo "<pre>";
+      // print_r($request->all());
+      // die();
+      try{
+        $data = JaminanKunci::find($id);
+        $data->penghuni_id=$request->penghuni_id;
+        $data->jaminan=$request->jaminan;
+        $data->update();
 
-      return redirect('/lihatjaminankunci')->with('info','Data berhasil diupdate');
+        return redirect('/lihatpenghuni')->with('info','Data berhasil diupdate');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
     }
 
     /**

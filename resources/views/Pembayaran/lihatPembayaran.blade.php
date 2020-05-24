@@ -2,6 +2,8 @@
 
 @section('css')
   <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+  {{-- Select2 --}}
+  <link href="{{ asset('lib/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page')
@@ -57,14 +59,30 @@
                   <div class="form-row">
                     <div class="form-group col-md-12">
                       <label class="col-lg-2 control-label">Choose Period</label>
-                      <div class="col-md-3">
+                      {{-- <div class="col-md-3">
                         <input type="month" class="form-control" parsley-trigger="change" required name="period" id="period">
+                      </div> --}}
+                      <div class="col-md-5">
+                        <select class="form-control select2" parsley-trigger="change" name="bulan" id="bulan" required>
+                            <option value="#" selected disabled>Pilih Bulan</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{$i}}">{{$bulan[$i-1]}}</option>
+                            @endfor
+                        </select>
+                      </div>
+                      <div class="col-md-5">
+                          <select class="form-control select2" parsley-trigger="change" name="tahun" id="tahun" required>
+                              <option value="#" selected disabled>Pilih Tahun</option>
+                              @for ($i = 2018; $i <= date('Y'); $i++)
+                                  <option value="{{$i}}">{{$i}}</option>
+                              @endfor
+                          </select>
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="id_kamar" class="control-label col-lg-2">Pilih Status Pembayaran</label>
-                      <div class="col-md-3">
-                        <select name="status" class="form-control" id="status">
+                      <div class="col-md-10">
+                        <select name="status" class="form-control select2" id="status">
                           <option disabled selected>-- Pilih Status Pembayaran --</option>
                           @foreach ($status as $stt)
                             <option value="{{ $stt }}"> {{ $stt }}</option>
@@ -95,6 +113,9 @@
 @endsection
 
 @section('js')
+  <!-- Select2 -->
+  <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
+
   <script src="{{ asset('lib/datatables/jquery.dataTables.min.js')}}"></script>
 
   <script type="text/javascript">
@@ -102,16 +123,20 @@
 
         // Default Datatable
         $('#datatable').DataTable();
+        // Select2
+        $(".select2").select2();
     });
 
     function showtabel(){
-            var period = $("#period").val()
+            var bulan = $("#bulan").val()
+            var tahun = $("#tahun").val()
             var status = $("#status").val()
             $.ajax({
                 url         :   "{{route('AjxShowTable')}}",
                 data        :   {
-                    date : period,
-                    stat : status,
+                    bulan : bulan,
+                    tahun : tahun,
+                    stat  : status,
                 },
                 type		:	"GET",
                 dataType    :   "html",

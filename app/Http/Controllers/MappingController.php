@@ -43,9 +43,8 @@ class MappingController extends Controller
     public function create()
     {
       $mappeng = Mapping::all('id_penghuni');
-      $mapkam = Mapping::all('id_kamar');
       $mappings = Mapping::all();
-      $kamars = Kamar::whereNotIn('id_kamar', $mapkam)->get();
+      $kamars = Kamar::all();
       $penghunis = Penghuni::whereNotIn('id_penghuni', $mappeng)->where('status',1)->get();
 
       return view('Mapping.tambah_mapping', compact('kamars', 'penghunis', 'mappings', 'mappeng'));
@@ -59,21 +58,18 @@ class MappingController extends Controller
      */
     public function store(Request $request)
     {
+      try{
+        $msk = new Carbon($request->masuk);
+        $masuk = date('Y-m-d', strtotime($msk));
+        $klr = new Carbon($request->keluar);
+        $keluar = date('Y-m-d', strtotime($klr));
 
-      $msk = new Carbon($request->masuk);
-      $masuk = date('Y-m-d', strtotime($msk));
-      $klr = new Carbon($request->keluar);
-      $keluar = date('Y-m-d', strtotime($klr));
+        $mapping = new Mapping;
+        $mapping->id_penghuni = $request->penghuni_id;
+        $mapping->id_kamar = $request->kamar_id;
+        $mapping->tglMasuk = $masuk;
+        $mapping->tglKeluar = $keluar;
 
-      $mapping = new Mapping;
-      $mapping->id_penghuni = $request->penghuni_id;
-      $mapping->id_kamar = $request->kamar_id;
-      $mapping->tglMasuk = $masuk;
-      $mapping->tglKeluar = $keluar;
-
-      if (Mapping::where('id_kamar', $mapping->id_kamar)->first()){
-        return redirect('/mapping/tambah')->with('alert', 'Kamar sudah dihuni penghuni lain!');
-      }else{
         $mapping->save();
         $idmap = Mapping::where('id_penghuni', $request->penghuni_id)->where('id_kamar', $request->kamar_id)->select('id_mapping')->first();
         for($i=0;$i<$request->lamaKontrak;$i++){
@@ -92,6 +88,9 @@ class MappingController extends Controller
         }
 
         return redirect('/mapping/lihat')->with('success', 'Mapping PENGHUNI-KAMAR berhasil dibuat');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
       }
     }
 

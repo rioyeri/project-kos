@@ -31,7 +31,7 @@
 
 <section id="main-content">
   <section class="wrapper">
-    <h3><i class="fa fa-angle-right"></i>Mapping Penghuni <-> Kamar</h3>
+    <h3><i class="fa fa-angle-right"></i>Mapping Penghuni & Kamar</h3>
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">

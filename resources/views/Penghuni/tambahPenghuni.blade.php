@@ -46,7 +46,7 @@
               {{ method_field('POST') }}
               {{ csrf_field() }}
               <div class="form-group ">
-                <label for="noKTP" class="control-label col-lg-2">Nomor KTP</label>
+                <label for="noKTP" class="control-label col-lg-2">Nomor Identitas</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="noKTP" name="noKTP" minlength="16" maxlength="16" type="text" placeholder='Nomor KTP' required/>
                 </div>
@@ -67,7 +67,7 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group ">
+              {{-- <div class="form-group ">
                 <label for="tempatLahir" class="control-label col-lg-2">Tempat Lahir</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="tempatLahir" name="tempatLahir" minlength="2" type="text" placeholder='Tempat Lahir' required/>
@@ -81,26 +81,26 @@
                   </div>
                   <span class="help-block">Contoh : 2000-01-02 (2 Januari 2000)</span>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group ">
                 <label for="noHP" class="control-label col-lg-2">Nomor Handphone</label>
                 <div class="col-lg-10">
                   <input class="form-control" id="noHP" name="noHP" minlength="10" type="text" placeholder='08xxxxxxx' required/>
                 </div>
               </div>
-              <div class="form-group ">
+              {{-- <div class="form-group ">
                 <label for="pekerjaan" class="control-label col-lg-2">Pekerjaan</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="pekerjaan" name="pekerjaan" minlength="2" type="text" placeholder='Pekerjaan' required/>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group ">
                 <label for="alamatAsli" class="control-label col-lg-2">Alamat (Sesuai KTP)</label>
                 <div class="col-lg-10">
                   <input class=" form-control" id="alamatAsli" name="alamatAsli" minlength="2" type="text" placeholder='Alamat' required/>
                 </div>
               </div>
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label class="control-label col-lg-2">Upload Foto KTP</label>
                 <div class="controls col-md-9">
                   <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -118,7 +118,7 @@
                     <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
                   </div>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
                   <button class="btn btn-theme" type="submit">Simpan</button>

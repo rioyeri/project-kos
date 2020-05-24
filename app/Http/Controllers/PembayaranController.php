@@ -42,9 +42,10 @@ class PembayaranController extends Controller
      */
     public function create()
     {
+        $mappeng = Mapping::all('id_penghuni');
         $pembayarans = Pembayaran::all();
         $kamars = Kamar::all();
-        $penghunis = Penghuni::all();
+        $penghunis = Penghuni::whereIn('id_penghuni', $mappeng)->where('status', 1)->get();
         $pembayarandets = Pembayarandet::all();
         return view('Pembayaran.tambahPembayaran',compact('pembayarans', 'kamars', 'penghunis','pembayarandets'));
     }
@@ -57,16 +58,31 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
+      // echo "<pre>";
+      // print_r($request->all());
+      // die();
       try{
         $data = new Pembayaran;
         $data->penghuni_id=$request->penghuni_id;
         $data->jumlahBayar=$request->jumlahBayar;
         $tglBayar = date('Y-m-d', strtotime($request->tglPembayaran));
         $data->tglPembayaran = $tglBayar;
-        $nama = Penghuni::where('id_penghuni', $request->penghuni_id)->first()->nama;
-        $namabukti = "bukti/$nama";
-        $filebukti = $request->file("buktiBayar")->store($namabukti);
-        $data->buktiBayar=$filebukti;
+        $metode = $request->metode;
+        $data->metode = $metode;
+        if($metode == "transfer"){
+          $nama = Penghuni::where('id_penghuni', $request->penghuni_id)->first()->nama;
+          // $namabukti = "bukti/$nama";
+          // $filebukti = $request->file("buktiBayar")->store($namabukti);
+          // $data->buktiBayar=$filebukti;
+          if($request->buktitf <> NULL|| $request->buktitf <> ''){
+            $buktitf = $nama.'.'.$tglBayar.'.'.$request->buktitf->getClientOriginalExtension();
+            // echo $buktitf;
+            // die();
+            $request->buktitf->move(public_path('images/bukti/'),$buktitf);
+            $data->buktiBayar = $buktitf;
+          }
+        }
+
         $data->save();
 
         $pembayaran = Pembayaran::latest()->first()->id_pembayaran;
@@ -83,14 +99,11 @@ class PembayaranController extends Controller
           }
         }
 
-        $keuangan = new Keuangan;
-        $keuangan->trx_jenis = 2;
-        $keuangan->trx_id = $pembayaran;
-        $keuangan->save();
-
         return redirect('/lihatpembayaran')->with('success', 'Data pembayaran berhasil ditambahkan!');
-      }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+      }catch(\Exception $e){
+        echo $e->getMessage();
+        die();
+        return redirect()->back()->withErrors($e->getMessage());
         // return response()->json($e);
       }
     }
@@ -146,20 +159,44 @@ class PembayaranController extends Controller
      */
     public function update(Request $request, $id)
     {
+      // echo "<pre>";
+      // print_r($request->all());
+      // die();
+      $metode = $request->metode;
       $data = Pembayaran::find($id);
       $data->jumlahBayar = $request->jumlahBayar;
       $tglBayar = date('Y-m-d',strtotime($request->tglPembayaran));
       $data->tglPembayaran=$tglBayar;
 
       $nama = Penghuni::where('id_penghuni', $request->penghuni_id)->first()->nama;
-      $namabukti = "bukti/$nama";
-      if(!empty($request->file)){
-        if(!empty($data->buktiBayar)){
-          Storage::delete($data->buktiBayar);
+      if($metode == "transfer"){
+        // Upload Bukti bayar
+        if($request->buktitf <> NULL|| $request->buktitf <> ''){
+
+          if (file_exists(public_path('images/bukti/').$data->buktiBayar) ){
+              unlink(public_path('images/bukti/').$data->buktiBayar);
+          }
+
+          $buktitf = $nama.'.'.$tglBayar.'.'.$request->buktitf->getClientOriginalExtension();
+          // echo $buktitf;
+          // die();
+          $request->buktitf->move(public_path('images/bukti/'),$buktitf);
+        }else{
+          $buktitf = $data->buktitf;
         }
-        $filebukti = $request->file("buktiBayar")->store($namabukti);
-        $data->buktiBayar=$filebukti;
+        // echo "tes";
+        // die();
+      }elseif($metode == "tunai"){
+        if (file_exists(public_path('images/bukti/').$data->buktiBayar)){
+          unlink(public_path('images/bukti/').$data->buktiBayar);
+        }
+        $buktitf = "";
+      }else{
+        $buktitf = $data->buktitf;
       }
+
+      $data->metode = $metode;
+      $data->buktiBayar = $buktitf;
 
       try{
         $data->update();
@@ -216,8 +253,10 @@ class PembayaranController extends Controller
     }
 
     public function AjxShowTable(Request $request){
-        $thn = date("Y", strtotime($request->date));
-        $bln = date("m", strtotime($request->date));
+        $thn = $request->tahun;
+        $bln = $request->bulan;
+        $bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+        $namabulan = $bulan[$bln-1];
         $pembayarans = Pembayaran::all();
         $penghunis = Penghuni::all();
         $filterstat = $request->stat;
@@ -229,7 +268,7 @@ class PembayaranController extends Controller
           $pembayarandets = Pembayarandet::where('tahun', $thn)->where('bulan',$bln)->where('status',1)->get();
         }
 
-        return view('Pembayaran.AjxShowTable',compact('pembayarans','penghunis', 'pembayarandets','filterstat','thn','bln'));
+        return view('Pembayaran.AjxShowTable',compact('pembayarans','penghunis', 'pembayarandets','filterstat','thn','bln','namabulan'));
     }
 
     public function ajxGetKeluar(Request $request){

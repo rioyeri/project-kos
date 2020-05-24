@@ -6,9 +6,20 @@ http://www.templatemo.com/tm-492-app-starter
 
 */
 
+@font-face {
+  font-family: copperplate_light;
+  src: url(COPRGTL.TTF);
+}
+
+@font-face {
+  font-family: franklin_book;
+  src: url(FRABK.TTF);
+}
+
 body {
 		background: #1c1c1c;
-    font-family: 'Source Sans Pro', sans-serif;
+    /* font-family: 'Source Sans Pro', sans-serif; */
+    font-family: 'franklin_book';
     font-style: normal;
 		font-weight: 300;
     padding-top: 70px;
@@ -17,12 +28,12 @@ body {
 
 
 /*---------------------------------------
-    Typorgraphy              
+    Typorgraphy
 -----------------------------------------*/
 
 h1,h2,h3,h4,h5,h6,
 .navbar-default, .btn {
-  font-family: 'Unica One', cursive;
+  font-family: 'franklin_book', cursive;
   font-weight: 400;
 }
 
@@ -53,6 +64,12 @@ h3 {
 }
 
 h4 {
+  color: #f0f0f0;
+  font-weight: bold;
+}
+
+h5 {
+  color: #f0f0f0;
   font-weight: bold;
 }
 
@@ -92,7 +109,7 @@ hr {
 
 
 /*---------------------------------------
-    General               
+    General
 -----------------------------------------*/
 
 html{
@@ -156,7 +173,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-    Preloader section              
+    Preloader section
 -----------------------------------------*/
 
 .preloader {
@@ -202,7 +219,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-    Navigation section              
+    Navigation section
 -----------------------------------------*/
 
 .navbar-default {
@@ -212,8 +229,15 @@ a:hover, a:active, a:focus {
     margin: 0 !important;
 }
 
+.black-bg {
+  background: #22242a;
+  border-bottom: 1px solid #393d46;
+}
+
 .navbar-default .navbar-brand {
-  color: #535bd4;
+  /* color: #535bd4; */
+  color: #f2f2f2;
+  font-family: 'copperplate_light';
   font-size: 26px;
   font-weight: bold;
   text-transform: uppercase;
@@ -223,11 +247,13 @@ a:hover, a:active, a:focus {
 }
 
 .navbar-default .navbar-brand span {
-  color: #1dc9e3;
+  /* color: #1dc9e3; */
+  color: #4ECDC4;
 }
 
 .navbar-default .navbar-nav li a {
-    color: #656565;
+    /* color: #656565; */
+    color : #f2f2f2;
     font-size: 18px;
     font-weight: 500;
     line-height: 50px;
@@ -265,13 +291,13 @@ a:hover, a:active, a:focus {
   }
 
 .navbar-default .navbar-toggle:hover,
-.navbar-default .navbar-toggle:focus { 
+.navbar-default .navbar-toggle:focus {
   background-color: transparent;
 }
 
 
 /*---------------------------------------
-    Home section              
+    Home section
 -----------------------------------------*/
 
 #home {
@@ -293,7 +319,7 @@ a:hover, a:active, a:focus {
 
 #home .overlay {
   background: #1dc9e3; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #4776E6 , #8E54E9); /* Chrome 10-25, Safari 5.1-6 */ 
+  background: -webkit-linear-gradient(to left, #4776E6 , #8E54E9); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to left, #4776E6 , #8E54E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   opacity: 0.9;
   position: absolute;
@@ -330,7 +356,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-   Divider section              
+   Divider section
 -----------------------------------------*/
 
 #divider {
@@ -345,7 +371,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-   About section              
+   About section
 -----------------------------------------*/
 
 #about img {
@@ -387,7 +413,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-    Screenshot section              
+    Screenshot section
 -----------------------------------------*/
 
 #screenshot .col-md-3 {
@@ -440,7 +466,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-   Pricing section         
+   Pricing section
 -----------------------------------------*/
 
 #pricing {
@@ -475,7 +501,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-    Newsletter section              
+    Newsletter section
 -----------------------------------------*/
 
 #newsletter {
@@ -547,7 +573,7 @@ a:hover, a:active, a:focus {
 
 
 /*---------------------------------------
-   Footer section              
+   Footer section
 -----------------------------------------*/
 
 footer {
@@ -567,7 +593,7 @@ footer p {
 
 
 /*---------------------------------------
-   Modal Contact           
+   Modal Contact
 -----------------------------------------*/
 
 .modal-dialog .modal-content {
@@ -706,7 +732,7 @@ footer p {
 
 
 /*---------------------------------------
-   Social icon             
+   Social icon
 -----------------------------------------*/
 
 .social-icon {
@@ -746,7 +772,7 @@ footer p {
 
 
 /*---------------------------------------
-   Back top         
+   Back top
 -----------------------------------------*/
 
 .go-top {
@@ -774,7 +800,7 @@ footer p {
 
 
 /*---------------------------------------
-   Mobile Responsive         
+   Mobile Responsive
 -----------------------------------------*/
 @media (max-width: 1200px) {
   .container {
@@ -787,7 +813,7 @@ footer p {
   h1 {
     font-size: 38px;
   }
-  
+
   .section-btn {
     padding: 10px 34px 12px;
   }

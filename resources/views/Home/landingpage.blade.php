@@ -23,6 +23,10 @@ http://www.templatemo.com/tm-492-app-starter
 <link rel="stylesheet" href="{{ asset('landingpage/css/owl.theme.css') }}">
 <link rel="stylesheet" href="{{ asset('landingpage/css/owl.carousel.css') }}">
 
+<!-- Toastr -->
+<link href="{{ asset('lib/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+
+
 <!-- Main css -->
 <link rel="stylesheet" href="{{ asset('landingpage/css/style.css') }}">
 
@@ -36,7 +40,7 @@ http://www.templatemo.com/tm-492-app-starter
 </div>
 
 <!-- Navigation Section -->
-<div class="navbar navbar-default navbar-fixed-top">
+<div class="navbar navbar-default navbar-fixed-top black-bg">
 	<div class="container">
 
 		<div class="navbar-header">
@@ -45,14 +49,14 @@ http://www.templatemo.com/tm-492-app-starter
 				<span class="icon icon-bar"></span>
 				<span class="icon icon-bar"></span>
 			</button>
-			<a href="{{ route('getHome') }}" class="navbar-brand"><span>Green</span>House</a>
+			<a href="{{ route('getHome') }}" class="navbar-brand">Green<span>House</span></a>
 		</div>
 
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#home" class="smoothScroll">Home</a></li>
 				<li><a href="#screenshot" class="smoothScroll">Gallery</a></li>
-        <li><a href="#pricing" class="smoothScroll">Pricing</a></li>
+        <li><a href="#footer" class="smoothScroll">Connect with Us</a></li>
         <li><a href="#" data-toggle="modal" data-target="#modal1">Login</a></li>
 			</ul>
 		</div>
@@ -71,7 +75,7 @@ http://www.templatemo.com/tm-492-app-starter
           <div class="home-thumb">
             <h1 class="wow fadeInUp" data-wow-delay="0.6s">Selamat Datang Di Green House</h1>
             <p class="wow fadeInUp" data-wow-delay="0.8s">Kos yang paling nyaman dan aman, di Cipadung</p>
-            <a href="#pricing" class="wow fadeInUp section-btn btn btn-success smoothScroll" data-wow-delay="1s">Login</a>
+            {{-- <a href="#pricing" class="wow fadeInUp section-btn btn btn-success smoothScroll" data-wow-delay="1s">Login</a> --}}
           </div>
         </div>
 		</div>
@@ -84,8 +88,8 @@ http://www.templatemo.com/tm-492-app-starter
     <div class="row">
       <div class="col-md-offset-2 col-md-8 col-sm-12">
         <div class="section-title">
-          <h1>App Screenshots</h1>
-          <p class="wow fadeInUp" data-wow-delay="0.8s">Nulla nisi purus, ultrices et scelerisque at, ullamcorper et ex. Phasellus at nisi lobortis, semper tortor sed, gravida neque.</p>
+          <h1>Galeri GreenHouse</h1>
+          <p class="wow fadeInUp" data-wow-delay="0.8s">GreenHouse adalah sebuah rumah kos nyaman yang memiliki variasi pilihan kamar dan harga</p>
         </div>
       </div>
       <!-- Screenshot Owl Carousel -->
@@ -110,7 +114,7 @@ http://www.templatemo.com/tm-492-app-starter
   </div>
 </section>
 
-
+{{--
 <!-- Pricing Section -->
 <section id="pricing">
   <div class="container">
@@ -168,26 +172,23 @@ http://www.templatemo.com/tm-492-app-starter
             </div>
        </div>
   </div>
-</section>
+</section> --}}
 
 <!-- Footer Section -->
-<footer>
+<footer id="footer">
 	<div class="container">
 		<div class="row">
-      <div class="col-md-8 col-sm-6">
-           <div class="wow fadeInUp footer-copyright" data-wow-delay="0.4s">
-                <p>Copyright &copy; 2016 Your App Starter
-                <span>||</span>
-                Design: <a href="https://plus.google.com/+templatemo" title="free css templates" target="_blank">Templatemo</a></p>
+      <div class="col-md-6 col-sm-6">
+           <div class="wow fadeInUp footer-fixed" data-wow-delay="0.4s">
+                <h1>Connect with Us </h1>
            </div>
       </div>
-			<div class="col-md-4 col-sm-6">
-				<ul class="wow fadeInUp social-icon" data-wow-delay="0.8s">
-          <li><a href="#" class="fa fa-facebook"></a></li>
-          <li><a href="#" class="fa fa-twitter"></a></li>
-          <li><a href="#" class="fa fa-google-plus"></a></li>
-          <li><a href="#" class="fa fa-dribbble"></a></li>
-          <li><a href="#" class="fa fa-linkedin"></a></li>
+			<div class="col-md-6 col-sm-6">
+				<ul class="wow fadeInUp" data-wow-delay="0.8s">
+          <h4>Jalan Desa Cipadung No. 30, Cibiru</h4>
+          <h4>Bandung, Jawa Barat 40614</h4>
+          <h5>Call/Whatsapp : 085659175295/085722632610</h5>
+          <h5>Email : greenhousecipadung@gmail.com</h5>
         </ul>
       </div>
 		</div>
@@ -229,6 +230,44 @@ http://www.templatemo.com/tm-492-app-starter
 <script src="{{ asset('landingpage/js/smoothscroll.js') }}"></script>
 <script src="{{ asset('landingpage/js/wow.min.js') }}"></script>
 <script src="{{ asset('landingpage/js/custom.js') }}"></script>
+<!-- Toastr js -->
+<script src="{{ asset('lib/toastr/toastr.min.js') }}"></script>
+
+@if (session('status'))
+  <script>
+      var status = "{{session('status')}}";
+      // Display a success toast, with a title
+      toastr.success(status, 'Success')
+  </script>
+  @elseif (session('warning'))
+  <script>
+      var status = "{{session('warning')}}";
+      // Display a success toast, with a title
+      toastr.warning(status, 'Warning!')
+  </script>
+  @elseif (session('failed'))
+  <script>
+    var status = "{{session('failed')}}";
+    // Display a success toast, with a title
+    toastr.error(status, 'Failed!')
+  </script>
+  @endif
+  @if ($errors->any())
+  @php
+      $er="";
+  @endphp
+  @foreach ($errors->all() as $error)
+      @php
+      $er .= "<li>".$error."</li>";
+      @endphp
+  @endforeach
+  <script>
+      var error = "<?=$er?>";
+      // Display an error toast, with a title
+      toastr.error(error, 'Error!!!')
+  </script>
+  @endif
 
 </body>
+
 </html>

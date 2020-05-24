@@ -24,6 +24,7 @@
   use App\Models\Penghuni;
   use App\Models\Kamar;
   use App\Models\Mapping;
+  use App\Models\PembayaranDet;
 @endphp
 <!--main content start-->
 <section id="main-content">
@@ -32,7 +33,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="content-panel">
-          <h4><i class="fa fa-angle-right"></i>Yang Belum Membayar Uang Kos pada bulan {{ $namabulan }} {{ $tahun }}</h4>
+        <h4><i class="fa fa-angle-right"></i>Yang Belum Membayar Uang Kos pada bulan {{ $namabulan }} {{ $tahun }}</h4>
           <hr>
           <table class="table" id="datatable">
             <thead>
@@ -58,7 +59,15 @@
                   <td>{{ $i }}</td>
                   <td>{{ Penghuni::where('id_penghuni', $jatuhtempo->id_penghuni)->first()->nama }}</td>
                   <td>{{ $namaKamar }}</td>
-                  <td>Belum Membayar</td>
+                    @php
+                      $pembayarandet = PembayaranDet::where('id_mapping', $mapping['id_mapping'])->where('tahun', $tahun)->where('bulan', $bulan)->first()->status;
+                      if($pembayarandet==1){
+                        $status = "Sudah Membayar";
+                      }else{
+                        $status = "Belum Membayar";
+                      }
+                    @endphp
+                  <td>{{ $status }}</td>
                 </tr>
               @endforeach
             </tbody>

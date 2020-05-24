@@ -55,7 +55,7 @@
                         $k = Kamar::where('id_kamar', $kamar->id_kamar)->first();
                         $blok = blok::where('id_blok', $k['blok_id'])->first()->namaBlok;
                         $lantai = lantai::where('id_lantai', $k['lantai_id'])->first()->namaLantai;
-                        $namaKamar = "Blok ".$blok." kamar ".$k['namaKamar']." (lantai ".$lantai.")";
+                        $namaKamar = "Blok ".$blok." kamar ".$k['namaKamar']." (lantai ".$lantai.") - Rp ".number_format($k['harga'], 2, ",", ".")."/bulan";
                       @endphp
                       <option value="{{ $kamar->id_kamar }}"> {{ $namaKamar }}</option>
                     @endforeach
@@ -74,24 +74,44 @@
                   <span class="help-block">Pilih Tanggal Pembayaran</span>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="control-label col-lg-2">Upload Bukti Pembayaran</label>
-                <div class="controls col-md-9">
-                  <div class="fileupload fileupload-new" data-provides="fileupload">
-                    <span class="btn btn-theme02 btn-file">
-                      <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select file</span>
-                      <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                        <input type="file" id="buktiBayar" name="buktiBayar" required>
-                          @if($errors->has('buktiBayar'))
-                            <span class="help-block">
-                              <strong>{{ $errors->first('buktiBayar') }}</strong>
-                            </span>
-                          @endif
-                    </span>
-                    <span class="fileupload-preview" style="margin-left:5px;"></span>
-                    <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
-                  </div>
+
+              <div class="form-group ">
+                <label for="metode" class="control-label col-lg-2">Metode Pembayaran</label>
+                <div class="col-lg-10">
+                  <select name="metode" id="metode" class="form-control select2" parsley-trigger="change" onchange="changeMethod(this.value)">
+                    <option disabled selected>-- Pilih Metode Pembayaran --</option>
+                    <option value="transfer">Transfer</option>
+                    <option value="tunai">Tunai</option>
+                  </select>
                 </div>
+              </div>
+
+              <div id="bukti_show" style="display:none">
+                {{-- <div class="form-group">
+                  <label class="control-label col-lg-2">Upload Bukti Pembayaran</label>
+                  <div class="controls col-md-9">
+                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                      <span class="btn btn-theme02 btn-file">
+                        <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select file</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+                          <input type="file" id="buktiBayar" name="buktiBayar">
+                            @if($errors->has('buktiBayar'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('buktiBayar') }}</strong>
+                              </span>
+                            @endif
+                      </span>
+                      <span class="fileupload-preview" style="margin-left:5px;"></span>
+                      <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
+                    </div>
+                  </div>
+                </div> --}}
+                <div class="form-group row">
+                  <label class="control-label col-lg-2">Upload bukti</label>
+                  <div class="col-md-9">
+                      <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="{{ asset('bukti/') }}">
+                  </div>
+              </div>
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
@@ -124,6 +144,18 @@
     jQuery('#tglPembayaran').datepicker();
     // Select2
     $(".select2").select2();
+
+    $('.dropify').dropify({
+          messages: {
+              'default': 'Drag and drop a file here or click',
+              'replace': 'Drag and drop or click to replace',
+              'remove': 'Remove',
+              'error': 'Ooops, something wrong appended.'
+          },
+          error: {
+              'fileSize': 'The file size is too big (1M max).'
+          }
+    });
 
     function change(id){
       changeTagihan(id);
@@ -179,6 +211,15 @@
                     // $('#responsive-datatable').DataTable();
                   }
             });
+      }
+
+      function changeMethod(id){
+        // console.log(id)
+        if(id == 'transfer'){
+            document.getElementById("bukti_show").style.display = 'block';
+        }else{
+            document.getElementById("bukti_show").style.display = 'none';
+        }
       }
   </script>
 @endsection

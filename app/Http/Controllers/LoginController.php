@@ -23,7 +23,7 @@ class LoginController extends Controller
           // $jatuhtempos = Pembayaran::whereYear('tglKeluar', $q->year)->whereMonth('tglKeluar', $q->month)->get();
           $jatuhtempos = Pembayarandet::where('tahun', $tahun)->where('bulan', $bulan)->join('penghuni','pembayarandet.id_penghuni','=','penghuni.id_penghuni')->get();
 
-          return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'namabulan', 'tahun', 'user_id'));
+          return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'namabulan', 'tahun', 'bulan','user_id'));
       }else{
           return view('Home.landingpage');
       }
@@ -56,26 +56,21 @@ class LoginController extends Controller
 
       // IF Validation fail
       if ($validator->fails()) {
-
-          echo("here");die();
-          return redirect()->back();
-
+          return redirect()->back()->with('failed', 'User tidak ditemukan');
       }else{
           $user = User::where('username',$request->username)->first();
 
           // FOUND
           if($user && Hash::check($request->password, $user->password)){
               $request->session()->put('username', $request->username);
+              $request->session()->put('name', $user->nama);
               $request->session()->put('isLoggedIn', 'Ya');
 
-              return redirect()->route('getHome');
+              return redirect()->route('getHome')->with('status', $user->nama.' Berhasil Login!');
 
           // NOT FOUND
           }else{
-            echo "<pre>";
-            print_r('NOT FOUND');
-            die();
-              return redirect()->back();
+            return redirect()->back()->with('failed', 'User tidak ditemukan');
           }
       }
 

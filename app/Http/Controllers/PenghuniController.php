@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penghuni;
 use App\Models\Mapping;
+use App\Models\dokumenPenghuni;
 use App\Imports\PenghuniImport;
 use Excel;
-Use App\Http\Controllers\Session;
-use Storage;
-
+use App\Exports\PenghuniExport;
+use Carbon\Carbon;
 
 class PenghuniController extends Controller
 {
@@ -57,15 +57,12 @@ class PenghuniController extends Controller
         $penghuni->noHP=$request->noHP;
         $penghuni->pekerjaan=$request->pekerjaan;
         $penghuni->alamatAsli=$request->alamatAsli;
-        $path = "ktp/$request->nama";
-        $file = $request->file("ktp")->store($path);
-        $penghuni->ktp=$file;
         $penghuni->status=1;
         $penghuni->save();
 
         return redirect('/lihatpenghuni')->with('success', 'Data Penghuni berhasil ditambahkan!');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
 
@@ -116,19 +113,10 @@ class PenghuniController extends Controller
         $penghuni->pekerjaan=$request->pekerjaan;
         $penghuni->alamatAsli=$request->alamatAsli;
 
-        $path = "ktp/$request->nama";
-        if(!empty($request->ktp)){
-          if(!empty($penghuni->ktp)){
-            Storage::delete($penghuni->ktp);
-          }
-            $file = $request->file("ktp")->store($path);
-            $penghuni->ktp=$file;
-        }
-
         $penghuni->update();
         return redirect('/lihatpenghuni')->with('info', 'Data Berhasil diupdate!');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
     }
@@ -150,7 +138,7 @@ class PenghuniController extends Controller
         }
         return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus!');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
     }
@@ -189,5 +177,88 @@ class PenghuniController extends Controller
         return redirect()->back()->withErrors($a->errorInfo);
         // return response()->json($e);
       }
+    }
+
+    public function getDokumen(Request $request)
+    {
+      if($request->ajax()){
+        $penghuni = Penghuni::where('id_penghuni', $request->id)->select('id_penghuni', 'nama')->first();
+        $dokumen = dokumenPenghuni::join('penghuni', 'dokumenpenghuni.id_penghuni', 'penghuni.id_penghuni')->where('penghuni.id_penghuni',$request->id)->select('id','nama', 'jenis', 'dokumen')->get();
+
+        return response()->json(view('Penghuni.modal',compact('dokumen', 'penghuni'))->render());
+      }else{
+        $jenis = 1;
+        $penghunis = Penghuni::where('status',1)->get();
+
+        return view('Penghuni.lihatPenghuni', compact('penghunis', 'jenis'));
+      }
+    }
+
+    public function tambahDokumen(Request $request, $id)
+    {
+      $penghuni = Penghuni::where('id_penghuni', $request->id)->select('id_penghuni', 'nama')->first();
+      return view('Penghuni.tambahDokumen', compact('penghuni'));
+    }
+
+    public function storeDokumen(Request $request, $id)
+    {
+      // echo "<pre>";
+      // print_r($request->file->getClientOriginalName());
+      // die();
+      try{
+        $penghuni = Penghuni::where('id_penghuni', $id)->first()->nama;
+        $data = new dokumenPenghuni;
+        $data->id_penghuni = $id;
+        $data->jenis = $request->jenis;
+        // Upload Foto
+        if($request->file <> NULL|| $request->file <> ''){
+          $file = $request->jenis.'-'.$penghuni.'.'.$request->file->getClientOriginalExtension();
+          $request->file->move(public_path('images/dokumen/'.$penghuni.'/'),$file);
+        }
+        // $path = "$request->nama/$request->jenis";
+        // $file = $request->file("file")->store($path);
+        $data->dokumen = $file;
+        $data->save();
+
+        return redirect()->route('penghuni.index');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
+    }
+
+    public function destroyDokumen(Request $request, $id)
+    {
+      try{
+        $data = dokumenPenghuni::where('id', $id)->first();
+        $nama = Penghuni::where('id_penghuni', $data->id_penghuni)->first()->nama;
+
+        if (file_exists(public_path('images/dokumen/'.$nama.'/').$data->dokumen)) {
+              unlink(public_path('images/dokumen/'.$nama.'/').$data->dokumen);
+              $data->delete();
+        }
+
+        return redirect()->route('penghuni.index');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
+    }
+
+    public function export(Request $request){
+      ini_set('max_execution_time', 3000);
+
+      $tgl = date('Y-m-d', strtotime(Carbon::today()));
+
+      $filename = "Daftar Penghuni (".$tgl.")";
+      $data = Penghuni::getData("asc");
+      $i = 0;
+
+      // echo "<pre>";
+      // print_r($data);
+      // die();
+      $export = new PenghuniExport($data);
+
+      return Excel::download($export, $filename.'.xlsx');
     }
 }

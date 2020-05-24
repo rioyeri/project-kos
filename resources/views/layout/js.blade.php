@@ -3,11 +3,15 @@
   <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js')}}"></script>
   <script src="{{ asset('lib/jquery.dcjqaccordion.2.7.js')}}" class="include" type="text/javascript" ></script>
   <script src="{{ asset('lib/jquery.scrollTo.min.js')}}"></script>
-  <script src="{{ asset('lib/jquery.nicescroll.js')}}" type="text/javascript"></script>
+  <script src="{{ asset('lib/jquery.nicescroll.js')}}"></script>
   <script src="{{ asset('lib/jquery.sparkline.js')}}"></script>
   <script src="{{ asset('lib/gritter/js/jquery.gritter.js')}}" type="text/javascript"></script>
   <script src="{{ asset('lib/gritter-conf.js')}}" type="text/javascript" ></script>
   <!--common script for all pages-->
+
+ <!-- Toastr js -->
+ <script src="{{ asset('lib/toastr/toastr.min.js') }}"></script>
+
   @yield('js')
 
   <script src="{{ asset('lib/common-scripts.js')}}"></script>
@@ -22,29 +26,6 @@
       $("#date-popover").click(function(e) {
         $(this).hide();
       });
-
-      $("#my-calendar").zabuto_calendar({
-        action: function() {
-          return myDateFunction(this.id, false);
-        },
-        action_nav: function() {
-          return myNavFunction(this.id);
-        },
-        ajax: {
-          url: "show_data.php?action=1",
-          modal: true
-        },
-        legend: [{
-            type: "text",
-            label: "Special event",
-            badge: "00"
-          },
-          {
-            type: "block",
-            label: "Regular event",
-          }
-        ]
-      });
     });
 
     function myNavFunction(id) {
@@ -54,6 +35,35 @@
       console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
     }
   </script>
+
+  @if (session('status'))
+  <script>
+      var status = "{{session('status')}}";
+      // Display a success toast, with a title
+      toastr.success(status, 'Success')
+  </script>
+  @elseif (session('warning'))
+  <script>
+      var status = "{{session('warning')}}";
+      // Display a success toast, with a title
+      toastr.warning(status, 'Warning!')
+  </script>
+  @endif
+  @if ($errors->any())
+  @php
+      $er="";
+  @endphp
+  @foreach ($errors->all() as $error)
+      @php
+      $er .= "<li>".$error."</li>";
+      @endphp
+  @endforeach
+  <script>
+      var error = "<?=$er?>";
+      // Display an error toast, with a title
+      toastr.error(error, 'Error!!!')
+  </script>
+  @endif
   @yield('script-js')
 
 

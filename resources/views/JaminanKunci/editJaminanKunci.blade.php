@@ -34,34 +34,26 @@
       <div class="col-lg-12">
         <div class="form-panel">
           <div class=" form">
-            <form class="cmxform form-horizontal style-form" id="commentForm" method="POST" action="/editjaminankunci/{{ $jaminankunci->id_jaminankunci }}">
-              {{ csrf_field() }}
-              {{ method_field('PUT') }}
+            @if($jenis == "edit")
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="POST" action="/editjaminankunci/{{ $jaminankunci->id_jaminankunci }}">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+            @else
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="POST" action="/tambahjaminankunci">
+                @csrf
+            @endif
               <div class="form-group ">
                 <label for="penghuni_id" class="control-label col-lg-2">Pilih Nama Penghuni</label>
-                <div class="col-lg-10">
-                  <select name="penghuni_id" class="form-control select2">
-                    @foreach ($mapping as $m)
-                      @php
-                        $kmr = Kamar::where('id_kamar', $m['id_kamar'])->first();
-                        $blok = blok::where('id_blok', $kmr['blok_id'])->first();
-                        $lantai = lantai::where('id_lantai', $kmr['lantai_id'])->first();
-                        $namaKamar = "Blok ".$blok['namaBlok']." kamar ".$kmr['namaKamar']." (lantai ".$lantai['namaLantai'].")";
-                      @endphp
-                      @if($jaminankunci->penghuni_id == $m['id_penghuni'])
-                        <option value="{{ $m['id_penghuni'] }}" selected> {{ $m['nama']}} ({{ $namaKamar }})</option>
-                      @else
-                      <option value="{{ $m['id_penghuni'] }}"> {{ $m['nama']}} ({{ $namaKamar }})</option>
-                      @endif
-                    @endforeach
-                  </select>
+                <div class="col-lg-5">
+                  <input type="text" class="form-control" name="penghuni" value="{{ $penghuni->nama }}" disabled>
+                  <input type="hidden" name="penghuni_id" value="{{ $penghuni->id_penghuni }}">
                 </div>
               </div>
               <div class="form-group ">
                 <label for="jaminan" class="control-label col-lg-2">Jaminan</label>
                 <div class="col-lg-10 form-inline">
                   <label>Rp.</label>
-                  <input class="form-control" id="number" name="jaminan" minlength="2" type="text" value="{{ $jaminankunci->jaminan }}" placeholder='Masukan Jaminan' required/>
+                  <input class="form-control" id="number" name="jaminan" minlength="2" type="text" value="@isset($jaminankunci->jaminan){{ $jaminankunci->jaminan }}@endisset" placeholder='Masukan Jaminan' required/>
                 </div>
               </div>
               <div class="form-group">

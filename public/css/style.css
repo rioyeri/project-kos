@@ -14,6 +14,16 @@ Website: http://Alvarez.is/
 /* Import fonts */
 @import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
 
+@font-face {
+  font-family: copperplate_light;
+  src: url(COPRGTL.TTF);
+}
+
+@font-face {
+  font-family: franklin_book;
+  src: url(FRABK.TTF);
+}
+
 /* BASIC THEME CONFIGURATION */
 body {
     color: #797979;
@@ -430,8 +440,10 @@ ul.sidebar-menu li a.active i {
 }
 
 a.logo {
+    font-family: 'copperplate_light';
     font-size: 24px;
     color: #f2f2f2;
+    /* color: #535bd4; */
     float: left;
     margin-top: 15px;
     text-transform: uppercase;

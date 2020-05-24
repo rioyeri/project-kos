@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Keuangan;
-use App\Models\Pemasukan;
-use App\Models\Pengeluaran;
+use App\Exports\LaporanExport;
+use Carbon\Carbon;
+use Excel;
 
 class KeuanganController extends Controller
 {
@@ -16,11 +17,16 @@ class KeuanganController extends Controller
      */
     public function index()
     {
-        $keuangans = Keuangan::all();
-        $pemasukans = Pemasukan::all();
-        $pengeluarans = Pengeluaran::all();
+        // $keuangans = Keuangan::all();
+        // $pemasukans = Pemasukan::all();
+        // $pengeluarans = Pengeluaran::all();
+        $keuangans = Keuangan::getKeuangan("desc");
+        // echo "<pre>";
+        // print_r($data);
+        // die();
 
-        return view('Keuangan.laporanKeuangan', compact('keuangans', 'pemasukans', 'pengeluarans'));
+        // return view('Keuangan.laporanKeuangan', compact('keuangans', 'pemasukans', 'pengeluarans'));
+        return view('Keuangan.laporanKeuangan', compact('keuangans'));
     }
 
     /**
@@ -87,5 +93,22 @@ class KeuanganController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export(Request $request){
+      ini_set('max_execution_time', 3000);
+
+      $tgl = date('Y-m-d', strtotime(Carbon::today()));
+
+      $filename = "Laporan Keuangan (".$tgl.")";
+      $data = Keuangan::getKeuangan("asc");
+      $i = 0;
+
+      // echo "<pre>";
+      // print_r($data);
+      // die();
+      $export = new LaporanExport($data);
+
+      return Excel::download($export, $filename.'.xlsx');
     }
 }

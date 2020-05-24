@@ -42,16 +42,25 @@ class UserController extends Controller
         'password' => 'required',
         'nama' => 'required|string',
         'noHP' => 'required',
-    ]);
+      ]);
 
-    $user = new User;
-    $user->nama = $request->nama;
-    $user->username = $request->username;
-    $user->password = Hash::make($request->password);
-    $user->backup_pass = $request->password;
-    $user->no_HP = $request->noHP;
-    $user->save();
-    return view ('user.user');
+      if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator->errors());
+      // Validation success
+      }else{
+        if(session('username')=="superadmin"){
+          $user = new User;
+          $user->nama = $request->nama;
+          $user->username = $request->username;
+          $user->password = Hash::make($request->password);
+          $user->backup_pass = $request->password;
+          $user->no_HP = $request->noHP;
+          $user->save();
+          return redirect()->route('getHome')->with('status', 'User baru berhasil ditambahkan');
+        }else{
+          return redirect()->route('getHome')->with('warning', 'Hanya admin yang bisa menambahkan user baru');
+        }
+      }
     }
 
     /**
