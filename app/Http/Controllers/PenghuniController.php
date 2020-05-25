@@ -130,13 +130,18 @@ class PenghuniController extends Controller
     public function destroy($id)
     {
       try{
-        $penghuni = Penghuni::find($id);
-        $penghuni->status = 0;
-        $penghuni->update();
-        if(Mapping::where('id_penghuni', $id)){
-          Mapping::where('id_penghuni', $id)->delete();
+        $penghuni = Penghuni::where('id_penghuni', $id)->first();
+        if($penghuni->status == 1){
+          $penghuni->status = 0;
+          $penghuni->update();
+          if(Mapping::where('id_penghuni', $id)){
+            Mapping::where('id_penghuni', $id)->delete();
+          }
+          return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dinonaktifkan!');
+        }elseif($penghuni->status == 0){
+          $penghuni->delete();
+          return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus permanen!');
         }
-        return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus!');
       }catch(\Exception $a){
         return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
@@ -203,7 +208,7 @@ class PenghuniController extends Controller
     public function storeDokumen(Request $request, $id)
     {
       // echo "<pre>";
-      // print_r($request->file->getClientOriginalName());
+      // print_r($request->all());
       // die();
       try{
         $penghuni = Penghuni::where('id_penghuni', $id)->first()->nama;

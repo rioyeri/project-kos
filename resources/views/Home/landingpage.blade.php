@@ -14,6 +14,8 @@
 App Starter Template
 http://www.templatemo.com/tm-492-app-starter
 -->
+<link href=" {{ asset('img/faviconnew.png') }}" rel="icon">
+
 <link rel="stylesheet" href="{{ asset('landingpage/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('landingpage/css/animate.css') }}">
 <link rel="stylesheet" href="{{ asset('landingpage/css/font-awesome.min.css') }}">
@@ -26,10 +28,15 @@ http://www.templatemo.com/tm-492-app-starter
 <!-- Toastr -->
 <link href="{{ asset('lib/toastr/toastr.min.css') }}" rel="stylesheet" type="text/css" />
 
+<link rel="stylesheet" href="{{ asset('lib/magnific-popup/dist/magnific-popup.css') }}"/>
 
 <!-- Main css -->
 <link rel="stylesheet" href="{{ asset('landingpage/css/style.css') }}">
-
+<style>
+  img.photo{
+      display:block; width:auto; height:200px;
+  }
+</style>
 </head>
 <body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
 
@@ -73,8 +80,8 @@ http://www.templatemo.com/tm-492-app-starter
         </div>
         <div class="col-md-6 col-sm-7 col-xs-12">
           <div class="home-thumb">
-            <h1 class="wow fadeInUp" data-wow-delay="0.6s">Selamat Datang Di Green House</h1>
-            <p class="wow fadeInUp" data-wow-delay="0.8s">Kos yang paling nyaman dan aman, di Cipadung</p>
+            <h1 class="wow fadeInUp" data-wow-delay="0.6s">{{ $greenhouse->welcome }}</h1>
+            <p class="wow fadeInUp" data-wow-delay="0.8s">{{ $greenhouse->welcome_desc }}</p>
             {{-- <a href="#pricing" class="wow fadeInUp section-btn btn btn-success smoothScroll" data-wow-delay="1s">Login</a> --}}
           </div>
         </div>
@@ -89,26 +96,22 @@ http://www.templatemo.com/tm-492-app-starter
       <div class="col-md-offset-2 col-md-8 col-sm-12">
         <div class="section-title">
           <h1>Galeri GreenHouse</h1>
-          <p class="wow fadeInUp" data-wow-delay="0.8s">GreenHouse adalah sebuah rumah kos nyaman yang memiliki variasi pilihan kamar dan harga</p>
+          <p class="wow fadeInUp" data-wow-delay="0.8s">{{ $greenhouse->galeri_desc }}</p>
         </div>
       </div>
       <!-- Screenshot Owl Carousel -->
       <div id="screenshot-carousel" class="owl-carousel">
-        <div class="item col-md-3 col-sm-3 wow fadeInUp" data-wow-delay="0.9s">
-          <a href="{{ asset('landingpage/images/gambar2.jpeg') }}" class="image-popup">
-            <img src="{{ asset('landingpage/images/gambar2.jpeg') }}" class="img-responsive" alt="screenshot">
-          </a>
-        </div>
-        <div class="item col-md-3 col-sm-3 wow fadeInUp" data-wow-delay="0.9s">
-          <a href="{{ asset('landingpage/images/gambar1.jpeg') }}" class="image-popup">
-            <img src="{{ asset('landingpage/images/gambar1.jpeg') }}" class="img-responsive" alt="screenshot">
-          </a>
-        </div>
-        <div class="item col-md-3 col-sm-3 wow fadeInUp" data-wow-delay="0.9s">
-          <a href="{{ asset('landingpage/images/gambar3.jpeg') }}" class="image-popup">
-            <img src="{{ asset('landingpage/images/gambar3.jpeg') }}" class="img-responsive" alt="screenshot">
-          </a>
-        </div>
+        @foreach($galeri as $gal)
+          <div class="item col-md-3 col-sm-3 wow fadeInUp" data-wow-delay="0.9s">
+            <a href="{{ asset('landingpage/gallery/'.$gal->image) }}" class="photo image-popup" title="{{ $gal->title }}">
+              <center><img src="{{ asset('landingpage/gallery/'.$gal->image) }}" class="photo img-responsive" alt="screenshot" title="{{ $gal->title }}"></center>
+            </a>
+            <h3 style="color: #4ECDC4;"><center>{{ $gal->title }}</center></h3>
+            <h5><center>{{ $gal->description }}</center></h5>
+            {{-- <label style="color: #ffffff">{{ $gal->title }}</label>
+            <label style="color: #ffffff">{{ $gal->description }}</label> --}}
+          </div>
+        @endforeach
       </div>
     </div>
   </div>
@@ -185,10 +188,10 @@ http://www.templatemo.com/tm-492-app-starter
       </div>
 			<div class="col-md-6 col-sm-6">
 				<ul class="wow fadeInUp" data-wow-delay="0.8s">
-          <h4>Jalan Desa Cipadung No. 30, Cibiru</h4>
-          <h4>Bandung, Jawa Barat 40614</h4>
-          <h5>Call/Whatsapp : 085659175295/085722632610</h5>
-          <h5>Email : greenhousecipadung@gmail.com</h5>
+          <h4>{{ $greenhouse->alamat }}</h4>
+          <h4>{{ $greenhouse->kota }}</h4>
+          <h5>Call/Whatsapp : {{ $greenhouse->noHP }}</h5>
+          <h5>Email : {{ $greenhouse->email }}</h5>
         </ul>
       </div>
 		</div>
@@ -205,10 +208,10 @@ http://www.templatemo.com/tm-492-app-starter
       </div>
       <form action="{{ route('login')}}" method="POST" class="form-login">
         @csrf
-        <input name="username" type="text" class="form-control" id="username" placeholder="Username" required autofocus>
-        <input name="password" type="password" class="form-control" id="password" placeholder="Password" required>
+        <input name="username" type="text" class="form-control" id="username" style="background: #ffffff; color: #527751;" placeholder="Username" required autofocus>
+        <input name="password" type="password" class="form-control" id="password" style="background: #ffffff; color: #527751;" placeholder="Password" required>
         {{-- <input name="submit" type="submit" class="form-control" id="submit" value="Login"> --}}
-        <button class="btn btn-success" type="submit">Log In</button>
+        <button class="btn btn-block btn-lg" style="background: #527751; color: #ffffff;" type="submit">Log In</button>
       </form>
     </div>
   </div>
@@ -232,7 +235,15 @@ http://www.templatemo.com/tm-492-app-starter
 <script src="{{ asset('landingpage/js/custom.js') }}"></script>
 <!-- Toastr js -->
 <script src="{{ asset('lib/toastr/toastr.min.js') }}"></script>
-
+<!-- Magnific popup -->
+<script type="text/javascript" src="{{ asset('lib/magnific-popup/dist/jquery.magnific-popup.min.js') }}"></script>
+<script>
+  $(document).ready(function () {
+    $('.image-popup').magnificPopup({
+      type: 'image',
+    });
+  });
+</script>
 @if (session('status'))
   <script>
       var status = "{{session('status')}}";

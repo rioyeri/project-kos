@@ -8,7 +8,7 @@
 
   @yield('css')
   <!-- Favicons -->
-  <link href=" {{ asset('img/favicon.png') }}" rel="icon">
+  <link href=" {{ asset('img/faviconnew.png') }}" rel="icon">
   <link href=" {{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
   <!-- Notification css (Toastr) -->

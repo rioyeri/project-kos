@@ -24,8 +24,8 @@ class Keuangan extends Model
 
     foreach($pemasukan as $m){
       $tgl = $m->tanggal;
-      $nama = $m->namaSumber;
-      $uraian = $m->keterangan." (".$nama.")";
+      // $nama = $m->namaSumber;
+      $uraian = $m->keterangan;
       $masuk = $m->jumlah;
       $keluar = "";
 
@@ -40,8 +40,8 @@ class Keuangan extends Model
 
     foreach($pengeluaran as $k){
       $tgl = $k->tanggal;
-      $nama = $k->namaPJ;
-      $uraian = $k->keterangan." (".$nama.")";
+      // $nama = $k->namaPJ;
+      $uraian = $k->keterangan;
       $masuk = "";
       $keluar = $k->jumlah;
 

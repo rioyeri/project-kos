@@ -26,31 +26,31 @@
           <div class=" form">
             <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/tambahpengeluaran">
               {{ csrf_field() }}
-              <div class="form-group ">
+              {{-- <div class="form-group ">
                 <label for="namaPJ" class="control-label col-lg-2">Nama Penanggungjawab</label>
                 <div class="col-lg-10">
                   <input class="form-control" name="namaPJ" type="text" placeholder='Masukan Nama Penanggungjawab Pengeluaran' required autocomplete="off"/>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group ">
-                <label for="jumlah" class="control-label col-lg-2">Jumlah (Rp)</label>
+                <label for="keterangan" class="control-label col-lg-2">Uraian</label>
                 <div class="col-lg-10">
-                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah Pengeluaran' required autocomplete="off"/>
+                  <input class="form-control" name="keterangan" type="text" placeholder='Uraian Pengeluaran' required autocomplete="off"/>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Tanggal Dana Keluar</label>
                   <div class="col-lg-10">
                     <div data-date-viewmode="years" data-date-format="Y-m-d">
-                      <input name="tanggal" id="tanggal" type="text" size="16" class="form-control default-date-picker" data-date-format='yyyy-mm-dd' required autocomplete="off"/>
+                      <input name="tanggal" id="tanggal" type="text" placeholder="YYYY-MM-DD" size="16" class="form-control default-date-picker" data-date-format='yyyy-mm-dd' required autocomplete="off"/>
                     </div>
                   <span class="help-block">Pilih Tanggal Dana Keluar</span>
                 </div>
               </div>
               <div class="form-group ">
-                <label for="keterangan" class="control-label col-lg-2">Keterangan</label>
+                <label for="jumlah" class="control-label col-lg-2">Jumlah (Rp)</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan' required autocomplete="off"/>
+                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah Pengeluaran' required autocomplete="off"/>
                 </div>
               </div>
               <div class="form-group">

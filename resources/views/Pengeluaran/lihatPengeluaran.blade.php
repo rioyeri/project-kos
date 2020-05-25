@@ -36,11 +36,10 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nama Penanggungjawab</th>
-                <th>Jumlah (Rp)</th>
                 <th>Tanggal Dana Keluar</th>
-                <th>Keterangan</th>
-                <th>Action</th>
+                <th>Uraian</th>
+                <th class="text-right">Jumlah (Rp)</th>
+                <th class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -49,10 +48,9 @@
                 <tr>
                   @php ($i++)
                   <td>{{ $i }}</td>
-                  <td>{{ $pengeluaran->namaPJ }}</td>
-                  <td>Rp. <span class="number">{{ $pengeluaran->jumlah }}</span></td>
                   <td>{{ $pengeluaran->tanggal }}</td>
                   <td>{{ $pengeluaran->keterangan }}</td>
+                  <td class="text-right">Rp {{ number_format($pengeluaran->jumlah, 2, ".", ",") }}</td>
                   <td>
                     <a href="/editpengeluaran/{{ $pengeluaran->id_pengeluaran}}"><button class="btn btn-primary btn-block btn-xs"><i class="fa fa-pencil"></i> Edit</button></a>
                     <form class="" action="/hapuspengeluaran/{{ $pengeluaran->id_pengeluaran }}" method="post">

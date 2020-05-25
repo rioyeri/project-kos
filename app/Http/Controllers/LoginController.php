@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Galeri;
+use App\Models\Greenhouse;
 use Carbon\Carbon;
 use App\Models\Pembayarandet;
 
@@ -25,7 +27,9 @@ class LoginController extends Controller
 
           return view('JatuhTempo.jatuhtempo', compact('jatuhtempos', 'namabulan', 'tahun', 'bulan','user_id'));
       }else{
-          return view('Home.landingpage');
+          $galeri = Galeri::all();
+          $greenhouse = Greenhouse::first();
+          return view('Home.landingpage', compact('galeri', 'greenhouse'));
       }
     }
 

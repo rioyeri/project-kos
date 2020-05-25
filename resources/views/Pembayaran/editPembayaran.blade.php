@@ -126,7 +126,7 @@
                 <div class="form-group row">
                     <label class="control-label col-lg-2">Upload bukti</label>
                     <div class="col-md-9">
-                        <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="{{ asset('images/bukti/'.$pembayaran->buktiBayar) }}">
+                        <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="@isset($pembayaran->buktiBayar){{ asset('images/bukti/'.$pembayaran->buktiBayar) }}@endisset">
                     </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@
                                 $source = "noimage.jpg";
                             }
                         @endphp
-                        <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="{{ asset('bukti/'.$pembayaran->buktiBayar) }}">
+                        <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="@isset($pembayaran->buktiBayar){{ asset('images/bukti/'.$pembayaran->buktiBayar) }}@endisset">
                     </div>
                 </div>
               </div>

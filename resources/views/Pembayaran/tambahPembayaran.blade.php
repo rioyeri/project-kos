@@ -6,6 +6,8 @@
 
 @section('css')
   <link href="{{ asset('lib/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+  <!-- form Uploads -->
+  <link href="{{ asset('lib/fileuploads/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('name')
   GreenHouse
@@ -111,7 +113,7 @@
                   <div class="col-md-9">
                       <input type="file" class="dropify" data-height="100" name="buktitf" id="buktitf" data-default-file="{{ asset('bukti/') }}">
                   </div>
-              </div>
+                </div>
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
@@ -140,6 +142,8 @@
   <script src="{{ asset('lib/advanced-form-components.js')}}"></script>
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
+  <!-- file uploads js -->
+  <script src="{{ asset('lib/fileuploads/js/dropify.min.js') }}"></script>
   <script>
     jQuery('#tglPembayaran').datepicker();
     // Select2

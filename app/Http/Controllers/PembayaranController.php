@@ -101,8 +101,8 @@ class PembayaranController extends Controller
 
         return redirect('/lihatpembayaran')->with('success', 'Data pembayaran berhasil ditambahkan!');
       }catch(\Exception $e){
-        echo $e->getMessage();
-        die();
+        // echo $e->getMessage();
+        // die();
         return redirect()->back()->withErrors($e->getMessage());
         // return response()->json($e);
       }

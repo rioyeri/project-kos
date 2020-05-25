@@ -36,11 +36,10 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nama Sumber</th>
-                <th>Jumlah (Rp)</th>
                 <th>Tanggal</th>
-                <th>Keterangan</th>
-                <th>Actions</th>
+                <th>Uraian</th>
+                <th class="text-right">Jumlah</th>
+                <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -49,10 +48,9 @@
                 <tr>
                   @php ($i++)
                   <td>{{ $i }}</td>
-                  <td>{{ $pemasukan->namaSumber }}</td>
-                  <td>Rp. <span class="number">{{ $pemasukan->jumlah }}</span></td>
                   <td>{{ $pemasukan->tanggal }}</td>
                   <td>{{ $pemasukan->keterangan }}</td>
+                  <td class="text-right">Rp {{ number_format($pemasukan->jumlah, 2, ".", ",") }}</td>
                   <td>
                     <a href="/editpemasukan/{{ $pemasukan->id_pemasukan}}"><button class="btn btn-primary btn-block btn-xs"><i class="fa fa-pencil"> Edit</i></button></a>
                     <form class="" action="/hapuspemasukan/{{ $pemasukan->id_pemasukan }}" method="post">

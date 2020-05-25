@@ -189,7 +189,12 @@
                       <form class="" action="/restorepenghuni/{{ $penghuni->id_penghuni }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('put') }}
-                          <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Restore</i></button></a>
+                          <button type="submit" class="btn btn-primary btn-block btn-sm"><i class="fa fa-mail-forward "> Restore</i></button></a>
+                      </form>
+                      <form class="" action="/hapuspenghuni/{{ $penghuni->id_penghuni }}" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('delete') }}
+                          <button type="submit" class="btn btn-danger btn-block btn-sm"><i class="fa fa-trash-o "> Hapus Permanen</i></button></a>
                       </form>
                     </td>
                   @endif

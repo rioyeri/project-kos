@@ -90,4 +90,11 @@ Route::middleware(['checkUser'])->group(function () {
   Route::get('/editjaminankunci/{id}', 'JaminanKunciController@edit');
   Route::put('/editjaminankunci/{id}', 'JaminanKunciController@update');
   Route::delete('/hapusjaminankunci/{id}','JaminanKunciController@destroy')->name('jaminankunci.destroy');
+
+  Route::resources([
+    // Galeri
+    'galeri' => 'GaleriController',
+    // Greenhouse
+    'greenhouse' => 'GreenhouseController',
+  ]);
 });

@@ -27,16 +27,16 @@
             <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/editpengeluaran/{{ $pengeluaran->id_pengeluaran }}">
               {{ csrf_field() }}
               {{ method_field('PUT') }}
-              <div class="form-group ">
+              {{-- <div class="form-group ">
                 <label for="namaPJ" class="control-label col-lg-2">Nama Penanggungjawab Pengeluaran</label>
                 <div class="col-lg-10">
                   <input class="form-control" name="namaPJ" type="text" placeholder='Masukan Nama Penanggungjawab Pengeluaran' value="{{ $pengeluaran->namaPJ }}" required/>
                 </div>
-              </div>
+              </div> --}}
               <div class="form-group ">
-                <label for="jumlah" class="control-label col-lg-2">Jumlah (Rp)</label>
+                <label for="keterangan" class="control-label col-lg-2">Uraian</label>
                 <div class="col-lg-10">
-                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah Pengeluaran' value="{{ $pengeluaran->jumlah }}" required/>
+                  <input class="form-control" name="keterangan" type="text" placeholder='Uraian Pengeluaran' value="{{ $pengeluaran->keterangan }}" required/>
                 </div>
               </div>
               <div class="form-group">
@@ -49,9 +49,9 @@
                 </div>
               </div>
               <div class="form-group ">
-                <label for="keterangan" class="control-label col-lg-2">Keterangan</label>
+                <label for="jumlah" class="control-label col-lg-2">Jumlah (Rp)</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="keterangan" type="text" placeholder='Tambahkan Keterangan' value="{{ $pengeluaran->keterangan }}" required/>
+                  <input class="form-control" id="number" name="jumlah" type="text" placeholder='Masukan Jumlah Pengeluaran' value="{{ $pengeluaran->jumlah }}" required/>
                 </div>
               </div>
               <div class="form-group">

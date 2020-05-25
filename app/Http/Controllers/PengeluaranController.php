@@ -15,7 +15,7 @@ class PengeluaranController extends Controller
      */
     public function index()
     {
-        $pengeluarans = Pengeluaran::all();
+        $pengeluarans = Pengeluaran::orderBy('tanggal', 'DESC')->get();
         return view('Pengeluaran.lihatPengeluaran', compact('pengeluarans'));
     }
 

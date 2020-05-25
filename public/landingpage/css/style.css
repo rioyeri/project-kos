@@ -597,7 +597,8 @@ footer p {
 -----------------------------------------*/
 
 .modal-dialog .modal-content {
-  background-color: #535bd4;
+  /* background-color: #535bd4; */
+  background-color: #ffffff;
   border: none;
   border-radius: 2px;
   text-align: center;
@@ -615,7 +616,8 @@ footer p {
 }
 
 .modal-dialog .close {
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #527751;
   font-size: 45px;
   font-weight: 300;
   text-shadow: none;
@@ -635,7 +637,8 @@ footer p {
 }
 
 .modal-dialog .modal-title {
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #527751;
 }
 
 .modal-dialog form {
@@ -647,21 +650,28 @@ footer p {
 }
 
 .modal-dialog .form-control {
-  background: transparent;
-  border: 1px solid #f0f0f0;
+  /* background: transparent; */
+  background: #527751;
+  /* border: 1px solid #f0f0f0; */
+  border: 1px solid #527751;
   border-radius: 0px;
   box-shadow: none;
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #527751;
   font-size: 20px;
   margin-bottom: 20px;
   transition: all 0.4s ease-in-out;
 }
 
 .modal-dialog .form-control:focus {
-  border-top-color: transparent;
+  /* border-top-color: transparent;
   border-right-color: transparent;
   border-left-color: transparent;
-  border-bottom-color: #ffffff;
+  border-bottom-color: #ffffff; */
+  border-top-color: #527751;
+  border-right-color: #527751;
+  border-left-color: #527751;
+  border-bottom-color: #527751;
 }
 
 .modal-dialog form input[type="submit"] {
@@ -670,7 +680,8 @@ footer p {
   border-radius: 100px;
   font-weight: 400;
   letter-spacing: 1px;
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #527751;
   text-transform: uppercase;
   margin-top: 30px;
 }

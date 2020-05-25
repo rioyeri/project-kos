@@ -40,21 +40,20 @@ class PemasukanController extends Controller
     {
       try{
         $data = new Pemasukan;
-        $data->namaSumber = $request->namaSumber;
         $data->jumlah = $request->jumlah;
         $data->tanggal = $request->tanggal;
         $data->keterangan = $request->keterangan;
         $data->save();
 
-        $pemasukan = Pemasukan::latest()->first()->id_pemasukan;
-        $keuangan = new Keuangan;
-        $keuangan->trx_jenis = 1;
-        $keuangan->trx_id = $pemasukan;
-        $keuangan->save();
+        // $pemasukan = Pemasukan::latest()->first()->id_pemasukan;
+        // $keuangan = new Keuangan;
+        // $keuangan->trx_jenis = 1;
+        // $keuangan->trx_id = $pemasukan;
+        // $keuangan->save();
 
-        return redirect('/lihatpemasukan');
+        return redirect('/lihatpemasukan')->with('status', 'Data Pemasukan Eksternal berhasil disimpan');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
     }
@@ -92,13 +91,17 @@ class PemasukanController extends Controller
      */
     public function update(Request $request, $id)
     {
+      try{
         $data = Pemasukan::find($id);
-        $data->namaSumber=$request->namaSumber;
         $data->keterangan=$request->keterangan;
         $data->tanggal=$request->tanggal;
         $data->jumlah=$request->jumlah;
         $data->update();
-        return redirect('/lihatpemasukan');
+        return redirect('/lihatpemasukan')->with('status', 'Data berhasil diupdate');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
     }
 
     /**
@@ -110,13 +113,12 @@ class PemasukanController extends Controller
     public function destroy($id)
     {
       try{
-        $pemasukan = Pemasukan::find($id);
-        $keuangan = Keuangan::where('trx_jenis', 1)->where('trx_id', $id)->first();
-        $keuangan->delete();
-        $pemasukan->delete();
-        return redirect('/lihatpemasukan');
+        $pemasukan = Pemasukan::where('id_pemasukan',$id)->delete();
+        // $keuangan = Keuangan::where('trx_jenis', 1)->where('trx_id', $id)->first();
+        // $keuangan->delete();
+        return redirect('/lihatpemasukan')->with('status', 'Data berhasil dihapus');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
     }
