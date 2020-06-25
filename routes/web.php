@@ -97,4 +97,7 @@ Route::middleware(['checkUser'])->group(function () {
     // Greenhouse
     'greenhouse' => 'GreenhouseController',
   ]);
+
+  //helper
+  Route::post('/dokumen/pindah/', 'PenghuniController@pindahDokumen')->name('pindahDokumen');
 });

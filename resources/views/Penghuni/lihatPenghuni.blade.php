@@ -13,7 +13,6 @@
   <link href="{{ asset('lib/advanced-datatable/css/demo_page.css')}}" rel="stylesheet" />
   <link href="{{ asset('lib/advanced-datatable/css/demo_table.css')}}" rel="stylesheet" />
   <link href="{{ asset('lib/advanced-datatable/css/DT_bootstrap.css')}}" rel="stylesheet"/>
-  <!--venobox lightbox-->
   <link rel="stylesheet" href="{{ asset('lib/magnific-popup/dist/magnific-popup.css') }}"/>
   {{-- <link href="{{ asset('lib/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" /> --}}
 @endsection
@@ -79,6 +78,16 @@
                       <button class="btn btn-success waves-effect waves-light w-xs m-b-5">
                           <span class="mdi mdi-file-excel">
                               Export to Excel
+                          </span>
+                      </button>
+                    </div>
+                  </form>
+                  <form class="form-horizontal" role="form" action="{{ route('pindahDokumen') }}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <div class="text-right m-b-0">
+                      <button class="btn btn-success waves-effect waves-light w-xs m-b-5">
+                          <span class="mdi mdi-file-excel">
+                              Pindah Dokumen
                           </span>
                       </button>
                     </div>

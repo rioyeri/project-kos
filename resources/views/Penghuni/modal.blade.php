@@ -18,15 +18,15 @@
       </thead>
       <tbody>
       @php
-          $i=0;
+          $i=1;
       @endphp
       @foreach ($dokumen as $d)
         <tr>
-          <td>{{ $i+1 }}</td>
+          <td>{{ $i++ }}</td>
           <td>{{ $d->jenis }}</td>
           <td>
-            <a href="{{ asset('images/dokumen/'.$penghuni->nama.'/'.$d->dokumen) }}" class="image-popup">
-              <img src="{{ asset('images/dokumen/'.$penghuni->nama.'/'.$d->dokumen) }}"  alt="user-img" title="{{ $d->dokumen }}" class="img-thumbnail img-responsive photo">
+            <a href="{{ asset('images/dokumen/'.$d->jenis.'/'.$d->dokumen) }}" class="image-popup">
+              <img src="{{ asset('images/dokumen/'.$d->jenis.'/'.$d->dokumen) }}"  alt="user-img" title="{{ $d->dokumen }}" class="img-thumbnail img-responsive photo">
             </a>
           </td>
           <td>
@@ -52,7 +52,7 @@
       $('#datatable').DataTable();
 
       $('.image-popup').magnificPopup({
-          type: 'image',
+        type: 'image',
       });
   });
 </script>

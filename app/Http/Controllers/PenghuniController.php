@@ -140,7 +140,7 @@ class PenghuniController extends Controller
           return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dinonaktifkan!');
         }elseif($penghuni->status == 0){
           $penghuni->delete();
-          return redirect('/lihatpenghuni')->with('info', 'Data Penghuni berhasil dihapus permanen!');
+          return redirect('/penghuni/history')->with('info', 'Data Penghuni berhasil dihapus permanen!');
         }
       }catch(\Exception $a){
         return redirect()->back()->withErrors($a->getMessage());
@@ -218,7 +218,7 @@ class PenghuniController extends Controller
         // Upload Foto
         if($request->file <> NULL|| $request->file <> ''){
           $file = $request->jenis.'-'.$penghuni.'.'.$request->file->getClientOriginalExtension();
-          $request->file->move(public_path('images/dokumen/'.$penghuni.'/'),$file);
+          $request->file->move(public_path('images/dokumen/'),$file);
         }
         // $path = "$request->nama/$request->jenis";
         // $file = $request->file("file")->store($path);
@@ -238,8 +238,8 @@ class PenghuniController extends Controller
         $data = dokumenPenghuni::where('id', $id)->first();
         $nama = Penghuni::where('id_penghuni', $data->id_penghuni)->first()->nama;
 
-        if (file_exists(public_path('images/dokumen/'.$nama.'/').$data->dokumen)) {
-              unlink(public_path('images/dokumen/'.$nama.'/').$data->dokumen);
+        if (file_exists(public_path('images/dokumen/').$data->dokumen)) {
+              unlink(public_path('images/dokumen/').$data->dokumen);
               $data->delete();
         }
 
@@ -265,5 +265,30 @@ class PenghuniController extends Controller
       $export = new PenghuniExport($data);
 
       return Excel::download($export, $filename.'.xlsx');
+    }
+
+    public function pindahDokumen(Request $request)
+    {
+      $dokumen = dokumenPenghuni::all();
+
+      foreach($dokumen as $dok){
+        $data = dokumenPenghuni::where('id', $dok->id)->first();
+        $penghuni = Penghuni::where('id_penghuni', $dok->id_penghuni)->first()->nama;
+        $file = public_path('images/dokumen/'.$dok->dokumen);
+        // $file = public_path('public/'.$dok->dokumen);
+        // echo $file;
+
+        if (file_exists($file)){
+          $path = pathinfo($file, PATHINFO_EXTENSION);
+          $filename = $dok->jenis.'-'.$penghuni.'.'.$path;
+          // echo $filename;
+          $isMove = rename($file, public_path('images/dokumen/'.$dok->jenis.'/'.$filename));
+
+          if($isMove){
+            $data->dokumen = $filename;
+            $data->update();
+          }
+        }
+      }
     }
 }
