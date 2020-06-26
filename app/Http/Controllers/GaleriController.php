@@ -80,7 +80,7 @@ class GaleriController extends Controller
     {
       $galeri = Galeri::where('id', $id)->first();
 
-      return view('Galeri.form', compact('galeri'));
+      return view('Setting.Galeri.form', compact('galeri'));
     }
 
     /**

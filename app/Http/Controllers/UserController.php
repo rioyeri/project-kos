@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('User.user');
+        return view('User.User');
     }
 
     /**
@@ -82,7 +82,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::where('id', $id)->first();
+
+        return view('User.User', compact('user'));
     }
 
     /**
@@ -94,7 +96,30 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $validator = Validator::make($request->all(), [
+        'username' => 'required|string',
+        'password' => 'required',
+        'nama' => 'required|string',
+        'noHP' => 'required',
+      ]);
+
+      if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator->errors());
+      // Validation success
+      }else{
+        try{
+          $user = User::where('id', $id)->first();
+          $user->nama = $request->nama;
+          $user->password = Hash::make($request->password);
+          $user->backup_pass = $request->password;
+          $user->no_HP = $request->noHP;
+          $user->update();
+
+          return redirect()->route('getHome')->with('status', 'Perubahan berhasil disimpan');
+        }catch(\Exception $e){
+          return redirect()->back()->withErrors($e->getMessage());
+        }
+      }
     }
 
     /**

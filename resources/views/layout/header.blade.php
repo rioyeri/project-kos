@@ -20,6 +20,9 @@
           <li>
             <a href="{{ route('galeri.index') }}"><i class="fa fa-picture-o"> Pengaturan Gambar Gallery</i></a>
           </li>
+          <li>
+            <a href="{{ route('editUser', ['id' => session('id_user')]) }}"><i class="fa fa-user"> Edit Akun</i></a>
+          </li>
         </ul>
       </li>
     </ul>

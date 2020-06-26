@@ -11,5 +11,4 @@ class Pembayarandet extends Model
   protected $fillable = [
     'id_pembayaran','id_penghuni', 'tahun', 'bulan', 'status'
   ];
-  public $timestamps = false;
 }

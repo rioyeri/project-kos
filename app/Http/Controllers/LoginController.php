@@ -66,6 +66,7 @@ class LoginController extends Controller
 
           // FOUND
           if($user && Hash::check($request->password, $user->password)){
+              $request->session()->put('id_user', $user->id);
               $request->session()->put('username', $request->username);
               $request->session()->put('name', $user->nama);
               $request->session()->put('isLoggedIn', 'Ya');

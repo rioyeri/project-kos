@@ -64,6 +64,7 @@
                 <th>Kamar</th>
                 <th>Tanggal Masuk</th>
                 <th>Jatuh Tempo</th>
+                <th>Cetak</th>
                 <th></th>
               </tr>
             </thead>
@@ -76,15 +77,19 @@
                   @php
                     $i++;
                     $kamar = Kamar::where('id_kamar', $mapping->id_kamar)->select('blok_id', 'lantai_id', 'namaKamar')->first();
-                    $blok = blok::where('id_blok', $kamar['blok_id'])->first()->namaBlok;
-                    $lantai = lantai::where('id_lantai', $kamar['lantai_id'])->first()->namaLantai;
-                    $namaKamar = $blok." ".$kamar['namaKamar']." (lantai ".$lantai.")";
+                    $blok = blok::where('id_blok', $kamar['blok_id'])->first();
+                    $lantai = lantai::where('id_lantai', $kamar['lantai_id'])->first();
+                    $namaKamar = $blok['namaBlok']." ".$kamar['namaKamar']." (lantai ".$lantai['namaLantai'].")";
                   @endphp
                   <td>{{ $i }}</td>
                   <td>{{ Penghuni::where('id_penghuni', $mapping->id_penghuni)->first()->nama }}</td>
                   <td>{{ $namaKamar }}</td>
                   <td>{{ $mapping->tglMasuk }}</td>
                   <td>{{ $mapping->tglKeluar }}</td>
+                  <td>
+                    <input type="hidden" id="route{{$mapping->id_mapping}}" value="{{route('printSP',['id' => $mapping->id_mapping])}}">
+                    <a href="javascript:;" class="btn btn-theme02 btn-xs" onclick="printSP({{$mapping->id_mapping}})"><i class="fa fa-file-pdf-o"></i> Surat Perjanjian</a>
+                  </td>
                   <td>
                     <a href="/mapping/edit/{{ $mapping->id_mapping}}"><button class="btn btn-primary btn-block btn-sm"><i class="fa fa-pencil"> Perpanjang Kontrak</i></button></a>
                     <form class="" action="/mapping/hapus/{{ $mapping->id_mapping }}" method="post">
@@ -153,7 +158,17 @@
                     $("#kamar_id").select2("val", data);
                     // $('#responsive-datatable').DataTable();
                   }
+
       });
+    }
+
+    function printSP(id){
+      windowUrl = $('#route'+id).val();
+      console.log(windowUrl)
+      windowName = "Surat Perjanjian";
+      var printWindow = window.open(windowUrl, windowName, 'left=500000,top=500000,width=0,height=0');
+      printWindow.focus();
+      printWindow.print();
     }
   </script>
 

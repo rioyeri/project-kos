@@ -66,17 +66,13 @@
               <div class="form-group">
                 <label class="control-label col-lg-2">Tanggal Masuk</label>
                 <div class="col-lg-10">
-                  <div data-date-format="Y-m-d">
-                    <input type="text" class="form-control" required name="masuk" id="masuk" autocomplete="off" data-date-format="yyyy-mm-dd" parsley-trigger="keyup" onkeyup="changeKeluar()">
-                  </div>
+                  <input type="text" class="form-control" required name="masuk" id="masuk" autocomplete="off" data-date-format="yyyy-mm-dd" placeholder="YYYY-MM-DD" parsley-trigger="change" onchange="changeKeluar()">
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Jatuh Tempo</label>
                 <div class="col-lg-10">
-                  <div data-date-format="Y-m-d">
-                    <input type="text" class="form-control" required name="keluar" id="keluar" autocomplete="off" data-date-format="yyyy-mm-dd">
-                  </div>
+                  <input type="text" class="form-control" required name="keluar" id="keluar" autocomplete="off" data-date-format="yyyy-mm-dd" placeholder="YYYY-MM-DD">
                 </div>
               </div>
               <div class="form-group">
@@ -102,51 +98,60 @@
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
   <script type="text/javascript" src="{{ asset('/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
-  <script>
-    $("#number").divide();
-    $(".select2").select2();
-    // Date Picker
-    $('#masuk').datepicker({
-        todayHighlight: true,
-        autoclose: true
-    });
-    $('#keluar').datepicker({
-        todayHighlight: true,
-        autoclose: true
-    });
+@endsection
 
-    function changeKamar(id){
-      $.ajax({
-        url       :   "{{ route('ajaxGetKamar')}}",
-        data      : {
-                      id_peng : id,
-                    },
+@section('script-js')
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#number").divide();
 
-        type		  :	"GET",
-        success		:	function(data){
-                    $("#kamar_id").select2("val", data);
-                    // $('#responsive-datatable').DataTable();
-                  }
+      $(".select2").select2();
+      // Date Picker
+      jQuery('#masuk').datepicker({
+          todayHighlight: true,
+          autoclose: true,
+      }).on('change', function () {
+        console.log("lalala lal")
+        changeKeluar();
       });
-    }
 
-    function changeKeluar(){
-        var msk = $("#masuk").val();
-        var lama = $("#lamaKontrak").val();
-        // console.log("test");
-        $.ajax({
-        url       :   "{{ route('ajxGetKeluar')}}",
+      jQuery('#keluar').datepicker({
+          todayHighlight: true,
+          autoclose: true,
+      });
+
+  });
+
+  function changeKamar(id){
+    $.ajax({
+      url       :   "{{ route('ajaxGetKamar')}}",
+      data      : {
+                    id_peng : id,
+                  },
+
+      type		  :	"GET",
+      success		:	function(data){
+                  $("#kamar_id").select2("val", data);
+                  // $('#responsive-datatable').DataTable();
+                }
+    });
+  }
+
+  function changeKeluar(){
+      var msk = $("#masuk").val();
+      var lama = $("#lamaKontrak").val();
+      // console.log("test");
+      $.ajax({
+        url       : "{{ route('ajxGetKeluar')}}",
         data      : {
                       msk : msk,
                       lamaKontrak : lama,
                     },
         type		  :	"GET",
-        success		:	function(data){
-                    $("#keluar").val(data);
-                    console.log(data);
-                    // $('#responsive-datatable').DataTable();
-                  }
-            });
-      }
-  </script>
+      }).done(function(data){
+        $("#keluar").val(data);
+        // console.log(data);
+      });
+  }
+</script>
 @endsection

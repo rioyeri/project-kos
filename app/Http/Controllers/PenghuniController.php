@@ -8,6 +8,7 @@ use App\Models\Mapping;
 use App\Models\dokumenPenghuni;
 use App\Imports\PenghuniImport;
 use Excel;
+use PDF;
 use App\Exports\PenghuniExport;
 use Carbon\Carbon;
 

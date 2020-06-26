@@ -2,6 +2,8 @@
 
 @section('css')
   <link href="{{ asset('lib/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+  <!--datepicker-->
+  <link href="{{ asset('lib/bootstrap-datepicker/css/datepicker.css') }}" rel="stylesheet">
 @endsection
 
 @section('page')
@@ -38,7 +40,7 @@
               <div class="form-group ">
                 <label for="id_penghuni" class="control-label col-lg-2">Pilih Penghuni</label>
                 <div class="col-lg-10">
-                  <select name="penghuni_id" class="form-control" parsley-trigger="change" onchange="changeKamar(this.value)">
+                  <select name="penghuni_id" class="form-control select2" parsley-trigger="change" onchange="changeKamar(this.value)">
                     <option value="{{ $mapping->id_penghuni }}" selected> {{ Penghuni::where('id_penghuni', $mapping->id_penghuni)->first()->nama }}</option>
                   </select>
                 </div>
@@ -46,7 +48,7 @@
               <div class="form-group ">
                 <label for="id_kamar" class="control-label col-lg-2">Pilih Kamar</label>
                 <div class="col-lg-10">
-                  <select name="kamar_id" class="form-control" id="kamar_id">
+                  <select name="kamar_id" class="form-control select2" id="kamar_id">
                     @php
                       $kamar = Kamar::where('id_kamar', $mapping->id_kamar)->select('blok_id', 'lantai_id', 'namaKamar')->first();
                       $blok = blok::where('id_blok', $kamar['blok_id'])->first()->namaBlok;
@@ -60,22 +62,22 @@
               <div class="form-group ">
                 <label for="lamaKontrak" class="control-label col-lg-2">Lama Sewa (/Bulan)</label>
                 <div class="col-lg-10">
-                  <input class="form-control" name="lamaKontrak" id="lamaKontrak" type="text" placeholder='Masukan Lama Sewa' required/>
+                  <input class="form-control" name="lamaKontrak" id="lamaKontrak" type="text" placeholder='Masukan Lama Sewa' parsley-trigger="change" onchange="changeKeluar()" required/>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Tanggal Masuk</label>
-                <div class="col-lg-4">
+                <div class="col-lg-10">
                   <div data-date-format="Y-m-d">
-                    <input name="masuk" id="masuk" type="date" class="form-control" parsley-trigger="change" onchange="changeKeluar(this.value)" required autocomplete="off">
+                    <input name="masuk" id="masuk" type="text" class="form-control" data-date-format="yyyy-mm-dd" parsley-trigger="change" onchange="changeKeluar()" required autocomplete="off" value="{{ $mapping->tglKeluar }}" placeholder="YYYY-MM-DD">
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-lg-2">Jatuh Tempo</label>
-                <div class="col-lg-4">
+                <div class="col-lg-10">
                   <div data-date-format="Y-m-d">
-                    <input type="date" class="form-control" required name="keluar" id="keluar" autocomplete="off">
+                    <input type="text" class="form-control" required name="keluar" id="keluar" autocomplete="off" data-date-format="yyyy-mm-dd" placeholder="YYYY-MM-DD">
                   </div>
                 </div>
               </div>
@@ -103,9 +105,19 @@
 @section('js')
   <script src="{{ asset('lib/number-divider.min.js') }}"></script>
   <script src="{{ asset('lib/select2/js/select2.min.js') }}" type="text/javascript"></script>
+  <script type="text/javascript" src="{{ asset('/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
   <script>
     $("#number").divide();
     $(".select2").select2();
+    $('#masuk').datepicker({
+        todayHighlight: true,
+        autoclose: true,
+    });
+    $('#keluar').datepicker({
+        todayHighlight: true,
+        autoclose: true,
+    });
+
     function changeKamar(id){
       $.ajax({
         url       :   "{{ route('ajaxGetKamar')}}",
@@ -121,12 +133,13 @@
       });
     }
 
-    function changeKeluar(id){
+    function changeKeluar(){
+        var msk = $("#masuk").val();
         var lama = $("#lamaKontrak").val()
         $.ajax({
         url       :   "{{ route('ajxGetKeluar')}}",
         data      : {
-                      msk : id,
+                      msk : msk,
                       lamaKontrak : lama,
                     },
         type		  :	"GET",

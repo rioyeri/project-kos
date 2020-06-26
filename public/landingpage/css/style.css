@@ -17,7 +17,8 @@ http://www.templatemo.com/tm-492-app-starter
 }
 
 body {
-		background: #1c1c1c;
+    /* background: #1c1c1c; */
+    background: #ffffff;
     /* font-family: 'Source Sans Pro', sans-serif; */
     font-family: 'franklin_book';
     font-style: normal;
@@ -44,37 +45,54 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 h1 {
-    color: #ffffff;
+    /* color: #ffffff; */
+    color: #000000;
     font-size: 52px;
     letter-spacing: 2px;
     padding-bottom: 10px;
     margin-bottom: 0px;
 }
 
+.white {
+  color: #ffffff;
+  /* color: #000000; */
+  font-size: 52px;
+  letter-spacing: 2px;
+  padding-bottom: 10px;
+  margin-bottom: 0px;
+}
+
 h2 {
-  color: #f0f0f0;
+  /* color: #f0f0f0; */
+  color: #505050;
   font-size: 32px;
 }
 
 h3 {
-  color: #535bd4;
+  color: #527751;
   font-size: 22px;
   line-height: 32px;
   padding-bottom: 4px;
 }
 
 h4 {
-  color: #f0f0f0;
+  /* color: #f0f0f0; */
+  color: #505050;
   font-weight: bold;
 }
 
 h5 {
-  color: #f0f0f0;
+  /* color: #f0f0f0; */
+  color: #505050;
   font-weight: bold;
 }
 
+.fw {
+  color: #f0f0f0;
+}
+
 p {
-    color: #999;
+    color: rgb(58, 58, 58);
     font-size: 20px;
     font-weight: 300;
     line-height: 30px;
@@ -148,7 +166,8 @@ a:hover, a:active, a:focus {
 
 ::-webkit-scrollbar-thumb {
   cursor: pointer;
-  background: #ffffff;
+  /* background: #ffffff; */
+  background: #527751;
 }
 
 .section-title {
@@ -230,13 +249,13 @@ a:hover, a:active, a:focus {
 }
 
 .black-bg {
-  background: #22242a;
-  border-bottom: 1px solid #393d46;
+  background: #eaeaea;
+  /* border-bottom: 1px solid #393d46; */
 }
 
 .navbar-default .navbar-brand {
   /* color: #535bd4; */
-  color: #f2f2f2;
+  color: #505050;
   font-family: 'copperplate_light';
   font-size: 26px;
   font-weight: bold;
@@ -248,12 +267,13 @@ a:hover, a:active, a:focus {
 
 .navbar-default .navbar-brand span {
   /* color: #1dc9e3; */
-  color: #4ECDC4;
+  color: #527751;
 }
 
 .navbar-default .navbar-nav li a {
     /* color: #656565; */
-    color : #f2f2f2;
+    /* color : #f2f2f2; */
+    color : #000000;
     font-size: 18px;
     font-weight: 500;
     line-height: 50px;
@@ -277,7 +297,8 @@ a:hover, a:active, a:focus {
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
-    color: #1dc9e3;
+    /* color: #1dc9e3; */
+    color : #527751;
     background-color: transparent;
 }
 
@@ -318,9 +339,13 @@ a:hover, a:active, a:focus {
 }
 
 #home .overlay {
-  background: #1dc9e3; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #4776E6 , #8E54E9); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #4776E6 , #8E54E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* fallback for old browsers */
+  /* background: #1dc9e3; */
+   /* Chrome 10-25, Safari 5.1-6 */
+  /* background: -webkit-linear-gradient(to left, #4776E6 , #8E54E9); */
+  /* background: linear-gradient(to left, #4776E6 , #8E54E9);  */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to left, #486847 , #a7d8a5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   opacity: 0.9;
   position: absolute;
   width: 100%;
@@ -343,6 +368,7 @@ a:hover, a:active, a:focus {
 #home p,
 #newsletter p {
   color: #f0f0f0;
+  /* color: #000000; */
   letter-spacing: 1px;
 }
 
@@ -360,11 +386,13 @@ a:hover, a:active, a:focus {
 -----------------------------------------*/
 
 #divider {
-  background-color: #1dc9e3;
+  /* background-color: #1dc9e3; */
+  background-color: #000000;
 }
 
 #divider p {
-  color: #666;
+  /* color: #666; */
+  color: #000;
   font-size: 26px;
   line-height: 42px;
 }
@@ -579,6 +607,7 @@ a:hover, a:active, a:focus {
 footer {
   padding-top: 60px;
   padding-bottom: 60px;
+  background: #527751;
 }
 
 footer span {

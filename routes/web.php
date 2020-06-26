@@ -21,6 +21,8 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 Route::middleware(['checkUser'])->group(function () {
   Route::get('/user/create', 'UserController@create')->name('createUser');
   Route::post('/user/create', 'UserController@store');
+  Route::get('/user/edit/{id}', 'UserController@edit')->name('editUser');
+  Route::post('/user/edit/{id}', 'UserController@update');
 
   Route::get('/dashboard', 'JatuhTempoController@index')->name('dashboard');
 
@@ -54,6 +56,7 @@ Route::middleware(['checkUser'])->group(function () {
   Route::put('/mapping/edit', 'MappingController@update');
   Route::delete('/mapping/hapus/{id}','MappingController@destroy');
   Route::get('/ajaxGetKamar', 'MappingController@ajx')->name('ajaxGetKamar');
+  Route::get('/mapping/suratperjanjian/{id}', 'MappingController@pdfSuratPerjanjian')->name('printSP');
 
   Route::get('/tambahpembayaran', 'PembayaranController@create');
   Route::get('/lihatpembayaran', 'PembayaranController@index');

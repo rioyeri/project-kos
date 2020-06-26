@@ -38,6 +38,9 @@ class PenghuniExport implements FromArray, WithHeadings, ShouldAutoSize
             'Nomor HP',
             'Alamat',
             'Dokumen',
+            'Kamar',
+            'Jatuh Tempo',
+            'Status Pembayaran'
         ];
     }
 }

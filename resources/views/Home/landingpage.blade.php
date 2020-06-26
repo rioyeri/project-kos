@@ -56,7 +56,7 @@ http://www.templatemo.com/tm-492-app-starter
 				<span class="icon icon-bar"></span>
 				<span class="icon icon-bar"></span>
 			</button>
-			<a href="{{ route('getHome') }}" class="navbar-brand">Green<span>House</span></a>
+			<a href="{{ route('getHome') }}" class="navbar-brand"><span>GreenHouse</span></a>
 		</div>
 
 		<div class="collapse navbar-collapse">
@@ -80,8 +80,8 @@ http://www.templatemo.com/tm-492-app-starter
         </div>
         <div class="col-md-6 col-sm-7 col-xs-12">
           <div class="home-thumb">
-            <h1 class="wow fadeInUp" data-wow-delay="0.6s">{{ $greenhouse->welcome }}</h1>
-            <p class="wow fadeInUp" data-wow-delay="0.8s">{{ $greenhouse->welcome_desc }}</p>
+            <h1 class="wow fadeInUp white" data-wow-delay="0.6s">{{ $greenhouse->welcome }}</h1>
+            <p class="wow fadeInUp" id="pwhite" data-wow-delay="0.8s">{{ $greenhouse->welcome_desc }}</p>
             {{-- <a href="#pricing" class="wow fadeInUp section-btn btn btn-success smoothScroll" data-wow-delay="1s">Login</a> --}}
           </div>
         </div>
@@ -106,7 +106,7 @@ http://www.templatemo.com/tm-492-app-starter
             <a href="{{ asset('landingpage/gallery/'.$gal->image) }}" class="photo image-popup" title="{{ $gal->title }}">
               <center><img src="{{ asset('landingpage/gallery/'.$gal->image) }}" class="photo img-responsive" alt="screenshot" title="{{ $gal->title }}"></center>
             </a>
-            <h3 style="color: #4ECDC4;"><center>{{ $gal->title }}</center></h3>
+            <h3><center>{{ $gal->title }}</center></h3>
             <h5><center>{{ $gal->description }}</center></h5>
             {{-- <label style="color: #ffffff">{{ $gal->title }}</label>
             <label style="color: #ffffff">{{ $gal->description }}</label> --}}
@@ -183,15 +183,15 @@ http://www.templatemo.com/tm-492-app-starter
 		<div class="row">
       <div class="col-md-6 col-sm-6">
            <div class="wow fadeInUp footer-fixed" data-wow-delay="0.4s">
-                <h1>Connect with Us </h1>
+                <h1 class="white">Connect with Us </h1>
            </div>
       </div>
 			<div class="col-md-6 col-sm-6">
 				<ul class="wow fadeInUp" data-wow-delay="0.8s">
-          <h4>{{ $greenhouse->alamat }}</h4>
-          <h4>{{ $greenhouse->kota }}</h4>
-          <h5>Call/Whatsapp : {{ $greenhouse->noHP }}</h5>
-          <h5>Email : {{ $greenhouse->email }}</h5>
+          <h4 class="fw">{{ $greenhouse->alamat }}</h4>
+          <h4 class="fw">{{ $greenhouse->kota }}</h4>
+          <h5 class="fw">Call/Whatsapp : {{ $greenhouse->noHP }}</h5>
+          <h5 class="fw">Email : {{ $greenhouse->email }}</h5>
         </ul>
       </div>
 		</div>

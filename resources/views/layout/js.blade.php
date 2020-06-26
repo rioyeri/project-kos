@@ -50,20 +50,21 @@
   </script>
   @endif
   @if ($errors->any())
-  @php
-      $er="";
-  @endphp
-  @foreach ($errors->all() as $error)
-      @php
-      $er .= "<li>".$error."</li>";
-      @endphp
-  @endforeach
+    @php
+        $er="";
+    @endphp
+    @foreach ($errors->all() as $error)
+        @php
+        $er .= "<li>".$error."</li>";
+        @endphp
+    @endforeach
   <script>
       var error = "<?=$er?>";
       // Display an error toast, with a title
       toastr.error(error, 'Error!!!')
   </script>
   @endif
+
   @yield('script-js')
 
 

@@ -8,6 +8,7 @@ use App\Models\Penghuni;
 use App\Models\Mapping;
 use Carbon\Carbon;
 use App\Models\Pembayarandet;
+use PDF;
 
 class MappingController extends Controller
 {
@@ -127,20 +128,36 @@ class MappingController extends Controller
      */
     public function update(Request $request)
     {
-      $mapping = Mapping::where('id_mapping', $request->id_mapping)->first();
-      $klr = new Carbon($request->keluar);
-      $keluar = date('Y-m-d', strtotime($klr));
-      $mapping->tglKeluar = $keluar;
-      $mapping->update();
+      // echo "<pre>";
+      // print_r($request->all());
+      // die();
+      // $mapping = Mapping::where('id_mapping', $request->id_mapping)->first();
+      // $klr = new Carbon($request->keluar);
+      // $keluar = date('Y-m-d', strtotime($klr));
+      // $mapping->tglKeluar = $keluar;
+      // $mapping->update();
       try{
         $msk = new Carbon($request->masuk);
+        $masuk = date('Y-m-d', strtotime($msk));
+        $klr = new Carbon($request->keluar);
+        $keluar = date('Y-m-d', strtotime($klr));
+
+        $data = Mapping::where('id_mapping', $request->id_mapping)->first();
+        $mapping = new Mapping;
+        $mapping->id_penghuni = $request->penghuni_id;
+        $mapping->id_kamar = $data->id_kamar;
+        $mapping->tglMasuk = $masuk;
+        $mapping->tglKeluar = $keluar;
+
+        $mapping->save();
+
         for($i=0;$i<$request->lamaKontrak;$i++){
           $data1 = new Pembayarandet;
           $data1->id_penghuni = $request->penghuni_id;
           $blnmsk = date('m', strtotime($msk));
           $thnmsk = date('Y', strtotime($msk));
           $tglmsk = date('d', strtotime($msk));
-          $data1->id_mapping = $request->id_mapping;
+          $data1->id_mapping = $mapping->id_mapping;
           $data1->tahun = $thnmsk;
           $data1->bulan = $blnmsk;
           $data1->tanggal = $tglmsk;
@@ -150,7 +167,7 @@ class MappingController extends Controller
         }
         return redirect('/mapping/lihat')->with('success', 'Perpanjangan masa sewa disimpan');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
 
@@ -164,9 +181,56 @@ class MappingController extends Controller
      */
     public function destroy($id)
     {
-        $data = Mapping::find($id);
+        $data = Mapping::where('id_mapping', $id)->first();
+        $masuk = Carbon::createFromFormat('Y-m-d',$data->tglMasuk);
+        $keluar = Carbon::createFromFormat('Y-m-d',$data->tglKeluar);
+        $count = $masuk->diffInMonths($keluar);
+        // echo "<pre>";
+        // print_r($count);
+        // die();
+        // $blnmsk = date('m', strtotime($data->tglMasuk));
+        // $thnmsk = date('Y', strtotime($data->tglMasuk));
+        // $tglmsk = date('d', strtotime($data->tglMasuk));
 
-        $data->delete();
-        return redirect()->back()->with('info', 'Mapping Kamar terhapus!');
+        try{
+          for($i=0; $i<$count; $i++){
+            $blnmsk = date('m', strtotime($masuk));
+            $thnmsk = date('Y', strtotime($masuk));
+            $tglmsk = date('d', strtotime($masuk));
+
+            PembayaranDet::where('id_mapping', $id)->where('tahun', $thnmsk)->where('bulan', $blnmsk)->where('tanggal', $tglmsk)->delete();
+            $masuk = $masuk->addMonths(1);
+          }
+
+          $data->delete();
+          return redirect()->back()->with('info', 'Mapping Kamar terhapus!');
+        }catch(\Exception $e){
+          return redirect()->back()->withErrors($e->getMessage());
+        }
+    }
+
+    public function pdfSuratPerjanjian($id, Request $request){
+      $penghuni = Mapping::join('penghuni', 'mappingkamar.id_penghuni', 'penghuni.id_penghuni')->join('kamar', 'mappingkamar.id_kamar', 'kamar.id_kamar')->where('id_mapping', $id)->first();
+      $pembayaran = PembayaranDet::where('id_mapping', $id)->where('id_penghuni', $penghuni->id_penghuni)->count();
+      // echo "<pre>";
+      // print_r($penghuni);
+      // die();
+      ini_set('max_execution_time', 3000);
+      $tgl = date('d F Y', strtotime(Carbon::today()));
+      $filename = "Surat Perjanjian ".$penghuni->nama;
+      $amount = $penghuni->harga * $pembayaran;
+
+      $datas = ['penghuni'=>$penghuni, 'tgl'=>$tgl];
+
+      // return view('penghuni.pdfSuratPerjanjian', compact('penghuni', 'tgl'));
+      // $pdf = PDF::loadview('penghuni.pdfSuratPerjanjian',$datas)->setPaper('a4');
+
+      // $pdf->save(public_path('download/'.$filename.'.pdf'));
+      // return $pdf->download($filename.'.pdf');
+      if ($request->ajax()) {
+        return response()->json(view('Penghuni.pdfSuratPerjanjian',compact('penghuni', 'tgl', 'amount'))->render());
+      }else{
+          return view('Penghuni.pdfSuratPerjanjian',compact('penghuni', 'tgl', 'amount'));
+      }
     }
 }

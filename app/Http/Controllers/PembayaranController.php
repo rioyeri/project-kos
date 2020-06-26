@@ -140,6 +140,9 @@ class PembayaranController extends Controller
      */
     public function edit($thn, $bln,$id)
     {
+      // echo "<pre>";
+      // print_r("lalala");
+      // die();
       $thn = $thn;
       $bln = $bln;
       $pembayaran = Pembayaran::find($id);
@@ -202,7 +205,7 @@ class PembayaranController extends Controller
         $data->update();
         return redirect('/lihatpembayaran')->with('info','Data pembayaran berhasil diupdate');
       }catch(\Exception $a){
-        return redirect()->back()->withErrors($a->errorInfo);
+        return redirect()->back()->withErrors($a->getMessage());
         // return response()->json($e);
       }
     }
@@ -215,41 +218,43 @@ class PembayaranController extends Controller
      */
     public function destroy($thn, $bln, $id)
     {
-        $pembayaran = Pembayaran::find($id);
+        $pembayaran = Pembayaran::where('id_pembayaran',$id)->first();
         $detail = Pembayarandet::where('id_pembayaran',$id)->get();
-        $keuangan = Keuangan::where('trx_jenis', 2)->where('trx_id',$id)->first();
 
         try{
           if($pembayaran->buktiBayar){
-            Storage::delete($pembayaran->buktiBayar);
-            $nama = Penghuni::where('id_penghuni', $pembayaran->penghuni_id)->first()->nama;
-            $namafolder = "bukti/$nama";
-            Storage::deleteDirectory($namafolder);
+            if (file_exists(public_path('images/bukti/').$pembayaran->buktiBayar)){
+              unlink(public_path('images/bukti/').$pembayaran->buktiBayar);
+            }
           }
           $pembayaran->delete();
-          $keuangan->delete();
           foreach($detail as $det){
-            $det->id_pembayaran = null;
-            $det->status = 0;
-            $det->update();
+            $data = Pembayarandet::where('id', $det->id)->first();
+            $data->id_pembayaran = null;
+            $data->status = 0;
+            $data->update();
           }
           return redirect('/lihatpembayaran')->with('info','Data pembayaran terpilih, berhasil dihapus');
         }catch(\Exception $a){
-          return redirect()->back()->withErrors($a->errorInfo);
+          return redirect()->back()->withErrors($a->getMessage());
           // return response()->json($e);
         }
     }
 
     public function ajxDelete(Request $request){
-      $pembayaran = Pembayaran::find($request->id);
+      try{
+        $pembayaran = Pembayaran::where('id_pembayaran',$request->id)->first();
         if($pembayaran->buktiBayar){
-          Storage::delete($pembayaran->buktiBayar);
-          $nama = Penghuni::where('id_penghuni', $pembayaran->penghuni_id)->first()->nama;
-          $namafolder = "bukti/$nama";
-          Storage::deleteDirectory($namafolder);
+          if (file_exists(public_path('images/bukti/').$pembayaran->buktiBayar)){
+            unlink(public_path('images/bukti/').$pembayaran->buktiBayar);
+          }
         }
         $pembayaran->delete();
         return redirect('/lihatpembayaran')->with('info','Data pembayaran terpilih, berhasil dihapus');
+      }catch(\Exception $a){
+        return redirect()->back()->withErrors($a->getMessage());
+        // return response()->json($e);
+      }
     }
 
     public function AjxShowTable(Request $request){

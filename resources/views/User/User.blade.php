@@ -40,35 +40,47 @@
             </div>
           @endif
           <div class=" form">
-            <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/user/create">
+            @isset($user)
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/user/edit/{{ $user->id }}">
+            @else
+              <form class="cmxform form-horizontal style-form" id="commentForm" method="post" action="/user/create">
+            @endisset
               {{ csrf_field() }}
+              <div class="form-group ">
+                <label for="harga" class="control-label col-lg-2">Username</label>
+                <div class="col-lg-10">
+                  @isset($user->username)
+                    <input class="form-control" id="username" name="username" minlength="3" type="text" placeholder='Username' value="@isset($user->username){{ $user->username }}@endisset" readonly="readonly" required/>
+                  @else
+                    <input class="form-control" id="username" name="username" minlength="3" type="text" placeholder='Username' required/>
+                  @endif
+                </div>
+              </div>
               <div class="form-group ">
                 <label for="namaKamar" class="control-label col-lg-2">Nama</label>
                 <div class="col-lg-10">
-                  <input class=" form-control" id="nama" name="nama" minlength="3" type="text" placeholder='Nama' required/>
+                  <input class=" form-control" id="nama" name="nama" minlength="3" type="text" placeholder='Nama' value="@isset($user->nama){{ $user->nama }}@endisset" required/>
                 </div>
               </div>
               <div class="form-group ">
                 <label for="namaKamar" class="control-label col-lg-2">No Handphone</label>
                 <div class="col-lg-10">
-                  <input class=" form-control" id="noHP" name="noHP" minlength="3" type="text" placeholder='nomor Handphone' required/>
-                </div>
-              </div>
-              <div class="form-group ">
-                <label for="harga" class="control-label col-lg-2">Username</label>
-                <div class="col-lg-10 form-inline">
-                  <input class="form-control" id="username" name="username" minlength="3" type="text" placeholder='Username' required/>
+                  <input class=" form-control" id="noHP" name="noHP" minlength="3" type="text" placeholder='nomor Handphone' value="@isset($user->no_HP){{ $user->no_HP }}@endisset" required/>
                 </div>
               </div>
               <div class="form-group ">
                 <label for="harga" class="control-label col-lg-2">Password</label>
-                <div class="col-lg-10 form-inline">
-                  <input class="form-control" id="password" name="password" minlength="6" type="password" placeholder='Password' required/>
+                <div class="col-lg-10">
+                  <input class="form-control" id="password" name="password" minlength="6" type="password" required/>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                  <button class="btn btn-theme" type="submit">Tambahkan</button>
+                  @isset($user)
+                    <button class="btn btn-theme" type="submit">Simpan</button>
+                  @else
+                    <button class="btn btn-theme" type="submit">Tambahkan</button>
+                  @endif
                 </div>
               </div>
             </form>
